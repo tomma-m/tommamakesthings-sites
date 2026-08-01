@@ -20,9 +20,9 @@ jobs:
       - uses: actions/setup-node@v4
         with: { node-version: '20' }
       - run: npm ci
+      # The build reads everything from disk, including the privacy policy.
+      # No network access, no secrets, nothing to expire.
       - run: node build.mjs sidelinehero
-        env:
-          APP_REPO_TOKEN: ${{ secrets.APP_REPO_TOKEN }}
       - uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::957424402699:role/github-tommamakesthings-sites-deploy
