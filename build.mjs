@@ -45,3 +45,10 @@ await page('support/index.html', await readFile(`${SRC}/support.html`, 'utf8'), 
   title: 'Support — Sideline Hero',
   description: 'Get help with Sideline Hero, report a bug, or ask a question.',
 });
+
+const appPolicy = await readFile(`${SRC}/privacy-app.md`, 'utf8');
+const sitePolicy = await readFile(`${SRC}/privacy-site.md`, 'utf8');
+await page('privacy/index.html',
+  marked.parse(appPolicy) + '<hr>' + marked.parse(sitePolicy),
+  { title: 'Privacy — Sideline Hero',
+    description: 'How Sideline Hero and this website handle your information.' });
