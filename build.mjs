@@ -35,3 +35,8 @@ await page('index.html', await readFile(`${SRC}/index.html`, 'utf8'), {
   title: 'Sideline Hero — basketball substitution planner for coaches',
   description: 'Fair rotations, planned before tip-off. Works offline, no account, free.',
 });
+
+await page('404.html', await readFile(`${SRC}/404.html`, 'utf8'), {
+  title: 'Not found — Sideline Hero',
+  description: 'That page does not exist.',
+});
