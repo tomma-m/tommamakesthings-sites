@@ -40,3 +40,8 @@ await page('404.html', await readFile(`${SRC}/404.html`, 'utf8'), {
   title: 'Not found — Sideline Hero',
   description: 'That page does not exist.',
 });
+
+await page('support/index.html', await readFile(`${SRC}/support.html`, 'utf8'), {
+  title: 'Support — Sideline Hero',
+  description: 'Get help with Sideline Hero, report a bug, or ask a question.',
+});
