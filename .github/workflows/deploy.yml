@@ -1,0 +1,45 @@
+name: Deploy
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+jobs:
+  sidelinehero:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '20' }
+      - run: npm ci
+      - run: node build.mjs sidelinehero
+        env:
+          APP_REPO_TOKEN: ${{ secrets.APP_REPO_TOKEN }}
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::957424402699:role/github-tommamakesthings-sites-deploy
+          aws-region: ap-southeast-2
+      - name: Sync assets
+        run: |
+          aws s3 sync sites/sidelinehero/dist s3://sidelinehero-tommamakesthings-site \
+            --delete --exclude "*.html" \
+            --cache-control "public,max-age=604800"
+      - name: Sync HTML (no cache)
+        run: |
+          aws s3 sync sites/sidelinehero/dist s3://sidelinehero-tommamakesthings-site \
+            --exclude "*" --include "*.html" \
+            --cache-control "no-cache" --content-type "text/html; charset=utf-8"
+      - name: Invalidate
+        run: |
+          aws cloudfront create-invalidation --distribution-id ${{ vars.DIST_ID }} \
+            --paths "/*"
+      - name: Smoke test
+        run: ./scripts/smoke.sh
