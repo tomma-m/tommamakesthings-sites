@@ -1,0 +1,6 @@
+{
+  "name": "tommamakesthings-sites",
+  "private": true,
+  "type": "module",
+  "devDependencies": { "marked": "^12.0.0" }
+}
