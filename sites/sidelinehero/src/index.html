@@ -62,15 +62,60 @@
   </div>
 </section>
 
-<!-- Interim beta section: replace with the real Formspree form once the
-     Formspree endpoint exists. Until then this is a plain mailto link. -->
 <section id="beta">
   <p class="kicker">Beta</p>
   <h2>Request beta access</h2>
-  <div class="card">
-    <p class="lede">Sideline Hero is currently in beta on iOS. Email us and
-    we'll send back a TestFlight invite so you can start using it with your
-    team.</p>
-  </div>
-  <p><a class="cta" href="mailto:support@tommamakesthings.com?subject=Sideline%20Hero%20beta%20access">Email for beta access</a></p>
+  <p class="lede">Sideline Hero is currently in beta on iOS. Leave your email
+  and we'll send back a TestFlight invite so you can start using it with your
+  team.</p>
+  <form id="beta-form" class="card" action="https://forms.tommamakesthings.com" method="POST">
+    <label for="email">Email address</label>
+    <input id="email" type="email" name="email" required autocomplete="email">
+    <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true">
+    <p id="beta-error" class="form-error" role="alert" hidden></p>
+    <button class="cta" type="submit">Request access</button>
+  </form>
+  <p class="fineprint">Used only to send you a beta invite — see the
+  <a href="/privacy">privacy page</a>.</p>
 </section>
+<script>
+(function () {
+  var form = document.getElementById('beta-form');
+  if (!form) return;
+  var email = document.getElementById('email');
+  var gotcha = form.elements['_gotcha'];
+  var error = document.getElementById('beta-error');
+  var button = form.querySelector('button');
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    error.hidden = true;
+    button.disabled = true;
+    button.textContent = 'Sending…';
+
+    fetch(form.action, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email.value, _gotcha: gotcha.value })
+    }).then(function (res) {
+      return res.json().catch(function () { return {}; }).then(function (data) {
+        return { ok: res.ok, data: data };
+      });
+    }).then(function (result) {
+      if (result.ok && result.data.ok) {
+        form.outerHTML = '<div class="card"><p>Thanks — check your inbox for a TestFlight invite soon.</p></div>';
+      } else {
+        error.textContent = result.data.error || 'Something went wrong. Please try again.';
+        error.hidden = false;
+        button.disabled = false;
+        button.textContent = 'Request access';
+      }
+    }).catch(function () {
+      error.textContent = 'Something went wrong. Please try again.';
+      error.hidden = false;
+      button.disabled = false;
+      button.textContent = 'Request access';
+    });
+  });
+})();
+</script>

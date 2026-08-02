@@ -17,7 +17,7 @@ check "missing page 404s" 404 "/definitely-not-a-page"
 
 echo "checking for third-party requests..."
 if grep -rEoh 'https?://[^"'"'"' )]+' sites/sidelinehero/dist --include='*.html' --include='*.css' \
-   | grep -vE '^https://(sidelinehero\.tommamakesthings\.com|formspree\.io)' \
+   | grep -vE '^https://(sidelinehero\.tommamakesthings\.com|forms\.tommamakesthings\.com)' \
    | sort -u | grep .; then
   echo "  FAIL third-party URLs found in built output"; fail=1
 else
