@@ -82,11 +82,16 @@ input[name=_gotcha] { position: absolute; left: -9999px; }
 /* The two halves of the privacy page make different promises. The website half
    is given its own surface, top rule and padding so the boundary is obvious
    without reading a word of it. */
+/* --surface2 is only 1.03:1 against --canvas, so the tint alone cannot carry
+   the boundary. The heavy top rule and the outlined panel edge do the work;
+   --orange is 2.66:1 on canvas, so the rule uses the darker CTA orange
+   (3.79:1). */
 .policy-site {
   background: var(--surface2);
-  border-top: 4px solid var(--orange);
+  border: 1px solid var(--rule);
+  border-top: 5px solid var(--orange-cta);
   border-radius: 12px;
   padding: 8px 24px 24px;
-  margin-top: 56px;
+  margin-top: 64px;
 }
 .policy > h2:first-child { margin-top: 32px; }

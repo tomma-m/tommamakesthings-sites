@@ -5,7 +5,10 @@
   --ink:        #191410;
   --muted:      #6A6257;  /* 4.85:1 on --canvas, 4.72:1 on --surface2 */
   --rule:       #E2D6C2;
-  --orange:     #E8671A;  /* hover states and decorative fills only — NEVER text, 3.29:1 on white */
+  /* Decorative fills and focus rings only. NEVER text and NEVER a button
+     background: white on it is 3.29:1. As a focus ring it clears the 3:1
+     non-text threshold (3.29:1 on the white input, 3.05:1 on --surface). */
+  --orange:     #E8671A;
   --orange-cta: #C2510A;  /* CTA resting background — white text on it is 4.69:1 */
   --orange-ink: #AC4208;  /* orange text only — 4.80:1 on --canvas, 4.67:1 on --surface2 */
 }
