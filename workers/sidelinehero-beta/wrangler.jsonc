@@ -1,0 +1,32 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "sidelinehero-beta",
+  "main": "src/index.js",
+  // Matches the deployed script's compatibility_date, read back from the API.
+  // Changing it changes runtime behaviour — don't bump it casually.
+  "compatibility_date": "2025-09-01",
+  "observability": { "enabled": true },
+
+  // Email Routing's send_email binding, NOT the newer Email Sending product.
+  // It may only send to addresses already VERIFIED as destinations on the
+  // account, which is exactly the case here — it emails the owner and nobody
+  // else. That constraint is a feature: a bug in this Worker cannot be turned
+  // into a spam cannon.
+  "send_email": [
+    {
+      "name": "EMAIL",
+      "destination_address": "thomas.morris@gmail.com"
+    }
+  ],
+
+  // The site is on CloudFront with Cloudflare DNS left unproxied (grey cloud),
+  // so a Worker route on that hostname is impossible — routes require a proxied
+  // record. Hence its own hostname. Still first-party: same registrable domain,
+  // and the only cross-origin endpoint the site is allowed to call.
+  "routes": [
+    {
+      "pattern": "forms.tommamakesthings.com",
+      "custom_domain": true
+    }
+  ]
+}
