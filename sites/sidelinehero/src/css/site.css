@@ -19,13 +19,19 @@ h2 { font-size: clamp(1.6rem, 5vw, 2.25rem); margin: 48px 0 12px; }
   letter-spacing: 1.6px; text-transform: uppercase; color: var(--orange-ink);
 }
 
+/* font-size is explicit: without it <button class="cta"> inherits the UA's
+   ~13px while <a class="cta"> inherits body's 17px, and the two CTAs render at
+   visibly different sizes. */
 .cta {
-  display: inline-block; background: var(--orange); color: #fff;
-  font-family: Saira, sans-serif; font-weight: 700; letter-spacing: 1px;
+  display: inline-block; background: var(--orange-cta); color: #fff;
+  font-family: Saira, sans-serif; font-weight: 700; font-size: 17px;
+  letter-spacing: 1px; line-height: 1.2;
   text-transform: uppercase; text-decoration: none;
   padding: 16px 28px; border-radius: 12px; border: 0; cursor: pointer;
 }
-.cta:hover { background: #C2510A; }
+/* Hover goes DARKER, not to --orange: white on #E8671A is 3.29:1, which would
+   make the hover state fail AA even though the resting state passes. */
+.cta:hover { background: var(--orange-ink); }
 
 .card {
   background: var(--surface); border: 1px solid var(--rule);
@@ -62,4 +68,25 @@ form input[type=email] {
 form input[type=email]:focus { outline: 2px solid var(--orange); outline-offset: 1px; }
 input[name=_gotcha] { position: absolute; left: -9999px; }
 .fineprint { font-size: 14px; color: var(--muted); }
+/* The error region stays in the DOM at all times — a `hidden` element is outside
+   the accessibility tree, so toggling it makes the live-region announcement
+   unreliable. Empty means no message, and no margin. */
 .form-error { color: var(--orange-ink); font-size: 14px; margin: -8px 0 16px; }
+.form-error:empty { margin: 0; }
+
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
+}
+
+/* The two halves of the privacy page make different promises. The website half
+   is given its own surface, top rule and padding so the boundary is obvious
+   without reading a word of it. */
+.policy-site {
+  background: var(--surface2);
+  border-top: 4px solid var(--orange);
+  border-radius: 12px;
+  padding: 8px 24px 24px;
+  margin-top: 56px;
+}
+.policy > h2:first-child { margin-top: 32px; }

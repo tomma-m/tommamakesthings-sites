@@ -23,6 +23,10 @@ jobs:
       # The build reads everything from disk, including the privacy policy.
       # No network access, no secrets, nothing to expire.
       - run: node build.mjs sidelinehero
+      # Gates the deploy. Must stay BEFORE the sync — running it afterwards only
+      # reports on a third-party asset that is already live.
+      - name: Check for third-party assets
+        run: ./scripts/check-third-party.sh
       - uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::957424402699:role/github-tommamakesthings-sites-deploy

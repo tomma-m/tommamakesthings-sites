@@ -16,19 +16,39 @@ check "support"           200 "/support"
 check "missing page 404s" 404 "/definitely-not-a-page"
 
 echo "checking for third-party requests..."
-if grep -rEoh 'https?://[^"'"'"' )]+' sites/sidelinehero/dist --include='*.html' --include='*.css' \
-   | grep -vE '^https://(sidelinehero\.tommamakesthings\.com|forms\.tommamakesthings\.com)' \
-   | sort -u | grep .; then
-  echo "  FAIL third-party URLs found in built output"; fail=1
-else
-  echo "  ok   no third-party asset URLs"
-fi
+# Also run as its own workflow step BEFORE the S3 sync, so it gates the deploy
+# rather than reporting on one that already happened. Repeated here so a local
+# `./scripts/smoke.sh` still enforces everything.
+if ! ./scripts/check-third-party.sh; then fail=1; fi
 
 echo "checking the privacy policy actually rendered..."
-if curl -sS "$BASE/privacy" | grep -q 'all your data stays on your device'; then
+privacy=$(curl -sS "$BASE/privacy")
+
+if grep -q 'all your data stays on your device' <<<"$privacy"; then
   echo "  ok   app policy present"
 else
   echo "  FAIL app policy missing from /privacy"; fail=1
+fi
+
+if grep -q 'This website' <<<"$privacy"; then
+  echo "  ok   website policy present"
+else
+  echo "  FAIL website policy missing from /privacy"; fail=1
+fi
+
+# The two halves must stay in separate, distinctly-styled sections — a reader who
+# merges them attributes the website's email collection to the app.
+if grep -q 'class="policy policy-site"' <<<"$privacy"; then
+  echo "  ok   website policy is in its own section"
+else
+  echo "  FAIL website policy section wrapper missing from /privacy"; fail=1
+fi
+
+# The app policy claimed a "Clear All Data" setting that does not exist.
+if grep -q 'Clear All Data' <<<"$privacy"; then
+  echo "  FAIL /privacy still names a 'Clear All Data' control the app does not have"; fail=1
+else
+  echo "  ok   no phantom 'Clear All Data' control"
 fi
 
 exit $fail

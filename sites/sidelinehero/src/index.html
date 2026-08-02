@@ -70,13 +70,22 @@
   team.</p>
   <form id="beta-form" class="card" action="https://forms.tommamakesthings.com" method="POST">
     <label for="email">Email address</label>
-    <input id="email" type="email" name="email" required autocomplete="email">
-    <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true">
-    <p id="beta-error" class="form-error" role="alert" hidden></p>
+    <input id="email" type="email" name="email" required autocomplete="email"
+           aria-describedby="beta-error">
+    <!-- Honeypot. It is focusable, so it must NOT be aria-hidden (WCAG 4.1.2);
+         it is off-screen and labelled instead. -->
+    <label class="visually-hidden" for="_gotcha">Leave this field empty</label>
+    <input id="_gotcha" type="text" name="_gotcha" tabindex="-1" autocomplete="off">
+    <p id="beta-error" class="form-error" role="alert"></p>
     <button class="cta" type="submit">Request access</button>
   </form>
-  <p class="fineprint">Used only to send you a beta invite — see the
-  <a href="/privacy">privacy page</a>.</p>
+  <noscript>
+    <p class="fineprint">This form needs JavaScript. Without it, email
+    <a href="mailto:support@tommamakesthings.com">support@tommamakesthings.com</a>
+    and ask for a beta invite.</p>
+  </noscript>
+  <p class="fineprint">Used only to send you a TestFlight invite — nothing else.
+  See the <a href="/privacy">privacy page</a>.</p>
 </section>
 <script>
 (function () {
@@ -87,34 +96,57 @@
   var error = document.getElementById('beta-error');
   var button = form.querySelector('button');
 
+  // The live region stays rendered and is emptied, never hidden: a `hidden`
+  // element is outside the accessibility tree, so screen readers may not
+  // announce text written into it as it un-hides.
+  function showError(message) {
+    error.textContent = message;
+    email.setAttribute('aria-invalid', 'true');
+    button.disabled = false;
+    button.textContent = 'Request access';
+  }
+
   form.addEventListener('submit', function (e) {
     e.preventDefault();
-    error.hidden = true;
+    error.textContent = '';
+    email.removeAttribute('aria-invalid');
     button.disabled = true;
     button.textContent = 'Sending…';
 
-    fetch(form.action, {
+    var opts = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: email.value, _gotcha: gotcha.value })
-    }).then(function (res) {
+    };
+    // Without a timeout a hung request leaves the button reading "Sending…"
+    // forever. Feature-detected: on a browser without it, reading the property
+    // unguarded would throw before fetch and strand the button anyway.
+    if (typeof AbortSignal !== 'undefined' && AbortSignal.timeout) {
+      opts.signal = AbortSignal.timeout(15000);
+    }
+
+    fetch(form.action, opts).then(function (res) {
       return res.json().catch(function () { return {}; }).then(function (data) {
         return { ok: res.ok, data: data };
       });
     }).then(function (result) {
       if (result.ok && result.data.ok) {
-        form.outerHTML = '<div class="card"><p>Thanks — check your inbox for a TestFlight invite soon.</p></div>';
+        // Replacing the form destroys focus. Move it to the confirmation, which
+        // is a status region, so the outcome is both announced and reachable.
+        var done = document.createElement('div');
+        done.className = 'card';
+        done.setAttribute('role', 'status');
+        done.setAttribute('tabindex', '-1');
+        done.innerHTML = '<p>Thanks — check your inbox for a TestFlight invite soon.</p>';
+        form.replaceWith(done);
+        done.focus();
       } else {
-        error.textContent = result.data.error || 'Something went wrong. Please try again.';
-        error.hidden = false;
-        button.disabled = false;
-        button.textContent = 'Request access';
+        showError(result.data.error || 'Something went wrong. Please try again.');
       }
-    }).catch(function () {
-      error.textContent = 'Something went wrong. Please try again.';
-      error.hidden = false;
-      button.disabled = false;
-      button.textContent = 'Request access';
+    }).catch(function (err) {
+      showError(err && err.name === 'TimeoutError'
+        ? 'That took too long. Please check your connection and try again.'
+        : 'Something went wrong. Please try again.');
     });
   });
 })();

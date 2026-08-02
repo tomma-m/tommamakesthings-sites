@@ -21,7 +21,9 @@ truth for the app's policy text and is published at `/privacy`.
 ## Deploy
 
 Push to `main`. GitHub Actions assumes an AWS role via OIDC (no stored keys),
-syncs to S3 and invalidates CloudFront, then runs `scripts/smoke.sh`.
+runs `scripts/check-third-party.sh` against the built output **before** anything
+is uploaded, then syncs to S3, invalidates CloudFront, and runs
+`scripts/smoke.sh`.
 
 ## Infrastructure
 
@@ -33,6 +35,16 @@ Cloudflare, **grey cloud**, so there is no Route 53 hosted zone to pay for.
 ## Rules
 
 - No third-party requests. Fonts are self-hosted; there is no analytics, no
-  reCAPTCHA, no embeds. `scripts/smoke.sh` enforces this.
-- Orange `#E8671A` is for fills only. Orange **text** is `#B4460A` — the lighter
-  one fails WCAG AA on the cream background.
+  reCAPTCHA, no embeds. `scripts/check-third-party.sh` enforces this and gates
+  the deploy; `scripts/smoke.sh` re-runs it.
+- Orange `#E8671A` is decorative only — white text on it is **3.29:1**, so it is
+  never a button background and never text. Measured on `--canvas` `#EFE6D6`:
+  - orange **text** is `--orange-ink` `#AC4208` — **4.80:1**. The old `#B4460A`
+    measured **4.44:1** and failed AA despite a comment claiming otherwise.
+  - the CTA resting background is `--orange-cta` `#C2510A` — white on it is
+    **4.69:1**. Hover goes darker (`#AC4208`, **5.94:1**), never lighter.
+  - `--muted` is `#6A6257` — **4.85:1** on `--canvas` and **4.72:1** on
+    `--surface2`. The old `#7A7266` measured **3.83:1** / **3.73:1**.
+- The privacy page has two halves making different promises. They are separate
+  `<section>`s with different backgrounds, and `scripts/smoke.sh` asserts the
+  wrapper is present. Do not merge them.

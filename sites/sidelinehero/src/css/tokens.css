@@ -3,10 +3,11 @@
   --surface:    #FBF6EC;
   --surface2:   #EDE3D2;
   --ink:        #191410;
-  --muted:      #7A7266;
+  --muted:      #6A6257;  /* 4.85:1 on --canvas, 4.72:1 on --surface2 */
   --rule:       #E2D6C2;
-  --orange:     #E8671A;  /* fills, borders, CTA background — NEVER text */
-  --orange-ink: #B4460A;  /* orange text only — clears AA on canvas */
+  --orange:     #E8671A;  /* hover states and decorative fills only — NEVER text, 3.29:1 on white */
+  --orange-cta: #C2510A;  /* CTA resting background — white text on it is 4.69:1 */
+  --orange-ink: #AC4208;  /* orange text only — 4.80:1 on --canvas, 4.67:1 on --surface2 */
 }
 
 @font-face { font-family: Anton;  src: url(../fonts/anton-400.woff2) format('woff2');
