@@ -45,7 +45,7 @@
       "body": [
         "Pick exactly five starters, or tap Smart Pick to choose them from skill level and recent playing time.",
         "If Review plan before starting is on — it is by default — you see the substitution plan next. Change any sub you need to, then tap Start Game.",
-        "With Manual cadence you always see the plan screen, where you can build your own plan by adding, changing or deleting subs. To play without a plan, tap Skip — start without a plan on the Starting 5 screen."
+        "With Manual cadence, tap Build Plan → to open the plan screen, where you can build your own plan by adding, changing or deleting subs. To play without a plan, tap Skip — start without a plan instead."
       ]
     },
     {
@@ -64,7 +64,7 @@
       "body": [
         "The sub strip counts down to the next planned sub. It reads NEXT SUB, turns green with WINDOW OPEN when it's time to make the sub, and turns red with OVERDUE if the window passes.",
         "As the window opens the phone gives a short vibration. At the planned time it vibrates and plays a tone, and if the window passes without the sub, the tone and vibration repeat every 10 seconds by default. Tap Snooze to quiet the alert for a minute.",
-        "Change these in Settings → App settings. Sub alerts sets the window around each planned sub, Haptics controls the vibration, and Sound alerts controls the tone, including Play through silent mode, which is off by default."
+        "Change these in Settings → App settings: the Sub alerts card sets the window around each planned sub, Haptics controls the vibration, and Sound alerts controls the tone, how often the alert repeats, and Play through silent mode, which is off by default."
       ]
     },
     {
@@ -101,7 +101,7 @@
       "body": [
         "To end a period, tap the period button beside the clock. When the period's time runs out it reads END and the period, for example END Q1.",
         "If a sub is due at the break, choose End & sub to make it as the next period starts, or End without sub to move it to early in the next period. The next period is set up paused, ready for you to start.",
-        "If the clock ran past zero, you're asked whether to count the extra time. Count it credits that time to the players who were on court; Discard ignores it. Turn the question off, or change how long to wait before asking, under Settings → App settings → Overtime."
+        "If the clock ran past zero by 15 seconds or more (the default), you're asked whether to count the extra time. Count it credits that time to the players who were on court; Discard ignores it. Turn the question off, or change how long to wait before asking, under Settings → App settings → Overtime."
       ]
     },
     {
@@ -169,8 +169,8 @@
       "id": "your-data",
       "title": "Your Data",
       "body": [
-        "Everything you enter stays on your phone. There's no account and no cloud sync, and Sideline Hero doesn't send your data anywhere.",
-        "To wipe it, go to Settings → App settings → Your data, tap Erase all data and type RESET to confirm. Deleting the app also removes everything it stored.",
+        "Everything you enter is stored on your phone. There's no account and no cloud sync, and Sideline Hero never sends your data anywhere. It only leaves the phone if you share or export it yourself, or if your phone's own backup includes app data.",
+        "To wipe it, go to Settings → App settings → Your data, tap Erase all data and type RESET to confirm. Deleting the app also removes everything it stored on the phone.",
         "Your data only moves to a new phone if your phone's own backup, such as iCloud or Google, includes app data."
       ]
     }
