@@ -25,6 +25,26 @@ runs `scripts/check-third-party.sh` against the built output **before** anything
 is uploaded, then syncs to S3, invalidates CloudFront, and runs
 `scripts/smoke.sh`.
 
+## FAQ
+
+`/faq` is built from two files in `sites/sidelinehero/src/`:
+
+- `faqs-app.json` — a **copy** of `src/features/help/faqs.json` from the private
+  `sideline-hero` repo, which is also what the app's Help screen shows. Never
+  edit it here. After the app's file changes (with both repos checked out side
+  by side in the same folder):
+
+      node scripts/sync-faqs.mjs          # copy it in
+      node scripts/sync-faqs.mjs --check  # exit 1 if the copy is stale
+
+  CI cannot read the app repo, so nothing checks this automatically — run
+  `--check` before any deploy that touches the FAQ.
+- `faqs-site.json` — questions only a website visitor asks. Edit it here.
+
+Both use `{ "faqs": [{ "id", "title", "body": [paragraphs] }] }`, plain text
+only. `build.mjs` refuses a malformed file or an id used in both.
+`node --test scripts/faqs.test.mjs` covers the helpers and runs in CI.
+
 ## Infrastructure
 
 AWS account `957424402699`. S3 bucket `sidelinehero-tommamakesthings-site`

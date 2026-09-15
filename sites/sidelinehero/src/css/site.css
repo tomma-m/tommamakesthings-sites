@@ -71,3 +71,14 @@ footer { border-top: 1px solid var(--rule); margin-top: 64px; padding: 24px 0;
   margin-top: 64px;
 }
 .policy > h2:first-child { margin-top: 32px; }
+
+/* FAQ page. h3 is only used here. Headings in --ink, links in --orange-ink
+   (4.80:1 on --canvas), matching the rest of the site. */
+.faq-contents ul { margin: 4px 0 16px; padding-left: 20px; }
+.faq-contents .kicker { margin: 8px 0 0; }
+.faq-topic { scroll-margin-top: 16px; }
+.faq-topic h3 {
+  font-family: Saira, sans-serif; font-weight: 700; font-size: 1.1rem;
+  letter-spacing: 0.3px; margin: 32px 0 8px;
+}
+.faq-topic p { margin: 0 0 12px; }

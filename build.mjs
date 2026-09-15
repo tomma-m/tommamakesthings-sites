@@ -1,6 +1,7 @@
 import { readFile, writeFile, mkdir, cp, rm } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { marked } from 'marked';
+import { validateFaqs } from './scripts/faqs.mjs';
 
 const site = process.argv[2];
 if (!site) { console.error('usage: node build.mjs <site>'); process.exit(1); }
@@ -86,3 +87,51 @@ const privacyBody = [
 await page('privacy/index.html', privacyBody,
   { title: 'Privacy — Sideline Hero',
     description: 'How Sideline Hero and this website handle your information.' });
+
+// FAQ. faqs-app.json is a copy of sideline-hero's src/features/help/faqs.json,
+// refreshed by scripts/sync-faqs.mjs — never edit it here. faqs-site.json holds
+// the questions only a website visitor asks. Everything is expanded (no
+// accordion, no JavaScript) so find-in-page and #id links work.
+async function loadFaqs(file) {
+  const path = `${SRC}/${file}`;
+  if (!existsSync(path)) throw new Error(`${file} is missing — see README "FAQ"`);
+  return validateFaqs(JSON.parse(await readFile(path, 'utf8')), file);
+}
+const appFaqs = await loadFaqs('faqs-app.json');
+const siteFaqs = await loadFaqs('faqs-site.json');
+const sharedIds = appFaqs.map(t => t.id).filter(id => siteFaqs.some(t => t.id === id));
+if (sharedIds.length) throw new Error(`FAQ ids used in both files: ${sharedIds.join(', ')}`);
+
+const faqContents = (label, topics) => [
+  `<p class="kicker">${escapeHtml(label)}</p>`,
+  '<ul>',
+  ...topics.map(t => `<li><a href="#${t.id}">${escapeHtml(t.title)}</a></li>`),
+  '</ul>',
+].join('\n');
+
+const faqGroup = (heading, topics) => [
+  `<h2>${escapeHtml(heading)}</h2>`,
+  ...topics.map(t => [
+    `<section class="faq-topic" id="${t.id}">`,
+    `<h3>${escapeHtml(t.title)}</h3>`,
+    ...t.body.map(p => `<p>${escapeHtml(p)}</p>`),
+    '</section>',
+  ].join('\n')),
+].join('\n');
+
+const faqBody = [
+  '<p class="kicker">Help</p>',
+  '<h1>FAQ</h1>',
+  '<p class="lede">How Sideline Hero works. The answers under Using the app are',
+  'the same ones you’ll find in the app, under Settings → FAQs.</p>',
+  '<nav class="card faq-contents" aria-label="Questions on this page">',
+  faqContents('Using the app', appFaqs),
+  faqContents('Before you download', siteFaqs),
+  '</nav>',
+  faqGroup('Using the app', appFaqs),
+  faqGroup('Before you download', siteFaqs),
+].join('\n');
+await page('faq/index.html', faqBody, {
+  title: 'FAQ — Sideline Hero',
+  description: 'How Sideline Hero works, what it costs, and what happens to your data.',
+});

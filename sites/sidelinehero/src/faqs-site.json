@@ -1,0 +1,40 @@
+{
+  "faqs": [
+    {
+      "id": "is-it-free",
+      "title": "Is Sideline Hero free?",
+      "body": [
+        "Yes. Sideline Hero is free, with no subscription and no in-app purchases."
+      ]
+    },
+    {
+      "id": "which-devices",
+      "title": "Which devices does it run on?",
+      "body": [
+        "iPhone and Android. There's no iPad version."
+      ]
+    },
+    {
+      "id": "does-data-leave-my-phone",
+      "title": "Does my team data leave my phone?",
+      "body": [
+        "No. The app makes no network requests at all and works in airplane mode. Your data only leaves the phone if you share a game summary or export a file yourself.",
+        "The privacy policy has the details."
+      ]
+    },
+    {
+      "id": "do-i-need-an-account",
+      "title": "Do I need an account?",
+      "body": [
+        "No. There's no sign-up, no login and no password."
+      ]
+    },
+    {
+      "id": "new-phone",
+      "title": "Can I move my data to a new phone?",
+      "body": [
+        "Only through your phone's own backup. If your iCloud or Google backup includes app data, restoring it on the new phone brings your teams and games across. There's no transfer inside the app."
+      ]
+    }
+  ]
+}

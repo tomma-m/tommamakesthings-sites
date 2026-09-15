@@ -13,6 +13,7 @@ check() {  # description, expected-status, path
 check "home"              200 "/"
 check "privacy"           200 "/privacy"
 check "support"           200 "/support"
+check "faq"               200 "/faq"
 check "missing page 404s" 404 "/definitely-not-a-page"
 
 echo "checking for third-party requests..."
@@ -50,5 +51,12 @@ if grep -q 'Clear All Data' <<<"$privacy"; then
 else
   echo "  ok   no phantom 'Clear All Data' control"
 fi
+
+echo "checking the FAQ rendered both halves..."
+faq=$(curl -sS "$BASE/faq")
+for id in getting-started is-it-free; do
+  if grep -q "id=\"$id\"" <<<"$faq"; then echo "  ok   faq has #$id"
+  else echo "  FAIL faq is missing #$id"; fail=1; fi
+done
 
 exit $fail

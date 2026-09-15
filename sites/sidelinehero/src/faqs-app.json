@@ -1,0 +1,178 @@
+{
+  "faqs": [
+    {
+      "id": "getting-started",
+      "title": "Getting Started",
+      "body": [
+        "Open the Teams tab and tap + to add a team. Give it a name and tap Save team. Team colours and a logo are under More options.",
+        "Open the team and tap Add player. Only the name is required — jersey number, skill level (Strong, Average or Developing) and positions are under More options. Save and add another keeps the form open for the next player."
+      ]
+    },
+    {
+      "id": "setting-up-a-game",
+      "title": "Setting Up a Game",
+      "body": [
+        "Open the New Game tab and select your team. Opponent and location are optional, under Game details.",
+        "Under Game settings, choose the number of periods, the period length and the sub cadence (see Choosing When Subs Happen). Playing-time priority decides who gets more court time: Equal shares it evenly, Developing favours your developing players, and Strong favours your strongest. Manual cadence doesn't use a priority.",
+        "Tap Next: Select players →, tick everyone playing today (at least five), then tap Continue to Starting 5 →.",
+        "To set your usual periods, length, cadence and priority once, use Settings → App settings → Game defaults.",
+        "Save for later sets a game up without starting it. It appears under Upcoming on the Dashboard — tap it there to carry on."
+      ]
+    },
+    {
+      "id": "when-subs-happen",
+      "title": "Choosing When Subs Happen",
+      "body": [
+        "Sub cadence decides when the plan schedules substitutions. Choose it for each game under Game settings, or set a default in Settings → App settings → Game defaults.",
+        "Auto — the app paces subs and picks how many, to keep minutes even.",
+        "Every X min — a fixed number of minutes between subs. You set the interval.",
+        "Per term — a set number of subs spread across each period.",
+        "Manual — you make every sub yourself. You can build a plan first to get reminders, or skip it.",
+        "With Every X min or Per term, Subs per Rotation sets how many players change at each sub."
+      ]
+    },
+    {
+      "id": "fill-ins-and-practice",
+      "title": "Fill-in Players and Practice Games",
+      "body": [
+        "If someone is playing just this once, add them on the Select players step: type their name in Fill-in player name and tap Add fill-in player. They play and are subbed like anyone else, but they aren't added to your roster or to season totals.",
+        "For a practice or scrimmage, turn on Practice mode under Game settings. Court time is still tracked, but the game's stats don't count toward season totals. The Practice filter in History shows just these games."
+      ]
+    },
+    {
+      "id": "starting-5",
+      "title": "Starting 5",
+      "body": [
+        "Pick exactly five starters, or tap Smart Pick to choose them from skill level and recent playing time.",
+        "If Review plan before starting is on — it is by default — you see the substitution plan next. Change any sub you need to, then tap Start Game.",
+        "With Manual cadence you always see the plan screen, where you can build your own plan by adding, changing or deleting subs. To play without a plan, tap Skip — start without a plan on the Starting 5 screen."
+      ]
+    },
+    {
+      "id": "during-the-game",
+      "title": "During the Game",
+      "body": [
+        "Tap the play button beside the clock to start it, and tap it again to pause.",
+        "If your clock drifts from the scoreboard, tap the clock — or choose Adjust timer… from the ⋮ menu — and set the time. Nobody's recorded minutes change, and the rest of the plan is reworked from the new time.",
+        "The Court tab shows who's on and who's on the bench. The Plan tab lists every sub: Edit plan changes the next one and Skip next skips it. The Score tab appears when live scoring is on (see Live Scoring).",
+        "When a planned sub is due, tap the sub strip and confirm with Substitute. UNDO, at the top of the game screen, reverses the last substitution."
+      ]
+    },
+    {
+      "id": "substitution-alerts",
+      "title": "Substitution Alerts",
+      "body": [
+        "The sub strip counts down to the next planned sub. It reads NEXT SUB, turns green with WINDOW OPEN when it's time to make the sub, and turns red with OVERDUE if the window passes.",
+        "As the window opens the phone gives a short vibration. At the planned time it vibrates and plays a tone, and if the window passes without the sub, the tone and vibration repeat every 10 seconds by default. Tap Snooze to quiet the alert for a minute.",
+        "Change these in Settings → App settings. Sub alerts sets the window around each planned sub, Haptics controls the vibration, and Sound alerts controls the tone, including Play through silent mode, which is off by default."
+      ]
+    },
+    {
+      "id": "manual-subs",
+      "title": "Manual Subs",
+      "body": [
+        "To make a sub the plan didn't expect, tap Manual sub at the bottom of the Court tab, choose who comes off and who goes on, and confirm.",
+        "The bench is listed with the players who've had the least court time first. The rest of the plan rebalances around the sub you made."
+      ]
+    },
+    {
+      "id": "injuries-and-foul-outs",
+      "title": "Injuries and Foul-outs",
+      "body": [
+        "Long-press a player on court or on the bench, pick a reason — Fouled Out, Injured or Other — and tap Remove. If they were on court, you choose their replacement next.",
+        "Their share of the remaining minutes is spread across the rest of the squad.",
+        "A player removed as Injured or Other can come back: tap them under Injury or Other and tap Return. A player who fouled out can't return.",
+        "With live scoring on, the app alerts you when a player reaches 5 fouls and offers to take them out."
+      ]
+    },
+    {
+      "id": "live-scoring",
+      "title": "Live Scoring",
+      "body": [
+        "Live scoring is off by default. Turn on Track live score in Settings → App settings → Stat tracking to add a Score tab to the game screen.",
+        "On the Score tab, tap to add 1, 2 or 3 points or a foul for any player, and points, fouls and steals for the opponent. Undo reverses the last stat.",
+        "Assists, blocks and steals for your players can be switched on in the same place, with Track Assists, Track Blocks and Track Steals.",
+        "Court time is tracked whether live scoring is on or off."
+      ]
+    },
+    {
+      "id": "period-breaks-and-overtime",
+      "title": "Period Breaks and Overtime",
+      "body": [
+        "To end a period, tap the period button beside the clock. When the period's time runs out it reads END and the period, for example END Q1.",
+        "If a sub is due at the break, choose End & sub to make it as the next period starts, or End without sub to move it to early in the next period. The next period is set up paused, ready for you to start.",
+        "If the clock ran past zero, you're asked whether to count the extra time. Count it credits that time to the players who were on court; Discard ignores it. Turn the question off, or change how long to wait before asking, under Settings → App settings → Overtime."
+      ]
+    },
+    {
+      "id": "ending-a-game",
+      "title": "Ending a Game",
+      "body": [
+        "After the last period, tap the period button and confirm. Enter the final score, then tap End game & save.",
+        "To finish before every period is played, choose End game early… from the ⋮ menu. End & save keeps the stats; End & delete removes the game completely.",
+        "The Game Summary shows each player's minutes and stats. To fix a stat afterwards, tap the edit button on that player's row — this works when you open the game from History too."
+      ]
+    },
+    {
+      "id": "game-history",
+      "title": "Game History",
+      "body": [
+        "The History tab lists your completed games. Filter them by result — All, Wins or Practice — and, when you have more than one, by team and by season.",
+        "Tap a game to open its summary. Swipe a game to delete it; you'll be asked to confirm, and it can't be undone."
+      ]
+    },
+    {
+      "id": "seasons",
+      "title": "Seasons",
+      "body": [
+        "Seasons group a team's games so History and player stats can be viewed one season at a time. They're optional: turn off Use seasons in Settings → App settings to hide them everywhere.",
+        "Add, rename and archive seasons on a team's page, under Seasons. Archiving hides a season from New Game but keeps its games.",
+        "A new game goes into the team's latest season unless you pick another, or none. You can change a game's season any time from its summary.",
+        "Season fairness nudge, off by default, flags players who are behind on season minutes before a game and offers to give them a boost."
+      ]
+    },
+    {
+      "id": "season-minutes-and-player-stats",
+      "title": "Season Minutes and Player Stats",
+      "body": [
+        "With seasons on, Season minutes on a team's page shows each player's court time against an even split of the team's total. Tap Export CSV there to save it as a spreadsheet.",
+        "Tap a player on the team page to see their stats game by game. When seasons are on, switch between This Season and All Time."
+      ]
+    },
+    {
+      "id": "fairness-card",
+      "title": "Fairness Card",
+      "body": [
+        "The Game Summary can show a Fairness card: a rating of Excellent, Good, Fair or Poor for how evenly court time was shared, and the biggest gap between a player's actual and target minutes.",
+        "It's off by default. Turn on Show fairness card in Settings → App settings. The Time Share column in the player table is always shown."
+      ]
+    },
+    {
+      "id": "balance-swap-alerts",
+      "title": "Balance-swap Alerts",
+      "body": [
+        "With Manual cadence, the app can suggest one late-game swap that would even out court time. It appears as a Balance swap strip: tap it to set up that sub, or tap × to dismiss it.",
+        "It's off by default and only appears with Manual cadence. Turn on Balance-swap alerts in Settings → App settings."
+      ]
+    },
+    {
+      "id": "sharing-and-exporting",
+      "title": "Sharing and Exporting",
+      "body": [
+        "On a game's summary, Share summary sends a readable recap — handy for a team chat — and Export CSV saves the game as a spreadsheet.",
+        "For a whole season, open the team's Season minutes and tap Export CSV.",
+        "For the full game record as a data file, use Settings → App settings → Your data → Export last completed game, or Export game data from the ⋮ menu during a game.",
+        "Everything goes through your phone's own share sheet, so it only goes where you send it."
+      ]
+    },
+    {
+      "id": "your-data",
+      "title": "Your Data",
+      "body": [
+        "Everything you enter stays on your phone. There's no account and no cloud sync, and Sideline Hero doesn't send your data anywhere.",
+        "To wipe it, go to Settings → App settings → Your data, tap Erase all data and type RESET to confirm. Deleting the app also removes everything it stored.",
+        "Your data only moves to a new phone if your phone's own backup, such as iCloud or Google, includes app data."
+      ]
+    }
+  ]
+}

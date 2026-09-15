@@ -42,7 +42,7 @@ Because data is stored only on your device:
 - Deleting the app will permanently delete all your data
 - Data is not transferred if you change devices unless you use a device backup service (such as iCloud or Google Drive backup) that includes app data
 
-You can delete all data stored by Sideline Hero at any time, in either of two ways: use **Erase all data** in the app (Help → App settings → Your data), or delete the app from your device. Both permanently remove everything it has stored.
+You can delete all data stored by Sideline Hero at any time, in either of two ways: use **Erase all data** in the app (Settings → App settings → Your data), or delete the app from your device. Both permanently remove everything it has stored.
 
 ## Data Sharing
 
