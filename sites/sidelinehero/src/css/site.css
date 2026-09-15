@@ -43,16 +43,19 @@ footer { border-top: 1px solid var(--rule); margin-top: 64px; padding: 24px 0;
 .trust { background: var(--surface2); border-radius: 12px; padding: 20px 24px; }
 .trust ul { margin: 0; padding-left: 20px; }
 
-/* The two badges must read at the same visible height (Apple: never smaller
-   than a neighbouring store badge; 40px onscreen minimum). The Apple SVG is the
-   badge edge to edge, so it is simply 48px tall. The Google PNG carries its own
-   transparent clear space — the badge is 168px of the image's 250px height — so
-   the image is 48 * 250 / 168 ≈ 71px tall to put a 48px badge inside it. That
-   built-in padding (≈12px a side) also supplies Apple's quarter-height clear
-   space between the two, so the row needs no gap of its own. */
+/* Both badges show at the same visible WIDTH, 144px. They cannot also share a
+   height: Apple's badge is 2.99:1 and Google's is 3.36:1, and neither may be
+   stretched or cropped. Equal width leaves Apple's ~5px taller (48px vs ~43px),
+   which also keeps Apple's rule that its badge is never smaller than a
+   neighbouring store badge, and above its 40px onscreen minimum.
+   The Apple SVG is the badge edge to edge, so it is simply 144px wide. The
+   Google PNG carries transparent clear space — the badge is 564px of the
+   image's 646px width (measured: opaque bbox 41,41 → 605,209) — so the image is
+   144 * 646 / 564 ≈ 165px wide. That built-in padding (≈10px a side) separates
+   the two, so the row needs no gap of its own. */
 .store-badges { display: flex; flex-wrap: wrap; align-items: center; margin: 0 0 16px; }
-.badge-app-store { height: 48px; width: auto; }
-.badge-google-play { height: 71px; width: auto; }
+.badge-app-store { width: 144px; height: auto; }
+.badge-google-play { width: 165px; height: auto; }
 
 /* The two halves of the privacy page cover different things — the app and this
    website. The website half is given its own surface, top rule and padding so
