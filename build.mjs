@@ -58,9 +58,9 @@ await page('support/index.html', await readFile(`${SRC}/support.html`, 'utf8'), 
   description: 'Get help with Sideline Hero, report a bug, or ask a question.',
 });
 
-// Two policies, two audiences, two very different factual claims. They are
-// wrapped in their own <section>s and given distinct styling so nobody can read
-// the website's email collection as something the app does, or vice versa.
+// Two policies, two audiences. They are wrapped in their own <section>s and
+// given distinct styling so every claim is visibly scoped to the thing it
+// describes — the app or this website — and neither can be read as the other.
 const appPolicy = await readFile(`${SRC}/privacy-app.md`, 'utf8');
 const sitePolicy = await readFile(`${SRC}/privacy-site.md`, 'utf8');
 // The app policy owns the page's <h1>. Lift it out of the section so the scoping
@@ -74,9 +74,8 @@ const appRest = appHtml.slice(h1End + '</h1>'.length);
 
 const privacyBody = [
   pageTitle,
-  '<p class="lede">This page has two separate parts: the Sideline Hero app,',
-  'which transmits nothing, and this website, which collects an email address',
-  'only if you ask for beta access.</p>',
+  '<p class="lede">This page has two separate parts: the Sideline Hero app',
+  'and this website. Neither collects any information about you.</p>',
   '<section class="policy policy-app" aria-label="Sideline Hero app privacy policy">',
   appRest,
   '</section>',

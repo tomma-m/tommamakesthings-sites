@@ -45,6 +45,7 @@ Cloudflare, **grey cloud**, so there is no Route 53 hosted zone to pay for.
     **4.69:1**. Hover goes darker (`#AC4208`, **5.94:1**), never lighter.
   - `--muted` is `#6A6257` — **4.85:1** on `--canvas` and **4.72:1** on
     `--surface2`. The old `#7A7266` measured **3.83:1** / **3.73:1**.
-- The privacy page has two halves making different promises. They are separate
-  `<section>`s with different backgrounds, and `scripts/smoke.sh` asserts the
-  wrapper is present. Do not merge them.
+- The privacy page has two halves: the app's policy and this website's. They are
+  separate `<section>`s with different backgrounds so each promise is scoped to
+  what it describes, and `scripts/smoke.sh` asserts the wrapper is present. Do
+  not merge them.

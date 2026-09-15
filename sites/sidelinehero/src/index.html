@@ -3,7 +3,14 @@
   <h1>Coach the game,<br>not the subs.</h1>
   <p class="lede">Fair rotations, planned before tip-off — and guided, live,
   through every substitution.</p>
-  <p><a class="cta" href="#beta">Request beta access</a></p>
+  <p class="kicker">Coming soon</p>
+  <!-- Placeholders until launch. Swap each for the official badge, linked to
+       the live store listing: Google only permits its badge for an app that is
+       available on Google Play. -->
+  <div class="store-badges">
+    <span class="store-badge">App Store</span>
+    <span class="store-badge">Google Play</span>
+  </div>
 </section>
 
 <section>
@@ -61,93 +68,3 @@
     </ul>
   </div>
 </section>
-
-<section id="beta">
-  <p class="kicker">Beta</p>
-  <h2>Request beta access</h2>
-  <p class="lede">Sideline Hero is currently in beta on iOS. Leave your email
-  and we'll send back a TestFlight invite so you can start using it with your
-  team.</p>
-  <form id="beta-form" class="card" action="https://forms.tommamakesthings.com" method="POST">
-    <label for="email">Email address</label>
-    <input id="email" type="email" name="email" required autocomplete="email"
-           aria-describedby="beta-error">
-    <!-- Honeypot. It is focusable, so it must NOT be aria-hidden (WCAG 4.1.2);
-         it is off-screen and labelled instead. -->
-    <label class="visually-hidden" for="_gotcha">Leave this field empty</label>
-    <input id="_gotcha" type="text" name="_gotcha" tabindex="-1" autocomplete="off">
-    <p id="beta-error" class="form-error" role="alert"></p>
-    <button class="cta" type="submit">Request access</button>
-  </form>
-  <noscript>
-    <p class="fineprint">This form needs JavaScript. Without it, email
-    <a href="mailto:support@tommamakesthings.com">support@tommamakesthings.com</a>
-    and ask for a beta invite.</p>
-  </noscript>
-  <p class="fineprint">Used only to send you a TestFlight invite — nothing else.
-  See the <a href="/privacy">privacy page</a>.</p>
-</section>
-<script>
-(function () {
-  var form = document.getElementById('beta-form');
-  if (!form) return;
-  var email = document.getElementById('email');
-  var gotcha = form.elements['_gotcha'];
-  var error = document.getElementById('beta-error');
-  var button = form.querySelector('button');
-
-  // The live region stays rendered and is emptied, never hidden: a `hidden`
-  // element is outside the accessibility tree, so screen readers may not
-  // announce text written into it as it un-hides.
-  function showError(message) {
-    error.textContent = message;
-    email.setAttribute('aria-invalid', 'true');
-    button.disabled = false;
-    button.textContent = 'Request access';
-  }
-
-  form.addEventListener('submit', function (e) {
-    e.preventDefault();
-    error.textContent = '';
-    email.removeAttribute('aria-invalid');
-    button.disabled = true;
-    button.textContent = 'Sending…';
-
-    var opts = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: email.value, _gotcha: gotcha.value })
-    };
-    // Without a timeout a hung request leaves the button reading "Sending…"
-    // forever. Feature-detected: on a browser without it, reading the property
-    // unguarded would throw before fetch and strand the button anyway.
-    if (typeof AbortSignal !== 'undefined' && AbortSignal.timeout) {
-      opts.signal = AbortSignal.timeout(15000);
-    }
-
-    fetch(form.action, opts).then(function (res) {
-      return res.json().catch(function () { return {}; }).then(function (data) {
-        return { ok: res.ok, data: data };
-      });
-    }).then(function (result) {
-      if (result.ok && result.data.ok) {
-        // Replacing the form destroys focus. Move it to the confirmation, which
-        // is a status region, so the outcome is both announced and reachable.
-        var done = document.createElement('div');
-        done.className = 'card';
-        done.setAttribute('role', 'status');
-        done.setAttribute('tabindex', '-1');
-        done.innerHTML = '<p>Thanks — check your inbox for a TestFlight invite soon.</p>';
-        form.replaceWith(done);
-        done.focus();
-      } else {
-        showError(result.data.error || 'Something went wrong. Please try again.');
-      }
-    }).catch(function (err) {
-      showError(err && err.name === 'TimeoutError'
-        ? 'That took too long. Please check your connection and try again.'
-        : 'Something went wrong. Please try again.');
-    });
-  });
-})();
-</script>

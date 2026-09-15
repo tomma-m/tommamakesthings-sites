@@ -2,21 +2,17 @@
 
 This section covers **sidelinehero.tommamakesthings.com** — the website you are
 reading now. It is separate from the app policy above, which describes the
-Sideline Hero app itself. The app transmits nothing; this website collects one
-thing, and only if you ask it to.
+Sideline Hero app itself. Like the app, this website collects nothing about you.
 
-**If you use the beta request form**, the email address you type is sent to a form
-handler we run on Cloudflare, which emails it to us. We use it for one thing:
-sending you a TestFlight invitation. It is never sold, and it is never disclosed
-to anyone beyond the service providers that carry the message (Cloudflare and our
-email provider, who may process it outside Australia).
+**No personal information is collected here.** There are no forms, no sign-ups,
+no analytics, no advertising, no tracking pixels, and no cookies. Fonts and every
+other asset are served from this domain, so loading a page here makes no request
+to any other company.
 
-We keep your address until the beta ends or you ask us to remove it, whichever
-comes first.
+Pages are delivered by Amazon Web Services, which may serve them from locations
+outside Australia. As with any website, the server has to receive your IP address
+to send a page back to your browser. Access logging is switched off, so no record
+is kept of who visits or what they view.
 
-**Nothing else is collected.** This site has no analytics, no advertising, no
-tracking pixels, and no cookies. Fonts and every other asset are served from this
-domain, so loading a page here makes no request to any other company.
-
-**To have your email removed**, write to the support address on the
-[support page](/support) and it will be deleted.
+**If you email us** at the address on the [support page](/support), your email
+address and message are used only to reply to you, and are deleted if you ask.

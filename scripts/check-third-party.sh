@@ -25,7 +25,7 @@ URL_RE='(https?:)?//[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)+(:[0-9]+)?(/[^"'"'"'`) >]*)?'
 
 # (/|$) after the host is load-bearing: without it,
 # sidelinehero.tommamakesthings.com.evil.example matches the prefix and passes.
-ALLOWED='^(https:)?//(sidelinehero\.tommamakesthings\.com|forms\.tommamakesthings\.com)(/|$)'
+ALLOWED='^(https:)?//sidelinehero\.tommamakesthings\.com(/|$)'
 
 # XML namespace URIs are identifiers, never fetched. Anchored exactly, so a real
 # asset hosted on w3.org would still be caught.

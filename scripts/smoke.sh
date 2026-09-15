@@ -37,7 +37,7 @@ else
 fi
 
 # The two halves must stay in separate, distinctly-styled sections — a reader who
-# merges them attributes the website's email collection to the app.
+# merges them cannot tell which promise covers the app and which the website.
 if grep -q 'class="policy policy-site"' <<<"$privacy"; then
   echo "  ok   website policy is in its own section"
 else

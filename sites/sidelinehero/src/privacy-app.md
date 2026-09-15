@@ -2,7 +2,7 @@
 
 **Sideline Hero**
 Effective date: 2026-04-01
-Last updated: 2026-08-02
+Last updated: 2026-09-15
 
 ## Overview
 
@@ -14,7 +14,7 @@ The short version: all your data stays on your device. Sideline Hero does not tr
 
 Sideline Hero stores only the information you enter directly into the app. This includes:
 
-- **Team information** — team name and colour preferences
+- **Team information** — team name, colour preferences, and the names of any seasons you create
 - **Coach name** — optional, used only to personalise the app's greeting
 - **Team logo** — an image you choose from your photo library, copied into the app's own storage. The app has no other access to your photos.
 - **Player information** — player names and jersey numbers, skill level (optional), and active/inactive status, including the names of one-off fill-in players added to a single game
@@ -42,7 +42,7 @@ Because data is stored only on your device:
 - Deleting the app will permanently delete all your data
 - Data is not transferred if you change devices unless you use a device backup service (such as iCloud or Google Drive backup) that includes app data
 
-You can delete all data stored by Sideline Hero at any time by deleting the app from your device, which permanently removes everything it has stored.
+You can delete all data stored by Sideline Hero at any time, in either of two ways: use **Erase all data** in the app (Help → App settings → Your data), or delete the app from your device. Both permanently remove everything it has stored.
 
 ## Data Sharing
 
@@ -73,13 +73,13 @@ This version of Sideline Hero does not include in-app purchases, subscriptions, 
 
 ## Changes to This Policy
 
-If this privacy policy changes in a future version of the app, the updated policy will be published in the app and on the app listing page. The "Last updated" date at the top of this document will reflect when changes were made.
+If this privacy policy changes in a future version of the app, the updated policy will be published on this page, which the app's store listing links to. The "Last updated" date at the top of this document will reflect when changes were made.
 
 ## Contact Information
 
 If you have questions or concerns about this privacy policy or how Sideline Hero handles data, please contact:
 
-**Email:** thomas.morris@gmail.com
+**Email:** support.sidelinehero@tommamakesthings.com
 
 We aim to respond to all enquiries within 5 business days.
 
