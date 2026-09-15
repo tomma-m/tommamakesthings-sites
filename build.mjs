@@ -1,7 +1,7 @@
 import { readFile, writeFile, mkdir, cp, rm } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { marked } from 'marked';
-import { validateFaqs } from './scripts/faqs.mjs';
+import { validateFaqs, parseFaqsJson } from './scripts/faqs.mjs';
 
 const site = process.argv[2];
 if (!site) { console.error('usage: node build.mjs <site>'); process.exit(1); }
@@ -95,7 +95,7 @@ await page('privacy/index.html', privacyBody,
 async function loadFaqs(file) {
   const path = `${SRC}/${file}`;
   if (!existsSync(path)) throw new Error(`${file} is missing — see README "FAQ"`);
-  return validateFaqs(JSON.parse(await readFile(path, 'utf8')), file);
+  return validateFaqs(parseFaqsJson(await readFile(path, 'utf8'), file), file);
 }
 const appFaqs = await loadFaqs('faqs-app.json');
 const siteFaqs = await loadFaqs('faqs-site.json');

@@ -11,14 +11,14 @@
       "id": "which-devices",
       "title": "Which devices does it run on?",
       "body": [
-        "iPhone and Android. There's no iPad version."
+        "iPhone and Android. There's no separate iPad version, but the iPhone app can be installed on an iPad."
       ]
     },
     {
       "id": "does-data-leave-my-phone",
       "title": "Does my team data leave my phone?",
       "body": [
-        "No. The app makes no network requests at all and works in airplane mode. Your data only leaves the phone if you share a game summary or export a file yourself.",
+        "No. The app never sends your data anywhere, makes no network requests at all and works in airplane mode. It only leaves the phone if you share a game summary or export a file yourself, or if your phone's own backup includes app data.",
         "The privacy policy has the details."
       ]
     },

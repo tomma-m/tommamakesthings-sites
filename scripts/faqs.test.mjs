@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { validateFaqs, diffFaqs, formatFaqs } from './faqs.mjs';
+import { validateFaqs, diffFaqs, formatFaqs, parseFaqsJson } from './faqs.mjs';
 
 const topic = (id, overrides = {}) => ({ id, title: `Title ${id}`, body: ['A paragraph.'], ...overrides });
 
@@ -35,6 +35,18 @@ test('validateFaqs rejects markdown, URLs and angle brackets', () => {
   for (const text of ['**bold**', '[link](x)', 'see https://example.com', 'a <b> tag']) {
     assert.throws(() => validateFaqs({ faqs: [topic('a', { body: [text] })] }, 'x.json'), /plain text/, `accepted "${text}"`);
   }
+});
+
+test('validateFaqs rejects a null topic', () => {
+  assert.throws(() => validateFaqs({ faqs: [null] }, 'x.json'), /is not an object/);
+});
+
+test('validateFaqs rejects a non-string title or paragraph', () => {
+  assert.throws(() => validateFaqs({ faqs: [topic('a', { body: [3] })] }, 'x.json'), /not a string/);
+});
+
+test('parseFaqsJson reports which file failed to parse', () => {
+  assert.throws(() => parseFaqsJson('{', 'x.json'), /^Error: x\.json: not valid JSON/);
 });
 
 test('diffFaqs reports added, removed and changed ids', () => {

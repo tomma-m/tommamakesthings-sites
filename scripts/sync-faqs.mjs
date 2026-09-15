@@ -9,20 +9,29 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { validateFaqs, diffFaqs, formatFaqs } from './faqs.mjs';
+import { fileURLToPath } from 'node:url';
+import { validateFaqs, diffFaqs, formatFaqs, parseFaqsJson } from './faqs.mjs';
+
+// Resolved from the script's own location, not the process's current
+// directory, so this works the same whether it's run from the repo root or
+// anywhere else.
+const REPO_ROOT = fileURLToPath(new URL('..', import.meta.url));
 
 const args = process.argv.slice(2);
 const check = args.includes('--check');
-const appRepo = resolve(args.find(arg => !arg.startsWith('--')) ?? '../sideline-hero');
+const appRepoArg = args.find(arg => !arg.startsWith('--'));
+// An explicit first argument is still resolved against the current
+// directory, so a relative path the user types works as they expect.
+const appRepo = appRepoArg ? resolve(appRepoArg) : resolve(REPO_ROOT, '..', 'sideline-hero');
 const source = `${appRepo}/src/features/help/faqs.json`;
-const dest = 'sites/sidelinehero/src/faqs-app.json';
+const dest = resolve(REPO_ROOT, 'sites/sidelinehero/src/faqs-app.json');
 
 if (!existsSync(source)) {
   console.error(`No FAQ file at ${source}. Pass the path to your sideline-hero checkout.`);
   process.exit(1);
 }
 
-const appData = JSON.parse(await readFile(source, 'utf8'));
+const appData = parseFaqsJson(await readFile(source, 'utf8'), source);
 validateFaqs(appData, source);
 const wanted = formatFaqs(appData);
 const current = existsSync(dest) ? await readFile(dest, 'utf8') : null;
@@ -32,7 +41,7 @@ if (check) {
     console.log(`ok   ${dest} matches ${source}`);
     process.exit(0);
   }
-  const { added, removed, changed } = diffFaqs(current ? JSON.parse(current).faqs : [], appData.faqs);
+  const { added, removed, changed } = diffFaqs(current ? parseFaqsJson(current, dest).faqs : [], appData.faqs);
   console.error(`FAIL ${dest} is out of date with ${source}`);
   if (added.length) console.error(`     added:   ${added.join(', ')}`);
   if (removed.length) console.error(`     removed: ${removed.join(', ')}`);
