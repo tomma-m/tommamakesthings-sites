@@ -20,6 +20,8 @@ jobs:
       - uses: actions/setup-node@v4
         with: { node-version: '20' }
       - run: npm ci
+      - name: Test FAQ helpers
+        run: node --test scripts/faqs.test.mjs
       # The build reads everything from disk, including the privacy policy.
       # No network access, no secrets, nothing to expire.
       - run: node build.mjs sidelinehero
