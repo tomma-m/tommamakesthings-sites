@@ -14,12 +14,12 @@ The short version: all your data stays on your device. Sideline Hero does not tr
 
 Sideline Hero stores only the information you enter directly into the app. This includes:
 
-- **Team information** — team name, colour preferences, and the names of any seasons you create
-- **Coach name** — optional, used only to personalise the app's greeting
-- **Team logo** — an image you choose from your photo library, copied into the app's own storage. The app has no other access to your photos.
-- **Player information** — player names and jersey numbers, skill level (optional), and active/inactive status, including the names of one-off fill-in players added to a single game
-- **Game records** — opponent name, date, location, game configuration settings, substitution history, and in-game events
-- **Game statistics** — points scored, fouls, playing time, and season totals calculated from completed games
+- **Team information**: team name, colour preferences, and the names of any seasons you create
+- **Coach name**: optional, used only to personalise the app's greeting
+- **Team logo**: an image you choose from your photo library, copied into the app's own storage. The app has no other access to your photos.
+- **Player information**: player names and jersey numbers, skill level (optional), and active/inactive status, including the names of one-off fill-in players added to a single game
+- **Game records**: opponent name, date, location, game configuration settings, substitution history, and in-game events
+- **Game statistics**: points scored, fouls, playing time, and season totals calculated from completed games
 
 Sideline Hero does not collect any information about you as the user. There are no user accounts, no login, and no device identifiers linked to your data.
 

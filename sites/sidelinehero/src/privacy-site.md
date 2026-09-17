@@ -1,6 +1,6 @@
 ## This website
 
-This section covers **sidelinehero.tommamakesthings.com** — the website you are
+This section covers **sidelinehero.tommamakesthings.com**, the website you are
 reading now. It is separate from the app policy above, which describes the
 Sideline Hero app itself. Like the app, this website collects nothing about you.
 
