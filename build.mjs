@@ -45,17 +45,17 @@ for (const dir of ['css', 'fonts', 'img']) {
 }
 
 await page('index.html', await readFile(`${SRC}/index.html`, 'utf8'), {
-  title: 'Sideline Hero — basketball substitution planner for coaches',
+  title: 'Sideline Hero · basketball substitution planner for coaches',
   description: 'Fair rotations, planned before tip-off. Works offline, no account, free.',
 });
 
 await page('404.html', await readFile(`${SRC}/404.html`, 'utf8'), {
-  title: 'Not found — Sideline Hero',
+  title: 'Not found · Sideline Hero',
   description: 'That page does not exist.',
 });
 
 await page('support/index.html', await readFile(`${SRC}/support.html`, 'utf8'), {
-  title: 'Support — Sideline Hero',
+  title: 'Support · Sideline Hero',
   description: 'Get help with Sideline Hero, report a bug, or ask a question.',
 });
 
@@ -85,7 +85,7 @@ const privacyBody = [
   '</section>',
 ].join('\n');
 await page('privacy/index.html', privacyBody,
-  { title: 'Privacy — Sideline Hero',
+  { title: 'Privacy · Sideline Hero',
     description: 'How Sideline Hero and this website handle your information.' });
 
 // FAQ. faqs-app.json is a copy of sideline-hero's src/features/help/faqs.json,
@@ -132,6 +132,6 @@ const faqBody = [
   faqGroup('Before you download', siteFaqs),
 ].join('\n');
 await page('faq/index.html', faqBody, {
-  title: 'FAQ — Sideline Hero',
+  title: 'FAQ · Sideline Hero',
   description: 'How Sideline Hero works, what it costs, and what happens to your data.',
 });
