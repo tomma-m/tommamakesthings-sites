@@ -4,7 +4,7 @@
       "id": "is-it-free",
       "title": "Is Sideline Hero free?",
       "body": [
-        "Yes. Sideline Hero is free, with no subscription and no in-app purchases."
+        "Sideline Hero is free to download and use. The free version shows ads. An optional Premium purchase (an annual subscription or a one-time lifetime purchase) removes ads and adds new premium features as they're released."
       ]
     },
     {
@@ -18,7 +18,7 @@
       "id": "does-data-leave-my-phone",
       "title": "Does my team data leave my phone?",
       "body": [
-        "No. The app never sends your data anywhere, makes no network requests at all and works in airplane mode. It only leaves the phone if you share a game summary or export a file yourself, or if your phone's own backup includes app data.",
+        "Your team, player and game data stays on your phone and is never uploaded. The free version does use the internet to show ads (Google AdMob) and to check Premium purchases (RevenueCat), but those never receive your team data. Setting up and running a game works offline. Your data only leaves the phone if you share a game summary or export a file yourself, or if your phone's own backup includes app data.",
         "The privacy policy has the details."
       ]
     },

@@ -46,7 +46,7 @@ for (const dir of ['css', 'fonts', 'img']) {
 
 await page('index.html', await readFile(`${SRC}/index.html`, 'utf8'), {
   title: 'Sideline Hero · basketball substitution planner for coaches',
-  description: 'Fair rotations, planned before tip-off. Works offline, no account, free.',
+  description: 'Fair rotations, planned before tip-off. Game day works offline, no account needed.',
 });
 
 await page('404.html', await readFile(`${SRC}/404.html`, 'utf8'), {
@@ -75,8 +75,10 @@ const appRest = appHtml.slice(h1End + '</h1>'.length);
 
 const privacyBody = [
   pageTitle,
-  '<p class="lede">This page has two separate parts: the Sideline Hero app',
-  'and this website. Neither collects any information about you.</p>',
+  '<p class="lede">This page has two separate parts: the Sideline Hero app,',
+  'which keeps your team data on your device and uses Google AdMob and',
+  'RevenueCat for ads and purchases, and this website, which collects nothing',
+  'about you.</p>',
   '<section class="policy policy-app" aria-label="Sideline Hero app privacy policy">',
   appRest,
   '</section>',
@@ -87,6 +89,11 @@ const privacyBody = [
 await page('privacy/index.html', privacyBody,
   { title: 'Privacy · Sideline Hero',
     description: 'How Sideline Hero and this website handle your information.' });
+
+await page('terms/index.html', marked.parse(await readFile(`${SRC}/terms-app.md`, 'utf8')), {
+  title: 'Terms · Sideline Hero',
+  description: 'Terms of use for the Sideline Hero app, including Premium purchases.',
+});
 
 // FAQ. faqs-app.json is a copy of sideline-hero's src/features/help/faqs.json,
 // refreshed by scripts/sync-faqs.mjs — never edit it here. faqs-site.json holds
