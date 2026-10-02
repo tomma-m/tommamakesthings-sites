@@ -2,7 +2,7 @@
 
 **Date:** 2026-10-02
 **Site:** `sites/sidelinehero` → https://sidelinehero.tommamakesthings.com
-**Branch:** `sidelinehero-redesign`, off `main` (`d2119a1`)
+**Branch:** `sidelinehero-redesign`, on top of `sidelinehero-freemium` (`100037b`: freemium privacy policy, Terms page, FAQ pricing answer)
 **Approved mockup:** `.superpowers/brainstorm/64962-1790918376/content/full-page-v2.html` (local only, git-ignored)
 
 ## Goal
@@ -25,7 +25,7 @@ Decisions already made with Tom:
    - concentric chalk arcs
 
    None of these: pill badges, icon-square cards, gradient blobs, glows, or "01/02" step numbers.
-7. **Ships before the freemium launch.** It's built off `main` with the current live copy, and deploys on merge to `main`. The `sidelinehero-freemium` branch is rebased onto it afterwards (see Rollout).
+7. **Written for the freemium app** (Tom, 2026-10-02, replacing the earlier "ship before freemium off `main`" decision). The site says the app is free with ads and offers optional in-app purchases that remove ads and add new premium features as they're released. It's built on `sidelinehero-freemium`, so the privacy policy, Terms and FAQ on the same deploy already describe ads and Premium. When it deploys is decided under Rollout.
 
 ## Non-goals
 
@@ -102,22 +102,23 @@ These are added to `src/css/tokens.css`. The existing tokens stay.
 5. **Built for youth basketball** (stat sheet)
    - A real `<table>` with a 2px ink rule under its header row. The header is "Built for youth basketball".
    - Each row has a bib chip, a label with a muted note, and a value tag on the right.
-   - Rows use the **live main copy**:
+   - Rows use the **freemium copy** from `sidelinehero-freemium`'s `index.html`, plus a Premium row. The Premium wording is the app's own `PREMIUM_BENEFITS` string (`sideline-hero/src/features/premium/premiumCopy.ts`), word for word. That file's rule applies here too: never name an unbuilt feature, and this sentence is the only future-value wording. No prices on the site, because they're set per store and region.
 
    | Bib | Label | Note | Value |
    |---|---|---|---|
    | 5 | Rosters | flexible game formats | Anton "5 to 12" |
-   | 0 | Works fully offline | no internet connection required | ink tag "Offline" |
+   | 0 | Game day works offline | plan and run a game with no connection | ink tag "Offline" |
    | 0 | No account | no login, no password | ink tag "None" |
-   | 0 | No data leaves your device | no analytics, no tracking | ink tag "None" |
-   | $ | Free | no subscription and no in-app purchases | orange tag "Free" |
+   | 0 | Your team data stays on your device | no analytics, no tracking | ink tag "None" |
+   | $ | Free to download | the free version shows ads | orange tag "Free" |
+   | P | Premium, an optional in-app purchase | No ads, plus new premium features as they're released. Yearly subscription or one-time lifetime purchase. | ink tag "Optional" |
 
    - The existing "Built for youth basketball" paragraph is dropped. Its facts become the table heading and the rosters row. Tom approved this in the mockup review.
    - `shot-4.png` is no longer used. The file stays in `img/`.
 
 6. **Full time** (dark band): kicker "Full time", an Anton line (see New copy) on the left, and both store badges on the right.
 
-7. **Footer** (`layout.html`): a 2px ink top rule, "Sideline Hero · made by tommamakesthings." in muted text, and links to Privacy, FAQ and Support. (`main` has no Terms page. The freemium rebase adds the Terms link back.)
+7. **Footer** (`layout.html`): a 2px ink top rule, "Sideline Hero · made by tommamakesthings." in muted text, and links to Privacy, Terms, FAQ and Support (the freemium branch's footer already has Terms).
 
 **Inner pages:** same header and footer, content in a `--measure`-wide column inside the container. Headings get the new type scale. The FAQ table of contents and topics move from a card to ruled rows: each group heading sits over a 2px ink rule, and questions are separated by hairlines, like the app's Help screen. The privacy page keeps its separate site-policy panel. Support's email card becomes a ruled block. 404 keeps its text.
 
@@ -147,7 +148,7 @@ This is one plain script, loaded with `<script src="/js/site.js" defer>`, under 
 - Keyboard focus is visible on every link: a 2px `--orange` outline (3.29:1, above the 3:1 non-text minimum).
 - Images keep their current alt text and get `width`/`height` (840×1818) to stop layout shift. Everything below the hero gets `loading="lazy"`.
 
-## New copy (needs Tom's sign-off)
+## New copy (approved by Tom 2026-10-02: the "Proposed" column)
 
 These follow the voice rules: plain words, no slogans, no em or en dashes.
 
@@ -157,7 +158,8 @@ These follow the voice rules: plain words, no slogans, no em or en dashes.
 | Header tag | Coming soon | (same) |
 | How it works heading | How a game goes | How it works |
 | How it works kicker | Auto-plan · equal minutes | (drop) |
-| Stat sheet rows | as in the table above (live copy, split into label and note) | n/a |
+| Stat sheet rows | as in the table above (freemium branch copy, split into label and note) | n/a |
+| Price rows (NEW, not yet approved) | "Free to download" · "the free version shows ads" · "Premium, an optional in-app purchase" · "Yearly subscription or one-time lifetime purchase." (the benefits sentence is the app's own, unchanged) | n/a |
 | Full time line | Ready for your next game. | Coming soon to iPhone and Android. |
 | Decorative | "Window open", "00:40", "Game clock", "Q2", "06:12", step time rails | n/a |
 
@@ -189,9 +191,7 @@ The privacy and terms Markdown, `faqs-*.json`, the FAQ build logic and the scrip
 ## Rollout
 
 1. Build locally and share the URL with Tom for review on desktop and phone (LAN).
-2. Tom approves → merge `sidelinehero-redesign` into `main` and push. That's the live deploy: GitHub Actions builds, gates on `check-third-party`, syncs to S3, invalidates CloudFront, and runs `smoke.sh`. Watch the run and load the live site.
-3. Rebase `sidelinehero-freemium` onto the new `main`. Expected conflicts:
-   - `index.html` trust copy → becomes the stat-sheet rows ("Game day works offline", "Your team data stays on your device", and "Free with ads" with an orange "Free" tag and the note "or go ad-free with Premium").
-   - `layout.html` footer → add the Terms link.
+2. Tom approves → commit on `sidelinehero-redesign`.
+3. **Deploy timing is Tom's call** (open question below). Going live means merging into `main` and pushing, which publishes the redesign *and* everything on `sidelinehero-freemium` at once: the ads and Premium privacy policy, the new `/terms` page and the FAQ pricing answer. GitHub Actions builds, gates on `check-third-party`, syncs to S3, invalidates CloudFront, and runs `smoke.sh`. Watch the run, then load `/`, `/terms` and `/privacy` live.
 
-   That branch stays unpushed until the freemium launch, as before.
+**Open question for Tom:** deploy as soon as the redesign is approved, or hold until the store launch? A point in favour of now: the freemium app builds already in testers' hands link to `https://sidelinehero.tommamakesthings.com/terms` from the Premium card, and that URL is a 404 on the live site today (checked 2026-10-02).
