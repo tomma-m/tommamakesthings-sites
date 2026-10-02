@@ -16,12 +16,32 @@ export function formatClock(seconds) {
   return `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
 }
 
+/**
+ * Crossfades `phone` to a new screenshot. Compares against the screenshot it
+ * is heading to, not the one showing: two steps can cross the middle inside
+ * one 150ms fade, and the first fade must not land after the second asks.
+ */
+export function phoneSwapper(phone, reduceMotion, timers = globalThis) {
+  let target = phone.getAttribute('src');
+  let pending = 0;
+  return (src) => {
+    if (src === target) return;
+    target = src;
+    timers.clearTimeout(pending);
+    if (reduceMotion) { phone.src = src; return; }
+    // A timeout, not transitionend: the phone is display:none on mobile, where
+    // no transition ever fires.
+    phone.classList.add('is-fading');
+    pending = timers.setTimeout(() => { phone.src = src; phone.classList.remove('is-fading'); }, 150);
+  };
+}
+
 function initStory(reduceMotion) {
   const steps = [...document.querySelectorAll('.step')];
   const phone = document.querySelector('[data-story-phone]');
   if (!steps.length || !phone) return;
   let current = -1;
-  let swap = 0;
+  const swap = phoneSwapper(phone, reduceMotion);
 
   function show(index) {
     if (index === current) return;
@@ -30,14 +50,7 @@ function initStory(reduceMotion) {
       steps[i].dataset.state = state;
       steps[i].querySelector('.step-tag').textContent = STEP_LABELS[state];
     });
-    const src = steps[index].querySelector('.step-shot').getAttribute('src');
-    if (phone.getAttribute('src') === src) return;
-    clearTimeout(swap);
-    if (reduceMotion) { phone.src = src; return; }
-    // A timeout, not transitionend: the phone is display:none on mobile, where
-    // no transition ever fires.
-    phone.classList.add('is-fading');
-    swap = setTimeout(() => { phone.src = src; phone.classList.remove('is-fading'); }, 150);
+    swap(steps[index].querySelector('.step-shot').getAttribute('src'));
   }
 
   // A thin band across the middle of the viewport: the step crossing it is "open".

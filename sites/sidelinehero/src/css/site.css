@@ -145,6 +145,8 @@ main:has(> .band-fulltime:last-child) { padding-bottom: 0; }
   display: flex; box-shadow: 0 8px 20px rgb(25 20 16 / 0.2);
 }
 .score-bug .tag { border-radius: 0; display: flex; align-items: center; }
+/* On phones, measured from the centre it runs off the right edge at 375px. */
+@media (max-width: 719px) { .score-bug { left: auto; right: var(--gutter); } }
 .score-bug-time {
   background: var(--ink); color: var(--canvas); padding: 4px 10px; line-height: 1.1;
   font-family: Anton, Impact, sans-serif; font-size: clamp(18px, 2.4vw, 24px); font-variant-numeric: tabular-nums;
@@ -182,10 +184,18 @@ main:has(> .band-fulltime:last-child) { padding-bottom: 0; }
 .story-grid { display: grid; gap: 48px; }
 .story-steps { list-style: none; margin: 0; padding: 0; }
 .step {
-  display: grid; grid-template-columns: 56px 14px 1fr; gap: 12px;
+  display: grid; grid-template-columns: 76px 14px 1fr; gap: 12px;
   padding: 20px 0 28px; border-bottom: 1px solid var(--rule);
 }
 .step-time { display: flex; flex-direction: column; }
+/* Phones: the time rail would squeeze the text, so it moves onto one line
+   above the tag and the text gets the full width beside the node. */
+@media (max-width: 719px) {
+  .step { grid-template-columns: 14px 1fr; row-gap: 4px; }
+  .step-node { grid-column: 1; grid-row: 1; margin-top: 2px; }
+  .step-time { grid-column: 2; grid-row: 1; flex-direction: row; align-items: baseline; gap: 8px; }
+  .step-body { grid-column: 2; grid-row: 2; }
+}
 .step-time .kicker { font-size: 10px; color: var(--muted); margin: 0 0 2px; }
 .step-clock { font-family: Anton, Impact, sans-serif; font-size: 22px; line-height: 1; font-variant-numeric: tabular-nums; }
 .step-node {
@@ -212,7 +222,6 @@ main:has(> .band-fulltime:last-child) { padding-bottom: 0; }
   .js .story-phone .phone { position: sticky; top: calc(var(--header-h) + 32px); transition: opacity 0.15s; }
   .js .story-phone .phone.is-fading { opacity: 0; }
   .js .step-shot { display: none; }
-  .js .step { min-height: 50vh; }
 }
 @media (prefers-reduced-motion: reduce) {
   .story-phone .phone { transition: none; }

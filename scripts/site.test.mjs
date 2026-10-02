@@ -180,7 +180,7 @@ test('store badges are not links', async () => {
   assert.doesNotMatch(html, /<a\b[^>]*>\s*<img[^>]*badge-/);
 });
 
-import { stepStates, formatClock, STEP_LABELS } from '../sites/sidelinehero/src/js/site.js';
+import { stepStates, formatClock, STEP_LABELS, phoneSwapper } from '../sites/sidelinehero/src/js/site.js';
 
 test('stepStates matches the Plan tab: done, open, next, upcoming', () => {
   assert.deepEqual(stepStates(0, 4), ['open', 'next', 'upcoming', 'upcoming']);
@@ -220,4 +220,40 @@ test('layout loads the versioned module and sets the js class', async () => {
 test('long URLs and email addresses in page text can wrap (no sideways scroll at 360px)', async () => {
   const css = await read('css/site.css');
   assert.match(css, /\.page a\s*\{[^}]*overflow-wrap:\s*anywhere/);
+});
+
+// A fake <img> and fake timers, so the swap can be driven step by step.
+function fakePhone(src) {
+  const classes = new Set();
+  return {
+    src, getAttribute: function () { return this.src; },
+    classList: { add: (c) => classes.add(c), remove: (c) => classes.delete(c), has: (c) => classes.has(c) },
+  };
+}
+function fakeTimers() {
+  const q = new Map(); let n = 0;
+  return {
+    setTimeout: (fn) => { q.set(++n, fn); return n; },
+    clearTimeout: (id) => q.delete(id),
+    flush: () => { for (const [id, fn] of q) { q.delete(id); fn(); } },
+  };
+}
+
+test('phone swap: two quick step changes end on the second screenshot', () => {
+  const phone = fakePhone('/img/shot-3.png');
+  const t = fakeTimers();
+  const swap = phoneSwapper(phone, false, t);
+  swap('/img/shot-2.png');   // step 0 crosses the middle
+  swap('/img/shot-3.png');   // step 1 crosses before the 150ms fade ends
+  t.flush();
+  assert.equal(phone.src, '/img/shot-3.png');
+  assert.equal(phone.classList.has('is-fading'), false);
+});
+
+test('phone swap: reduced motion swaps at once, no fade', () => {
+  const phone = fakePhone('/img/shot-3.png');
+  const swap = phoneSwapper(phone, true, fakeTimers());
+  swap('/img/shot-5.png');
+  assert.equal(phone.src, '/img/shot-5.png');
+  assert.equal(phone.classList.has('is-fading'), false);
 });
