@@ -1,4 +1,4 @@
-import { readFile, writeFile, mkdir, cp, rm, readdir } from 'node:fs/promises';
+import { readFile, writeFile, mkdir, cp, rm, readdir, rename } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { marked } from 'marked';
 import { validateFaqs, parseFaqsJson } from './scripts/faqs.mjs';
@@ -47,13 +47,18 @@ for (const dir of ['css', 'fonts', 'img', 'js']) {
   if (existsSync(`${SRC}/${dir}`)) await cp(`${SRC}/${dir}`, `${DIST}/${dir}`, { recursive: true });
 }
 
-// See scripts/asset-version.mjs. Stamped into CSS/JS here and into HTML in render().
+// See scripts/asset-version.mjs. The hash goes in the FILE NAME
+// (site.css → site.<v>.css): CloudFront ignores query strings in its cache
+// key, so a ?v= alone could hand a mid-deploy visitor the old file under the
+// new URL, which the browser then keeps for 7 days. References use {{v}},
+// stamped into CSS/JS here and into HTML in render().
 const V = await assetVersion([`${SRC}/css`, `${SRC}/js`]);
 for (const dir of ['css', 'js']) {
   if (!existsSync(`${DIST}/${dir}`)) continue;
   for (const name of await readdir(`${DIST}/${dir}`)) {
     const p = `${DIST}/${dir}/${name}`;
     await writeFile(p, (await readFile(p, 'utf8')).replaceAll('{{v}}', V));
+    await rename(p, `${DIST}/${dir}/${name.replace(/\.(css|js)$/, `.${V}.$1`)}`);
   }
 }
 

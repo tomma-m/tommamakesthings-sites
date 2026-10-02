@@ -9,6 +9,8 @@ import { assetVersion } from './asset-version.mjs';
 const DIST = 'sites/sidelinehero/dist';
 const read = (p) => readFile(join(DIST, p), 'utf8');
 const flat = (s) => s.replace(/\s+/g, ' ');
+// The stylesheet's name carries the asset hash, so look it up.
+const readCss = async () => read(`css/${(await readdir(join(DIST, 'css'))).find((n) => n.startsWith('site.'))}`);
 
 before(() => {
   execFileSync('node', ['build.mjs', 'sidelinehero'], { stdio: 'pipe' });
@@ -30,12 +32,17 @@ test('no {{placeholder}} survives the build', async () => {
   }
 });
 
-test('stylesheet and its tokens import carry the same 8-hex version', async () => {
+test('CSS and JS ship under hashed file names (the CDN ignores query strings)', async () => {
   const html = await read('index.html');
-  const css = await read('css/site.css');
-  const v = html.match(/\/css\/site\.css\?v=([0-9a-f]{8})"/)?.[1];
-  assert.ok(v, 'index.html links /css/site.css?v=<8 hex>');
-  assert.match(css, new RegExp(`tokens\\.css\\?v=${v}`));
+  const v = html.match(/href="\/css\/site\.([0-9a-f]{8})\.css"/)?.[1];
+  assert.ok(v, 'index.html links /css/site.<8 hex>.css');
+  assert.match(html, new RegExp(`src="/js/site\\.${v}\\.js"`));
+  assert.match(await read(`css/site.${v}.css`), new RegExp(`@import url\\('tokens\\.${v}\\.css'\\)`));
+  await read(`css/tokens.${v}.css`);
+  await read(`js/site.${v}.js`);
+  for (const [dir, names] of [['css', await readdir(join(DIST, 'css'))], ['js', await readdir(join(DIST, 'js'))]]) {
+    for (const n of names) assert.match(n, new RegExp(`\\.${v}\\.(css|js)$`), `${dir}/${n} is not hashed`);
+  }
 });
 
 test('assetVersion changes when any asset changes', async () => {
@@ -80,12 +87,12 @@ test('FAQ contents are ruled rows, not a card', async () => {
 });
 
 test('anchors land below the sticky header', async () => {
-  const css = await read('css/site.css');
+  const css = await readCss();
   assert.match(css, /html\s*\{[^}]*scroll-padding-top:\s*calc\(var\(--header-h\)/);
 });
 
 test('the How it works header link hides below 420px', async () => {
-  const css = await read('css/site.css');
+  const css = await readCss();
   assert.match(css, /@media \(max-width: 419px\)\s*\{\s*\.nav-how\s*\{\s*display:\s*none;?\s*\}/);
 });
 
@@ -101,7 +108,7 @@ function contrast(a, b) {
 }
 
 test('text colour pairs meet WCAG AA (4.5:1)', async () => {
-  const tokens = await read('css/tokens.css');
+  const tokens = await read(`css/${(await readdir(join(DIST, 'css'))).find((n) => n.startsWith('tokens.'))}`);
   const t = Object.fromEntries([...tokens.matchAll(/--([\w-]+):\s*(#[0-9A-Fa-f]{6})/g)].map((m) => [m[1], m[2]]));
   const pairs = [
     ['#FFFFFF', t['orange-cta'], 'white on orange tag'],
@@ -204,21 +211,20 @@ test('formatClock pads, floors and holds at zero', () => {
 });
 
 test('inline step screenshots are only hidden when JS is running', async () => {
-  const css = await read('css/site.css');
+  const css = await readCss();
   for (const m of css.matchAll(/([^{}]+)\{[^}]*display:\s*none[^}]*\}/g)) {
     if (m[1].includes('.step-shot')) assert.match(m[1].trim(), /^\.js\s/, `unscoped: ${m[1].trim()}`);
   }
 });
 
-test('layout loads the versioned module and sets the js class', async () => {
+test('layout loads the hashed module, sets the js class only if modules can run, and clears it if the load fails', async () => {
   const html = await read('index.html');
-  assert.match(html, /<script type="module" src="\/js\/site\.js\?v=[0-9a-f]{8}"><\/script>/);
-  assert.match(html, /<script>document\.documentElement\.classList\.add\('js'\)<\/script>/);
-  await readFile('sites/sidelinehero/dist/js/site.js', 'utf8');
+  assert.match(html, /<script>if\('noModule' in HTMLScriptElement\.prototype&&'IntersectionObserver' in window\)document\.documentElement\.classList\.add\('js'\)<\/script>/);
+  assert.match(html, /<script type="module" src="\/js\/site\.[0-9a-f]{8}\.js" onerror="document\.documentElement\.classList\.remove\('js'\)"><\/script>/);
 });
 
 test('long URLs and email addresses in page text can wrap (no sideways scroll at 360px)', async () => {
-  const css = await read('css/site.css');
+  const css = await readCss();
   assert.match(css, /\.page a\s*\{[^}]*overflow-wrap:\s*anywhere/);
 });
 

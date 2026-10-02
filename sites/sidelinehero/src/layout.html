@@ -5,9 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{{title}}</title>
 <meta name="description" content="{{description}}">
-<link rel="stylesheet" href="/css/site.css?v={{v}}">
-<script>document.documentElement.classList.add('js')</script>
-<script type="module" src="/js/site.js?v={{v}}"></script>
+<link rel="stylesheet" href="/css/site.{{v}}.css">
+<!-- .js switches on the sticky phone and hides the inline step screenshots.
+     Only set it where a module can run, and take it back if the load fails,
+     so a blocked or missing script never leaves screenshots hidden. -->
+<script>if('noModule' in HTMLScriptElement.prototype&&'IntersectionObserver' in window)document.documentElement.classList.add('js')</script>
+<script type="module" src="/js/site.{{v}}.js" onerror="document.documentElement.classList.remove('js')"></script>
 </head>
 <body>
 <header class="site-header">

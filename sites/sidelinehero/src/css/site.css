@@ -1,4 +1,4 @@
-@import url('tokens.css?v={{v}}');
+@import url('tokens.{{v}}.css');
 
 *, *::before, *::after { box-sizing: border-box; }
 html { scroll-padding-top: calc(var(--header-h) + 16px); }
