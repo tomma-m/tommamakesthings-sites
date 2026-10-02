@@ -300,3 +300,10 @@ test('desktop: the How a game goes heading sticks under the site header, the pho
   assert.match(desktop, /\.js \.story \.section-head\s*\{[^}]*position:\s*sticky;[^}]*top:\s*var\(--header-h\)/);
   assert.match(desktop, /\.js \.story-phone \.phone\s*\{[^}]*top:\s*calc\(var\(--header-h\) \+ var\(--story-head-h\)/);
 });
+
+test('desktop: the last step is as tall as the pinned phone, so it reaches the top before the section leaves', async () => {
+  const css = await readCss();
+  assert.match(css, /\.js \.story-grid\s*\{[^}]*grid-template-columns:\s*1fr var\(--phone-w\)/);
+  assert.match(css, /\.js \.step:last-child\s*\{[^}]*min-height:\s*calc\(var\(--phone-w\) \* 2\.164 \+ 24px\)/);
+  assert.doesNotMatch(css, /\.js \.story-steps\s*\{[^}]*padding-bottom/, 'fixed padding after step 4 is gone');
+});
