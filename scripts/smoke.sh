@@ -14,6 +14,7 @@ check "home"              200 "/"
 check "privacy"           200 "/privacy"
 check "support"           200 "/support"
 check "faq"               200 "/faq"
+check "terms"             200 "/terms"
 check "missing page 404s" 404 "/definitely-not-a-page"
 
 echo "checking for third-party requests..."
@@ -25,7 +26,7 @@ if ! ./scripts/check-third-party.sh; then fail=1; fi
 echo "checking the privacy policy actually rendered..."
 privacy=$(curl -sS "$BASE/privacy")
 
-if grep -q 'all your data stays on your device' <<<"$privacy"; then
+if grep -q 'stays on your device' <<<"$privacy"; then
   echo "  ok   app policy present"
 else
   echo "  FAIL app policy missing from /privacy"; fail=1

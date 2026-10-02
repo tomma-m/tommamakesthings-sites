@@ -1,7 +1,8 @@
-import { readFile, writeFile, mkdir, cp, rm } from 'node:fs/promises';
+import { readFile, writeFile, mkdir, cp, rm, readdir } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { marked } from 'marked';
 import { validateFaqs, parseFaqsJson } from './scripts/faqs.mjs';
+import { assetVersion } from './scripts/asset-version.mjs';
 
 const site = process.argv[2];
 if (!site) { console.error('usage: node build.mjs <site>'); process.exit(1); }
@@ -27,7 +28,8 @@ function render(body, { title, description }) {
   return layout
     .replaceAll('{{title}}', () => escapeHtml(title))
     .replaceAll('{{description}}', () => escapeHtml(description))
-    .replaceAll('{{body}}', () => body);
+    .replaceAll('{{body}}', () => body)
+    .replaceAll('{{v}}', () => V);
 }
 
 async function page(outPath, body, meta) {
@@ -40,8 +42,18 @@ async function page(outPath, body, meta) {
 await rm(DIST, { recursive: true, force: true });
 await mkdir(DIST, { recursive: true });
 
-for (const dir of ['css', 'fonts', 'img']) {
+for (const dir of ['css', 'fonts', 'img', 'js']) {
   if (existsSync(`${SRC}/${dir}`)) await cp(`${SRC}/${dir}`, `${DIST}/${dir}`, { recursive: true });
+}
+
+// See scripts/asset-version.mjs. Stamped into CSS/JS here and into HTML in render().
+const V = await assetVersion([`${SRC}/css`, `${SRC}/js`]);
+for (const dir of ['css', 'js']) {
+  if (!existsSync(`${DIST}/${dir}`)) continue;
+  for (const name of await readdir(`${DIST}/${dir}`)) {
+    const p = `${DIST}/${dir}/${name}`;
+    await writeFile(p, (await readFile(p, 'utf8')).replaceAll('{{v}}', V));
+  }
 }
 
 await page('index.html', await readFile(`${SRC}/index.html`, 'utf8'), {
