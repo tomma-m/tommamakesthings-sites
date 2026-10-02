@@ -159,7 +159,7 @@ These follow the voice rules: plain words, no slogans, no em or en dashes.
 | How it works heading | How a game goes | How it works |
 | How it works kicker | Auto-plan · equal minutes | (drop) |
 | Stat sheet rows | as in the table above (freemium branch copy, split into label and note) | n/a |
-| Price rows (NEW, not yet approved) | "Free to download" · "the free version shows ads" · "Premium, an optional in-app purchase" · "Yearly subscription or one-time lifetime purchase." (the benefits sentence is the app's own, unchanged) | n/a |
+| Price rows (approved 2026-10-02) | "Free to download" · "the free version shows ads" · "Premium, an optional in-app purchase" · "Yearly subscription or one-time lifetime purchase." (the benefits sentence is the app's own, unchanged) | n/a |
 | Full time line | Ready for your next game. | Coming soon to iPhone and Android. |
 | Decorative | "Window open", "00:40", "Game clock", "Q2", "06:12", step time rails | n/a |
 
@@ -192,6 +192,6 @@ The privacy and terms Markdown, `faqs-*.json`, the FAQ build logic and the scrip
 
 1. Build locally and share the URL with Tom for review on desktop and phone (LAN).
 2. Tom approves → commit on `sidelinehero-redesign`.
-3. **Deploy timing is Tom's call** (open question below). Going live means merging into `main` and pushing, which publishes the redesign *and* everything on `sidelinehero-freemium` at once: the ads and Premium privacy policy, the new `/terms` page and the FAQ pricing answer. GitHub Actions builds, gates on `check-third-party`, syncs to S3, invalidates CloudFront, and runs `smoke.sh`. Watch the run, then load `/`, `/terms` and `/privacy` live.
+3. **Deploy as soon as Tom approves the local build.** Going live means merging into `main` and pushing, which publishes the redesign *and* everything on `sidelinehero-freemium` at once: the ads and Premium privacy policy, the new `/terms` page and the FAQ pricing answer. GitHub Actions builds, gates on `check-third-party`, syncs to S3, invalidates CloudFront, and runs `smoke.sh`. Watch the run, then load `/`, `/terms` and `/privacy` live.
 
-**Open question for Tom:** deploy as soon as the redesign is approved, or hold until the store launch? A point in favour of now: the freemium app builds already in testers' hands link to `https://sidelinehero.tommamakesthings.com/terms` from the Premium card, and that URL is a 404 on the live site today (checked 2026-10-02).
+**Decided (Tom, 2026-10-02): deploy as soon as the redesign is approved.** Reason: the freemium app builds already with testers link to `https://sidelinehero.tommamakesthings.com/terms` from the Premium card, and that URL was a 404 on the live site on 2026-10-02.
