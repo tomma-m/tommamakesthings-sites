@@ -1,4 +1,5 @@
-// Homepage behaviour: the How it works timeline and the scoreboard clock.
+// Site behaviour: the homepage How it works timeline and scoreboard clock, and
+// opening a linked FAQ answer.
 // The page is complete without this file. The pure helpers are exported for
 // scripts/site.test.mjs; the DOM wiring at the bottom only runs in a browser.
 
@@ -34,6 +35,15 @@ export function phoneSwapper(phone, reduceMotion, timers = globalThis) {
     phone.classList.add('is-fading');
     pending = timers.setTimeout(() => { phone.src = src; phone.classList.remove('is-fading'); }, 150);
   };
+}
+
+/** /faq#is-it-free should land on that answer open, not on a closed row. */
+export function openLinkedAnswer(doc, hash) {
+  const id = decodeURIComponent(hash.slice(1));
+  const el = id && doc.getElementById(id);
+  if (!el || el.tagName !== 'DETAILS') return;
+  el.open = true;
+  el.scrollIntoView();
 }
 
 function initStory(reduceMotion) {
@@ -79,8 +89,12 @@ function initClock(reduceMotion) {
   }).observe(el);
 }
 
-if (typeof document !== 'undefined' && 'IntersectionObserver' in window) {
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  initStory(reduceMotion);
-  initClock(reduceMotion);
+if (typeof document !== 'undefined') {
+  openLinkedAnswer(document, location.hash);
+  addEventListener('hashchange', () => openLinkedAnswer(document, location.hash));
+  if ('IntersectionObserver' in window) {
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    initStory(reduceMotion);
+    initClock(reduceMotion);
+  }
 }

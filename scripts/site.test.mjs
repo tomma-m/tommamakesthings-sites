@@ -81,9 +81,18 @@ test('inner pages sit in the container column, the homepage does not', async () 
   assert.doesNotMatch(await read('index.html'), /<div class="container page">/);
 });
 
-test('FAQ contents are ruled rows, not a card', async () => {
+test('FAQ answers are closed accordions inside their two sections, no contents list', async () => {
   const html = await read('faq/index.html');
-  assert.match(html, /<nav class="faq-contents" aria-label="Questions on this page">/);
+  assert.doesNotMatch(html, /faq-contents/);
+  const groups = html.split(/<h2>/).slice(1);
+  assert.deepEqual(groups.map((g) => g.slice(0, g.indexOf('</h2>'))), ['Using the app', 'Before you download']);
+  for (const g of groups) {
+    const rows = [...g.matchAll(/<details class="faq-topic" id="([a-z0-9-]+)">\s*<summary><h3>[^<]+<\/h3><\/summary>/g)];
+    assert.ok(rows.length > 0, 'section has accordion rows');
+    assert.equal(rows.length, (g.match(/<details/g) || []).length, 'every topic is a details row');
+  }
+  assert.doesNotMatch(html, /<details[^>]*\sopen/, 'all start closed');
+  for (const id of ['getting-started', 'is-it-free']) assert.match(html, new RegExp(`<details class="faq-topic" id="${id}">`));
 });
 
 test('anchors land below the sticky header', async () => {
@@ -187,7 +196,7 @@ test('store badges are not links', async () => {
   assert.doesNotMatch(html, /<a\b[^>]*>\s*<img[^>]*badge-/);
 });
 
-import { stepStates, formatClock, STEP_LABELS, phoneSwapper } from '../sites/sidelinehero/src/js/site.js';
+import { stepStates, formatClock, STEP_LABELS, phoneSwapper, openLinkedAnswer } from '../sites/sidelinehero/src/js/site.js';
 
 test('stepStates matches the Plan tab: done, open, next, upcoming', () => {
   assert.deepEqual(stepStates(0, 4), ['open', 'next', 'upcoming', 'upcoming']);
@@ -262,4 +271,19 @@ test('phone swap: reduced motion swaps at once, no fade', () => {
   swap('/img/shot-5.png');
   assert.equal(phone.src, '/img/shot-5.png');
   assert.equal(phone.classList.has('is-fading'), false);
+});
+
+test('a link to one FAQ answer opens it', () => {
+  const answer = { tagName: 'DETAILS', open: false, scrolled: false, scrollIntoView() { this.scrolled = true; } };
+  const doc = { getElementById: (id) => (id === 'is-it-free' ? answer : null) };
+  openLinkedAnswer(doc, '#is-it-free');
+  assert.equal(answer.open, true);
+  assert.equal(answer.scrolled, true);
+});
+
+test('openLinkedAnswer ignores empty hashes, unknown ids and non-accordion targets', () => {
+  const section = { tagName: 'SECTION', open: false, scrollIntoView() { throw new Error('should not scroll'); } };
+  const doc = { getElementById: (id) => (id === 'how-it-works' ? section : null) };
+  for (const h of ['', '#', '#nope', '#how-it-works']) openLinkedAnswer(doc, h);
+  assert.equal(section.open, false);
 });
