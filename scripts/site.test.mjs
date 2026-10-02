@@ -196,7 +196,7 @@ test('store badges are not links', async () => {
   assert.doesNotMatch(html, /<a\b[^>]*>\s*<img[^>]*badge-/);
 });
 
-import { stepStates, formatClock, STEP_LABELS, phoneSwapper, openLinkedAnswer } from '../sites/sidelinehero/src/js/site.js';
+import { stepStates, formatClock, STEP_LABELS, phoneSwapper, openLinkedAnswer, triggerMargin } from '../sites/sidelinehero/src/js/site.js';
 
 test('stepStates matches the Plan tab: done, open, next, upcoming', () => {
   assert.deepEqual(stepStates(0, 4), ['open', 'next', 'upcoming', 'upcoming']);
@@ -286,4 +286,17 @@ test('openLinkedAnswer ignores empty hashes, unknown ids and non-accordion targe
   const doc = { getElementById: (id) => (id === 'how-it-works' ? section : null) };
   for (const h of ['', '#', '#nope', '#how-it-works']) openLinkedAnswer(doc, h);
   assert.equal(section.open, false);
+});
+
+test('the step trigger is a 1px line just under the sticky heading', () => {
+  assert.equal(triggerMargin(130, 900), '-130px 0px -769px 0px');
+  assert.equal(triggerMargin(58, 812), '-58px 0px -753px 0px');
+  assert.equal(triggerMargin(900, 800), '-900px 0px 0px 0px', 'never a negative bottom inset');
+});
+
+test('desktop: the How a game goes heading sticks under the site header, the phone below it', async () => {
+  const css = await readCss();
+  const desktop = css.slice(css.indexOf('.js .story-grid'));
+  assert.match(desktop, /\.js \.story \.section-head\s*\{[^}]*position:\s*sticky;[^}]*top:\s*var\(--header-h\)/);
+  assert.match(desktop, /\.js \.story-phone \.phone\s*\{[^}]*top:\s*calc\(var\(--header-h\) \+ var\(--story-head-h\)/);
 });

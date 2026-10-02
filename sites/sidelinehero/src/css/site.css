@@ -226,7 +226,18 @@ main:has(> .band-fulltime:last-child) { padding-bottom: 0; }
 @media (min-width: 720px) {
   .js .story-grid { grid-template-columns: 1fr clamp(200px, 24vw, 260px); }
   .js .story-phone { display: block; }
-  .js .story-phone .phone { position: sticky; top: calc(var(--header-h) + 32px); transition: opacity 0.15s; }
+  /* The heading sticks under the site header and the descriptions scroll up
+     beneath it; site.js swaps the phone as each one goes under. */
+  .js .story { --story-head-h: 72px; }
+  .js .story .section-head {
+    position: sticky; top: var(--header-h); z-index: 5;
+    min-height: var(--story-head-h); padding-top: 16px; background: var(--canvas);
+    /* The open step's tint is 12px wider than the column; paint canvas over it
+       at both sides without moving the rule. */
+    box-shadow: -12px 0 0 var(--canvas), 12px 0 0 var(--canvas);
+  }
+  .js .story-steps { padding-bottom: 30vh; }  /* room for the last step to become active */
+  .js .story-phone .phone { position: sticky; top: calc(var(--header-h) + var(--story-head-h) + 24px); transition: opacity 0.15s; }
   .js .story-phone .phone.is-fading { opacity: 0; }
   .js .step-shot { display: none; }
 }

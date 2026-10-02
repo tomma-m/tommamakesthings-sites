@@ -46,6 +46,16 @@ export function openLinkedAnswer(doc, hash) {
   el.scrollIntoView();
 }
 
+/**
+ * IntersectionObserver rootMargin for a 1px line `top` px below the viewport
+ * top. The step crossing it is "open": a step goes Done once its description
+ * has scrolled up under the sticky heading.
+ */
+export function triggerMargin(top, viewportHeight) {
+  const bottom = Math.max(0, viewportHeight - top - 1);
+  return `-${top}px 0px ${bottom ? `-${bottom}px` : '0px'} 0px`;
+}
+
 function initStory(reduceMotion) {
   const steps = [...document.querySelectorAll('.step')];
   const phone = document.querySelector('[data-story-phone]');
@@ -63,11 +73,26 @@ function initStory(reduceMotion) {
     swap(steps[index].querySelector('.step-shot').getAttribute('src'));
   }
 
-  // A thin band across the middle of the viewport: the step crossing it is "open".
-  const io = new IntersectionObserver((entries) => {
-    for (const e of entries) if (e.isIntersecting) show(steps.indexOf(e.target));
-  }, { rootMargin: '-45% 0px -45% 0px' });
-  steps.forEach((s) => io.observe(s));
+  // The line sits under the site header, plus the section heading when it is
+  // sticky (desktop). Rebuilt on resize, since both heights and the viewport change.
+  const header = document.querySelector('.site-header');
+  const head = document.querySelector('.story .section-head');
+  let io;
+  function observe() {
+    io?.disconnect();
+    const sticky = head && getComputedStyle(head).position === 'sticky';
+    const top = (header?.offsetHeight ?? 0) + (sticky ? head.offsetHeight : 0);
+    io = new IntersectionObserver((entries) => {
+      for (const e of entries) if (e.isIntersecting) show(steps.indexOf(e.target));
+    }, { rootMargin: triggerMargin(top, innerHeight) });
+    steps.forEach((s) => io.observe(s));
+  }
+  let resize = 0;
+  addEventListener('resize', () => { clearTimeout(resize); resize = setTimeout(observe, 150); });
+  observe();
+  // The section is read from step 1, so start there rather than on the
+  // no-JS states (which show step 2 open).
+  show(0);
 }
 
 function initClock(reduceMotion) {
