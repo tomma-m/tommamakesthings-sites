@@ -216,3 +216,8 @@ test('layout loads the versioned module and sets the js class', async () => {
   assert.match(html, /<script>document\.documentElement\.classList\.add\('js'\)<\/script>/);
   await readFile('sites/sidelinehero/dist/js/site.js', 'utf8');
 });
+
+test('long URLs and email addresses in page text can wrap (no sideways scroll at 360px)', async () => {
+  const css = await read('css/site.css');
+  assert.match(css, /\.page a\s*\{[^}]*overflow-wrap:\s*anywhere/);
+});

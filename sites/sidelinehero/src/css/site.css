@@ -93,6 +93,9 @@ main:has(> .band-fulltime:last-child) { padding-bottom: 0; }
 .page > * { max-width: var(--measure); }
 /* Section headers sit above a 2px ink rule (motif 2). */
 .page h2 { padding-bottom: 6px; border-bottom: 2px solid var(--ink); }
+/* Policy URLs and the support address are single unbreakable words: without
+   this they push a 360px page sideways. */
+.page a { overflow-wrap: anywhere; }
 .ruled-block { border-top: 2px solid var(--ink); border-bottom: 1px solid var(--rule); padding: 12px 0; margin: 16px 0 8px; }
 .ruled-block p { margin: 0 0 8px; }
 .ruled-block p:last-child { margin: 0; }
