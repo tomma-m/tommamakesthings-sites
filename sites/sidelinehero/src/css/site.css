@@ -112,6 +112,127 @@ main:has(> .band-fulltime:last-child) { padding-bottom: 0; }
 }
 .faq-topic p { margin: 0 0 12px; }
 
+/* ---------- Homepage ---------- */
+
+/* Hero: centred, a fan of three phones on the app's concentric chalk arcs. */
+.hero { position: relative; overflow: hidden; text-align: center; padding-top: 48px; }
+.hero-text { position: relative; z-index: 1; }
+.hero h1 { font-size: clamp(2.75rem, 9vw, 4.75rem); margin: 16px 0; }
+.hero .lede { margin: 0 auto 20px; }
+.hero .store-badges { justify-content: center; }
+.hero-arcs {
+  position: absolute; left: 50%; bottom: -40%; width: min(820px, 130vw); aspect-ratio: 1;
+  transform: translateX(-50%); border-radius: 50%; border: 2px solid var(--rule); pointer-events: none;
+}
+.hero-arcs::before, .hero-arcs::after { content: ''; position: absolute; border-radius: 50%; border: 2px solid var(--rule); }
+.hero-arcs::before { inset: 14%; }
+.hero-arcs::after  { inset: 28%; }
+.hero-fan { position: relative; height: clamp(250px, 40vw, 420px); margin-top: 32px; }
+.hero-fan .phone { position: absolute; left: 50%; top: 12%; width: clamp(104px, 17vw, 190px); }
+.hero-fan .phone-centre { top: 0; width: clamp(120px, 19vw, 215px); transform: translateX(-50%); z-index: 2; }
+.hero-fan .phone-left  { transform: translateX(-135%) rotate(-5deg); }
+.hero-fan .phone-right { transform: translateX(35%) rotate(5deg); }
+@media (min-width: 720px) {
+  .hero-fan .phone-left  { transform: translateX(-135%) rotate(-7deg); }
+  .hero-fan .phone-right { transform: translateX(35%) rotate(7deg); }
+}
+/* A TV score bug over the centre phone (motif 1). Decorative. */
+.score-bug {
+  position: absolute; z-index: 3; top: 6%; left: calc(50% + clamp(20px, 6vw, 70px));
+  display: flex; box-shadow: 0 8px 20px rgb(25 20 16 / 0.2);
+}
+.score-bug .tag { border-radius: 0; display: flex; align-items: center; }
+.score-bug-time {
+  background: var(--ink); color: var(--canvas); padding: 4px 10px; line-height: 1.1;
+  font-family: Anton, Impact, sans-serif; font-size: clamp(18px, 2.4vw, 24px); font-variant-numeric: tabular-nums;
+}
+
+/* The problem: a scoreboard band. */
+.band-problem { padding: 56px 0; }
+.problem { display: grid; gap: 24px; }
+@media (min-width: 720px) { .problem { grid-template-columns: 180px 1fr; gap: 40px; align-items: start; } }
+.game-clock { justify-self: start; background: var(--dark-surface); border: 1px solid var(--dark-rule); padding: 12px 16px; }
+.game-clock-head {
+  display: flex; justify-content: space-between; gap: 32px; margin-bottom: 4px;
+  font-family: Saira, sans-serif; font-weight: 700; font-size: 11px; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--dark-kicker);
+}
+.game-clock-time {
+  font-family: Anton, Impact, sans-serif; font-size: 48px; line-height: 1;
+  color: var(--dark-ink); font-variant-numeric: tabular-nums;
+}
+.problem-statement {
+  font-family: Anton, Impact, sans-serif; text-transform: uppercase; line-height: 1.02;
+  font-size: clamp(1.9rem, 4.5vw, 2.6rem); color: var(--dark-ink); margin: 0 0 16px; max-width: 18em;
+}
+.problem-statement em { font-style: normal; color: var(--orange); } /* 5.8:1 on --dark */
+.problem-text p:not(.problem-statement) { max-width: var(--measure); margin: 0 0 12px; }
+
+/* How it works: the app's Plan-tab timeline. */
+.story { padding: 64px 0; }
+.section-head {
+  display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end;
+  gap: 4px 16px; padding-bottom: 8px; border-bottom: 2px solid var(--ink);
+}
+.section-head h2 { margin: 0; font-size: clamp(2rem, 5vw, 2.75rem); }
+.section-head .kicker { margin: 0; color: var(--muted); }
+.story-grid { display: grid; gap: 48px; }
+.story-steps { list-style: none; margin: 0; padding: 0; }
+.step {
+  display: grid; grid-template-columns: 56px 14px 1fr; gap: 12px;
+  padding: 20px 0 28px; border-bottom: 1px solid var(--rule);
+}
+.step-time { display: flex; flex-direction: column; }
+.step-time .kicker { font-size: 10px; color: var(--muted); margin: 0 0 2px; }
+.step-clock { font-family: Anton, Impact, sans-serif; font-size: 22px; line-height: 1; font-variant-numeric: tabular-nums; }
+.step-node {
+  width: 14px; height: 14px; margin-top: 6px; border-radius: 50%;
+  border: 2px solid var(--muted); background: var(--canvas);
+}
+.step-body h2 { font-size: clamp(1.4rem, 3.4vw, 1.75rem); margin: 10px 0 8px; }
+.step-body p { margin: 0 0 16px; color: var(--muted); max-width: var(--measure); }
+.step-shot { width: min(260px, 100%); }
+/* States mirror the Plan tab. Never opacity: it drops text below AA. */
+.step[data-state="done"] .step-tag  { background: var(--rule); color: var(--ink); }
+.step[data-state="done"] .step-node { background: var(--muted); }
+.step[data-state="done"] h2         { color: var(--muted); }
+.step[data-state="open"]            { background: var(--tint); margin-inline: -12px; padding-inline: 12px; }
+.step[data-state="open"] .step-tag  { background: var(--orange-cta); color: #fff; }
+.step[data-state="open"] .step-node { background: var(--orange); border-color: var(--orange); }
+.step[data-state="next"] .step-tag  { box-shadow: inset 0 0 0 1.5px var(--ink); color: var(--ink); }
+.step[data-state="next"] .step-node { border-color: var(--ink); }
+.step[data-state="upcoming"] .step-tag { box-shadow: inset 0 0 0 1.5px var(--muted); color: var(--muted); }
+.story-phone { display: none; }
+
+/* Built for youth basketball: a stat sheet (motif 2), bib chips (motif 3). */
+.sheet-section { padding: 0 0 64px; }
+.stat-sheet { width: 100%; border-collapse: collapse; }
+.stat-sheet thead th {
+  text-align: left; padding: 10px 0; border-bottom: 2px solid var(--ink);
+  font-family: Saira, sans-serif; font-weight: 700; font-size: 11px;
+  letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted);
+}
+.stat-sheet td { padding: 14px 0; border-bottom: 1px solid var(--rule); vertical-align: middle; }
+.stat-sheet td:first-child { width: 44px; }
+.sheet-label { font-weight: 700; }
+.sheet-note { display: block; color: var(--muted); font-size: 15px; }
+@media (min-width: 720px) {
+  .sheet-note { display: inline; }
+  .sheet-note::before { content: '· '; }
+}
+.sheet-value { text-align: right; padding-left: 12px; white-space: nowrap; }
+.sheet-number { font-family: Anton, Impact, sans-serif; font-size: 22px; }
+
+/* Full time band. */
+.band-fulltime { padding: 48px 0; }
+.fulltime { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 20px 32px; }
+.band-fulltime .kicker { color: var(--dark-kicker); }
+.fulltime-line {
+  margin: 0; font-family: Anton, Impact, sans-serif; text-transform: uppercase;
+  font-size: clamp(2rem, 5vw, 3rem); line-height: 1; color: var(--dark-ink);
+}
+.band-fulltime .store-badges { margin: 0; }
+
 /* Both badges show at the same visible HEIGHT, 48px, and keep their own widths
    (Apple's badge is 2.99:1, Google's 3.36:1; neither may be stretched or
    cropped). 48px clears Apple's 40px onscreen minimum.

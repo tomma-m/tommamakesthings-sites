@@ -1,71 +1,133 @@
 <section class="hero">
-  <p class="kicker">Sideline Hero</p>
-  <h1>Coach the game,<br>not the subs.</h1>
-  <p class="lede">Fair rotations, planned before tip-off. The app guides you
-  through every sub during the game.</p>
-  <p class="kicker">Coming soon</p>
-  <!-- Official, unmodified badge artwork (Apple developer marketing guidelines;
-       Google Play badges page), self-hosted. At launch, wrap each in a link to
-       its live store listing. -->
-  <div class="store-badges">
-    <img class="badge-app-store" src="/img/badge-app-store.svg" alt="Download on the App Store">
-    <img class="badge-google-play" src="/img/badge-google-play.png" alt="Get it on Google Play">
+  <div class="hero-arcs" aria-hidden="true"></div>
+  <div class="container hero-text">
+    <p class="tag tag-ink">Coming soon · iPhone and Android</p>
+    <h1>Coach the game,<br>not the subs.</h1>
+    <p class="lede">Fair rotations, planned before tip-off. The app guides you
+    through every sub during the game.</p>
+    <!-- Official, unmodified badge artwork (Apple developer marketing guidelines;
+         Google Play badges page), self-hosted. At launch, wrap each in a link to
+         its live store listing. -->
+    <div class="store-badges">
+      <img class="badge-app-store" src="/img/badge-app-store.svg" alt="Download on the App Store">
+      <img class="badge-google-play" src="/img/badge-google-play.png" alt="Get it on Google Play">
+    </div>
+  </div>
+  <div class="hero-fan" aria-hidden="true">
+    <img class="phone phone-left" src="/img/shot-2.png" alt="" width="840" height="1818">
+    <img class="phone phone-centre" src="/img/shot-3.png" alt="" width="840" height="1818">
+    <img class="phone phone-right" src="/img/shot-5.png" alt="" width="840" height="1818">
+    <div class="score-bug"><span class="tag tag-amber">Window open</span><span class="score-bug-time">00:40</span></div>
   </div>
 </section>
 
-<section>
-  <p>You're on the sideline. The clock is running. Someone needs to come off.
-  Who's been on longest? Who hasn't had their fair share of court time?</p>
-  <p>Most coaches juggle this on a clipboard, lose track halfway through the
-  second quarter, and spend the rest of the game with a nagging feeling that
-  someone's been short-changed.</p>
+<section class="band-dark band-problem">
+  <div class="container problem">
+    <div class="game-clock" aria-hidden="true">
+      <div class="game-clock-head"><span>Game clock</span><span>Q2</span></div>
+      <div class="game-clock-time" data-clock="372">06:12</div>
+    </div>
+    <div class="problem-text">
+      <p class="problem-statement">You're on the sideline. The clock is running.
+      <em>Someone needs to come off.</em></p>
+      <p>Who's been on longest? Who hasn't had their fair share of court time?</p>
+      <p>Most coaches juggle this on a clipboard, lose track halfway through the
+      second quarter, and spend the rest of the game with a nagging feeling that
+      someone's been short-changed.</p>
+    </div>
+  </div>
 </section>
 
-<section>
-  <h2>Plan before the game starts</h2>
-  <p>Pick your starting five, or let Smart Pick choose them from skill level and
-  recent playing time, then tell Sideline Hero how you want rotations to work. It
-  builds a full substitution plan, balancing playing time across the whole roster.
-  You choose the priority: equal time for everyone, more minutes for developing
-  players, or your strongest lineup when it counts.</p>
-  <figure class="shot"><img src="/img/shot-2.png" alt="New Game setup: pick a team, with game details and settings summarised as 4 by 8 minutes, auto subs, equal time."></figure>
+<section class="story" id="how-it-works">
+  <div class="container">
+    <div class="section-head">
+      <h2>How a game goes</h2>
+      <p class="kicker">Auto-plan · equal minutes</p>
+    </div>
+    <div class="story-grid">
+      <ol class="story-steps">
+        <li class="step" data-state="done">
+          <div class="step-time" aria-hidden="true"><span class="kicker">Pre-game</span><span class="step-clock">PRE</span></div>
+          <span class="step-node" aria-hidden="true"></span>
+          <div class="step-body">
+            <span class="tag step-tag" aria-hidden="true">Done</span>
+            <h2>Plan before the game starts</h2>
+            <p>Pick your starting five, or let Smart Pick choose them from skill level and
+            recent playing time, then tell Sideline Hero how you want rotations to work. It
+            builds a full substitution plan, balancing playing time across the whole roster.
+            You choose the priority: equal time for everyone, more minutes for developing
+            players, or your strongest lineup when it counts.</p>
+            <img class="phone step-shot" src="/img/shot-2.png" alt="New Game setup: pick a team, with game details and settings summarised as 4 by 8 minutes, auto subs, equal time." width="840" height="1818" loading="lazy">
+          </div>
+        </li>
+        <li class="step" data-state="open">
+          <div class="step-time" aria-hidden="true"><span class="kicker">Q1</span><span class="step-clock">04:00</span></div>
+          <span class="step-node" aria-hidden="true"></span>
+          <div class="step-body">
+            <span class="tag step-tag" aria-hidden="true">Window open</span>
+            <h2>Follow along live</h2>
+            <p>The game clock ticks alongside the action. When a substitution window
+            approaches, the app alerts you before the moment, not after. Planned subs are
+            queued and ready in two taps. Need an unplanned change? Manual sub puts the
+            players who need court time most at the top of the bench.</p>
+            <img class="phone step-shot" src="/img/shot-3.png" alt="Live game screen: game clock running in the first quarter, a SUB WINDOW OPEN alert, the five players on court with their minutes, and the bench below." width="840" height="1818" loading="lazy">
+          </div>
+        </li>
+        <li class="step" data-state="next">
+          <div class="step-time" aria-hidden="true"><span class="kicker">Full time</span><span class="step-clock">00:00</span></div>
+          <span class="step-node" aria-hidden="true"></span>
+          <div class="step-body">
+            <span class="tag step-tag" aria-hidden="true">Next</span>
+            <h2>Track stats without a statistician</h2>
+            <p>Tap points, fouls and opponent scores as they happen. Court time is logged to
+            the second, so you never have to wonder who played how long.</p>
+            <img class="phone step-shot" src="/img/shot-5.png" alt="Full time screen: final score entry above a table of every player's minutes, points and fouls." width="840" height="1818" loading="lazy">
+          </div>
+        </li>
+        <li class="step" data-state="upcoming">
+          <div class="step-time" aria-hidden="true"><span class="kicker">Season</span><span class="step-clock">G12</span></div>
+          <span class="step-node" aria-hidden="true"></span>
+          <div class="step-body">
+            <span class="tag step-tag" aria-hidden="true">Upcoming</span>
+            <h2>See the season, not just the game</h2>
+            <p>Every game adds to a running record. Browse your history to see how the season
+            is going, or open any player to track their development over time.</p>
+            <img class="phone step-shot" src="/img/shot-1.png" alt="Team screen listing a ten-player roster with jersey numbers, plus a link to season minutes." width="840" height="1818" loading="lazy">
+          </div>
+        </li>
+      </ol>
+      <div class="story-phone" aria-hidden="true">
+        <img class="phone" data-story-phone src="/img/shot-3.png" alt="" width="840" height="1818" loading="lazy">
+      </div>
+    </div>
+  </div>
 </section>
 
-<section>
-  <h2>Follow along live</h2>
-  <p>The game clock ticks alongside the action. When a substitution window
-  approaches, the app alerts you before the moment, not after. Planned subs are
-  queued and ready in two taps. Need an unplanned change? Manual sub puts the
-  players who need court time most at the top of the bench.</p>
-  <figure class="shot"><img src="/img/shot-3.png" alt="Live game screen: game clock running in the first quarter, a SUB WINDOW OPEN alert, the five players on court with their minutes, and the bench below."></figure>
+<section class="sheet-section">
+  <div class="container">
+    <table class="stat-sheet">
+      <thead><tr><th colspan="3" scope="colgroup">Built for youth basketball</th></tr></thead>
+      <tbody>
+        <tr><td><span class="bib" aria-hidden="true">5</span></td><td><span class="sheet-label">Rosters</span> <span class="sheet-note">flexible game formats</span></td><td class="sheet-value"><span class="sheet-number">5 to 12</span></td></tr>
+        <tr><td><span class="bib" aria-hidden="true">0</span></td><td><span class="sheet-label">Game day works offline</span> <span class="sheet-note">plan and run a game with no connection</span></td><td class="sheet-value"><span class="tag tag-ink">Offline</span></td></tr>
+        <tr><td><span class="bib" aria-hidden="true">0</span></td><td><span class="sheet-label">No account</span> <span class="sheet-note">no login, no password</span></td><td class="sheet-value"><span class="tag tag-ink">None</span></td></tr>
+        <tr><td><span class="bib" aria-hidden="true">0</span></td><td><span class="sheet-label">Your team data stays on your device</span> <span class="sheet-note">no analytics, no tracking</span></td><td class="sheet-value"><span class="tag tag-ink">None</span></td></tr>
+        <tr><td><span class="bib" aria-hidden="true">$</span></td><td><span class="sheet-label">Free to download</span> <span class="sheet-note">the free version shows ads</span></td><td class="sheet-value"><span class="tag tag-orange">Free</span></td></tr>
+        <tr><td><span class="bib" aria-hidden="true">P</span></td><td><span class="sheet-label">Premium, an optional in-app purchase</span> <span class="sheet-note">No ads, plus new premium features as they're released. Yearly subscription or one-time lifetime purchase.</span></td><td class="sheet-value"><span class="tag tag-ink">Optional</span></td></tr>
+      </tbody>
+    </table>
+  </div>
 </section>
 
-<section>
-  <h2>Track stats without a statistician</h2>
-  <p>Tap points, fouls and opponent scores as they happen. Court time is logged to
-  the second, so you never have to wonder who played how long.</p>
-  <figure class="shot"><img src="/img/shot-5.png" alt="Full time screen: final score entry above a table of every player's minutes, points and fouls."></figure>
-</section>
-
-<section>
-  <h2>See the season, not just the game</h2>
-  <p>Every game adds to a running record. Browse your history to see how the season
-  is going, or open any player to track their development over time.</p>
-  <figure class="shot"><img src="/img/shot-1.png" alt="Team screen listing a ten-player roster with jersey numbers, plus a link to season minutes."></figure>
-</section>
-
-<section>
-  <h2>Built for youth basketball</h2>
-  <p>Designed for coaches running youth and community programs, where fair playing
-  time isn't just good coaching. It's an obligation to every kid and their family.
-  Rosters of 5 to 12 players, flexible game formats.</p>
-  <figure class="shot"><img src="/img/shot-4.png" alt="Confirm substitution dialog showing five players going out and five coming in, with Cancel and Substitute buttons."></figure>
-  <div class="trust">
-    <ul>
-      <li><strong>Game day works offline.</strong> Plan and run a game with no connection.</li>
-      <li><strong>No account</strong>, no login, no password.</li>
-      <li><strong>Your team data stays on your device.</strong> No analytics, no tracking.</li>
-      <li><strong>Free with ads</strong>, or go ad-free with Premium.</li>
-    </ul>
+<section class="band-dark band-fulltime">
+  <div class="container fulltime">
+    <div>
+      <p class="kicker">Full time</p>
+      <p class="fulltime-line">Ready for your next game.</p>
+    </div>
+    <div class="store-badges">
+      <img class="badge-app-store" src="/img/badge-app-store.svg" alt="Download on the App Store">
+      <img class="badge-google-play" src="/img/badge-google-play.png" alt="Get it on Google Play">
+    </div>
   </div>
 </section>
