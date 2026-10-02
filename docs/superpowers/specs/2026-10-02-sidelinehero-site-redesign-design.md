@@ -126,7 +126,7 @@ These are added to `src/css/tokens.css`. The existing tokens stay.
 
 The breakpoint is `720px`. Everything is laid out mobile-first.
 
-- **Header:** wordmark plus the three links. The "Coming soon" tag is hidden under 720px so the row fits at 360px.
+- **Header:** wordmark plus the three links. The "Coming soon" tag is hidden under 720px so the row fits at 360px. Below 420px the How it works link is hidden as well, so the header fits at 360px.
 - **Hero:** h1 `clamp(2.75rem, 9vw, 4.75rem)`. The fan scales: phone widths in `vw` with a cap, tilt reduced to ±5° under 720px.
 - **Problem band:** the clock box sits above the text.
 - **How it works:** one column. No sticky phone. Each step shows its own screenshot inline under its text, at max 260px wide. Status tags are static.
@@ -140,7 +140,7 @@ This is one plain script, loaded with `<script src="/js/site.js" defer>`, under 
 1. **Story steps.** An `IntersectionObserver` on the four steps marks the step nearest the middle of the screen as active. Earlier steps become Done, the active step becomes Window open, the next one becomes Next, and the rest become Upcoming. It sets `data-state` on each step and swaps the sticky phone's screenshot with a crossfade between two stacked `<img>`s. The screenshots are already on the page (each step's inline image), so nothing new is downloaded.
 2. **Game clock.** An `IntersectionObserver` starts a 1-second countdown from 06:12 while the clock is on screen and stops it when it's off. At 00:00 it holds.
 3. **Reduced motion.** When `prefers-reduced-motion: reduce` is set, the clock doesn't tick and the phone swaps without the crossfade. Step states still update, because that's state and not motion.
-4. **No JavaScript.** The page is complete without the script. Steps render in the mockup's static states (Done, Window open, Next, Upcoming). On desktop the sticky phone shows shot-3, and every step's inline screenshot stays available through the mobile layout.
+4. **No JavaScript.** The page is complete without the script. Steps render in the mockup's static states (Done, Window open, Next, Upcoming). Without JavaScript, desktop shows each step's own screenshot inline (the mobile layout), because the sticky phone and the hiding of inline screenshots are both scoped to a `.js` class that an inline head script sets.
 
 **Accessibility:**
 - Status tags and the clock are decorative: `aria-hidden="true"`, and the clock has no live region.

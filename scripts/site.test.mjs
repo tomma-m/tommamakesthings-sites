@@ -179,3 +179,40 @@ test('store badges are not links', async () => {
   const html = await read('index.html');
   assert.doesNotMatch(html, /<a\b[^>]*>\s*<img[^>]*badge-/);
 });
+
+import { stepStates, formatClock, STEP_LABELS } from '../sites/sidelinehero/src/js/site.js';
+
+test('stepStates matches the Plan tab: done, open, next, upcoming', () => {
+  assert.deepEqual(stepStates(0, 4), ['open', 'next', 'upcoming', 'upcoming']);
+  assert.deepEqual(stepStates(1, 4), ['done', 'open', 'next', 'upcoming']);
+  assert.deepEqual(stepStates(3, 4), ['done', 'done', 'done', 'open']);
+  assert.deepEqual(Object.keys(STEP_LABELS).sort(), ['done', 'next', 'open', 'upcoming']);
+});
+
+test('the static HTML states equal stepStates(1, 4), so no-JS and JS agree', async () => {
+  const html = await read('index.html');
+  const states = [...html.matchAll(/<li class="step" data-state="(\w+)">/g)].map((m) => m[1]);
+  assert.deepEqual(states, stepStates(1, 4));
+});
+
+test('formatClock pads, floors and holds at zero', () => {
+  assert.equal(formatClock(372), '06:12');
+  assert.equal(formatClock(5.9), '00:05');
+  assert.equal(formatClock(0), '00:00');
+  assert.equal(formatClock(-3), '00:00');
+  assert.equal(formatClock(Number.NaN), '00:00');
+});
+
+test('inline step screenshots are only hidden when JS is running', async () => {
+  const css = await read('css/site.css');
+  for (const m of css.matchAll(/([^{}]+)\{[^}]*display:\s*none[^}]*\}/g)) {
+    if (m[1].includes('.step-shot')) assert.match(m[1].trim(), /^\.js\s/, `unscoped: ${m[1].trim()}`);
+  }
+});
+
+test('layout loads the versioned module and sets the js class', async () => {
+  const html = await read('index.html');
+  assert.match(html, /<script type="module" src="\/js\/site\.js\?v=[0-9a-f]{8}"><\/script>/);
+  assert.match(html, /<script>document\.documentElement\.classList\.add\('js'\)<\/script>/);
+  await readFile('sites/sidelinehero/dist/js/site.js', 'utf8');
+});

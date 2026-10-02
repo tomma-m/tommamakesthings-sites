@@ -203,6 +203,17 @@ main:has(> .band-fulltime:last-child) { padding-bottom: 0; }
 .step[data-state="next"] .step-node { border-color: var(--ink); }
 .step[data-state="upcoming"] .step-tag { box-shadow: inset 0 0 0 1.5px var(--muted); color: var(--muted); }
 .story-phone { display: none; }
+@media (min-width: 720px) {
+  .js .story-grid { grid-template-columns: 1fr clamp(200px, 24vw, 260px); }
+  .js .story-phone { display: block; }
+  .js .story-phone .phone { position: sticky; top: calc(var(--header-h) + 32px); transition: opacity 0.15s; }
+  .js .story-phone .phone.is-fading { opacity: 0; }
+  .js .step-shot { display: none; }
+  .js .step { min-height: 50vh; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .story-phone .phone { transition: none; }
+}
 
 /* Built for youth basketball: a stat sheet (motif 2), bib chips (motif 3). */
 .sheet-section { padding: 0 0 64px; }
