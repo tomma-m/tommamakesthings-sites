@@ -11,6 +11,19 @@
   --orange:     #E8671A;
   --orange-cta: #C2510A;  /* CTA resting background — white text on it is 4.69:1 */
   --orange-ink: #AC4208;  /* orange text only — 4.80:1 on --canvas, 4.67:1 on --surface2 */
+  --container:   1120px;
+  --measure:     40rem;
+  --gutter:      clamp(16px, 4vw, 32px);
+  --header-h:    56px;
+  /* Dark bands use the app's dark theme. */
+  --dark:         #14100B;
+  --dark-surface: #1E1811;
+  --dark-rule:    #2E2619;
+  --dark-ink:     #F3EADB;  /* headings on --dark */
+  --dark-body:    #CFC4B2;  /* body on --dark, 11.0:1 */
+  --dark-kicker:  #F4B27A;  /* kickers on --dark, 10.4:1 */
+  --tint:         #FCE7D5;  /* "window open" row; --muted on it is 5.0:1 */
+  --amber-tag:    #9A5C00;  /* white on it 5.4:1; the app's #C77700 is only 3.5:1 */
 }
 
 @font-face { font-family: Anton;  src: url(../fonts/anton-400.woff2) format('woff2');

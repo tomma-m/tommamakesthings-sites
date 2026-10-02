@@ -35,7 +35,8 @@ function render(body, { title, description }) {
 async function page(outPath, body, meta) {
   const full = `${DIST}/${outPath}`;
   await mkdir(full.replace(/\/[^/]+$/, ''), { recursive: true });
-  await writeFile(full, render(body, meta));
+  const content = meta.fullBleed ? body : `<div class="container page">\n${body}\n</div>`;
+  await writeFile(full, render(content, meta));
   console.log('  ->', outPath);
 }
 
@@ -59,6 +60,7 @@ for (const dir of ['css', 'js']) {
 await page('index.html', await readFile(`${SRC}/index.html`, 'utf8'), {
   title: 'Sideline Hero · basketball substitution planner for coaches',
   description: 'Fair rotations, planned before tip-off. Game day works offline, no account needed.',
+  fullBleed: true,
 });
 
 await page('404.html', await readFile(`${SRC}/404.html`, 'utf8'), {
@@ -143,7 +145,7 @@ const faqBody = [
   '<h1>FAQ</h1>',
   '<p class="lede">How Sideline Hero works. The answers under Using the app are',
   'the same ones you’ll find in the app, under Settings → FAQs.</p>',
-  '<nav class="card faq-contents" aria-label="Questions on this page">',
+  '<nav class="faq-contents" aria-label="Questions on this page">',
   faqContents('Using the app', appFaqs),
   faqContents('Before you download', siteFaqs),
   '</nav>',
