@@ -307,3 +307,10 @@ test('desktop: the last step is as tall as the pinned phone, so it reaches the t
   assert.match(css, /\.js \.step:last-child\s*\{[^}]*min-height:\s*calc\(var\(--phone-w\) \* 2\.164 \+ 24px\)/);
   assert.doesNotMatch(css, /\.js \.story-steps\s*\{[^}]*padding-bottom/, 'fixed padding after step 4 is gone');
 });
+
+// AdMob's app-ads.txt: authorises our publisher to sell ads in the app. It
+// must sit at the site root, exactly one record, Google's fixed TAG-ID.
+test('app-ads.txt is published at the site root for our AdMob publisher', async () => {
+  const txt = await read('app-ads.txt');
+  assert.equal(txt.trim(), 'google.com, pub-2727987591732368, DIRECT, f08c47fec0942fa0');
+});

@@ -47,6 +47,12 @@ for (const dir of ['css', 'fonts', 'img', 'js']) {
   if (existsSync(`${SRC}/${dir}`)) await cp(`${SRC}/${dir}`, `${DIST}/${dir}`, { recursive: true });
 }
 
+// Files that must sit at the site root under a fixed name. app-ads.txt is
+// AdMob's authorised-seller record for the app (IAB app-ads.txt spec).
+for (const file of ['app-ads.txt']) {
+  if (existsSync(`${SRC}/${file}`)) await cp(`${SRC}/${file}`, `${DIST}/${file}`);
+}
+
 // See scripts/asset-version.mjs. The hash goes in the FILE NAME
 // (site.css → site.<v>.css): CloudFront ignores query strings in its cache
 // key, so a ?v= alone could hand a mid-deploy visitor the old file under the

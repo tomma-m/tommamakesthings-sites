@@ -15,6 +15,7 @@ check "privacy"           200 "/privacy"
 check "support"           200 "/support"
 check "faq"               200 "/faq"
 check "terms"             200 "/terms"
+check "app-ads.txt"       200 "/app-ads.txt"
 check "missing page 404s" 404 "/definitely-not-a-page"
 
 echo "checking for third-party requests..."
