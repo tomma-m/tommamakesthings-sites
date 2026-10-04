@@ -169,12 +169,12 @@ test('story: four steps, screenshots in order, initial states', async () => {
   const html = await read('index.html');
   const steps = [...html.matchAll(/<li class="step" data-state="(\w+)">([\s\S]*?)<\/li>/g)];
   assert.deepEqual(steps.map((m) => m[1]), ['done', 'open', 'next', 'upcoming']);
-  assert.deepEqual(steps.map((m) => m[2].match(/class="phone step-shot" src="\/img\/(shot-\d)\.png"/)?.[1]),
-    ['shot-2', 'shot-3', 'shot-5', 'shot-1']);
+  assert.deepEqual(steps.map((m) => m[2].match(/class="phone step-shot" src="\/img\/(shot-[a-z]+)\.png"/)?.[1]),
+    ['shot-plan', 'shot-live', 'shot-score', 'shot-player']);
   assert.deepEqual(steps.map((m) => m[2].match(/class="tag step-tag"[^>]*>([^<]+)</)?.[1]),
     ['Done', 'Window open', 'Next', 'Upcoming']);
   assert.match(html, /id="how-it-works"/);
-  assert.match(html, /<img class="phone" data-story-phone src="\/img\/shot-3\.png"/);
+  assert.match(html, /<img class="phone" data-story-phone src="\/img\/shot-live\.png"/);
   assert.match(html, /data-clock="372">06:12</);
 });
 
