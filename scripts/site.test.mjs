@@ -207,7 +207,7 @@ test('every store badge says Coming soon on hover and focus', async () => {
 test('every page uses the app icon as favicon and in the header', async () => {
   for (const p of PAGES) {
     const html = await read(p);
-    assert.match(html, /<link rel="icon" type="image\/png" sizes="32x32" href="\/img\/icon-32\.png">/, p);
+    assert.match(html, /<link rel="icon" type="image\/png" sizes="32x32" href="\/img\/favicon-32\.png">/, p);
     assert.match(html, /<link rel="apple-touch-icon" href="\/img\/icon-180\.png">/, p);
     assert.match(html, /<a class="brand" href="\/">\s*<img class="brand-icon" src="\/img\/icon-64\.png"/, p);
   }
