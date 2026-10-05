@@ -37,13 +37,6 @@ h2 { font-size: clamp(1.6rem, 4.5vw, 2.25rem); margin: 48px 0 12px; }
 .tag-orange { background: var(--orange-cta); color: #fff; }
 .tag-amber  { background: var(--amber-tag); color: #fff; }
 
-/* Bib numbers: rounded squares, never circles (motif 3). */
-.bib {
-  display: inline-flex; align-items: center; justify-content: center;
-  width: 26px; height: 26px; border-radius: 8px; background: var(--ink);
-  color: var(--canvas); font-family: Saira, sans-serif; font-weight: 700; font-size: 12px;
-}
-
 .phone {
   display: block; height: auto; border: 5px solid var(--ink);
   border-radius: 22px; background: var(--ink);
@@ -61,10 +54,8 @@ h2 { font-size: clamp(1.6rem, 4.5vw, 2.25rem); margin: 48px 0 12px; }
   gap: 16px; height: var(--header-h);
 }
 .brand { display: flex; align-items: center; gap: 10px; color: var(--ink); text-decoration: none; }
-.brand-tile {
-  flex: none; width: 30px; height: 30px; border-radius: 8px; background: var(--ink);
-  display: flex; align-items: center; justify-content: center;
-}
+/* The app icon itself, as a rounded square (motif 3). */
+.brand-icon { flex: none; display: block; width: 30px; height: 30px; border-radius: 8px; }
 .brand-name {
   font-family: Anton, Impact, sans-serif; text-transform: uppercase;
   font-size: 19px; letter-spacing: 0.01em; line-height: 1; white-space: nowrap;
@@ -250,7 +241,7 @@ main:has(> .band-fulltime:last-child) { padding-bottom: 0; }
   .story-phone .phone { transition: none; }
 }
 
-/* Built for youth basketball: a stat sheet (motif 2), bib chips (motif 3). */
+/* Built for youth basketball: a stat sheet (motif 2). */
 .sheet-section { padding: 0 0 64px; }
 .stat-sheet { width: 100%; border-collapse: collapse; }
 .stat-sheet thead th {
@@ -259,7 +250,6 @@ main:has(> .band-fulltime:last-child) { padding-bottom: 0; }
   letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted);
 }
 .stat-sheet td { padding: 14px 0; border-bottom: 1px solid var(--rule); vertical-align: middle; }
-.stat-sheet td:first-child { width: 44px; }
 .sheet-label { font-weight: 700; }
 .sheet-note { display: block; color: var(--muted); font-size: 15px; }
 @media (min-width: 720px) {
@@ -290,6 +280,25 @@ main:has(> .band-fulltime:last-child) { padding-bottom: 0; }
 .store-badges { display: flex; flex-wrap: wrap; align-items: center; margin: 0 0 16px; }
 .badge-app-store { height: 48px; width: auto; }
 .badge-google-play { height: 71.43px; width: auto; }
+
+/* Until launch the badges aren't links, so hovering or focusing one says why.
+   The tip is a broadcast tag (motif 1). Google's image carries ~12px of clear
+   space, so its tip anchors to the image box and still sits above the badge. */
+.badge-tip { position: relative; display: inline-flex; border-radius: 8px; outline-offset: 2px; }
+.badge-tip::after {
+  content: attr(data-tip); position: absolute; left: 50%; bottom: calc(100% + 6px);
+  transform: translate(-50%, 4px); pointer-events: none; opacity: 0;
+  transition: opacity 0.15s, transform 0.15s;
+  font-family: Saira, sans-serif; font-weight: 700; font-size: 11px;
+  letter-spacing: 0.14em; text-transform: uppercase; line-height: 1;
+  padding: 6px 9px; border-radius: 3px; white-space: nowrap;
+  background: var(--orange-cta); color: #fff;
+}
+.badge-tip:has(.badge-google-play)::after { bottom: calc(100% - 6px); }
+.badge-tip:hover::after, .badge-tip:focus-visible::after, .badge-tip:focus::after {
+  opacity: 1; transform: translate(-50%, 0);
+}
+@media (prefers-reduced-motion: reduce) { .badge-tip::after { transition: none; } }
 
 /* The two halves of the privacy page cover different things — the app and this
    website. The website half is given its own surface, top rule and padding so

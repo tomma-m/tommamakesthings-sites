@@ -184,7 +184,7 @@ test('every image has alt, width and height; below-the-fold images are lazy', as
   assert.ok(imgs.length >= 12, `only ${imgs.length} images`);
   for (const img of imgs) {
     assert.match(img, /\salt="[^"]*"/, img);
-    if (!/badge-/.test(img)) assert.match(img, /\swidth="840" height="1818"/, img);
+    if (!/badge-|brand-icon/.test(img)) assert.match(img, /\swidth="840" height="1818"/, img);
   }
   for (const img of imgs.filter((i) => /step-shot|data-story-phone/.test(i))) {
     assert.match(img, /loading="lazy"/, img);
@@ -193,7 +193,24 @@ test('every image has alt, width and height; below-the-fold images are lazy', as
 
 test('store badges are not links', async () => {
   const html = await read('index.html');
-  assert.doesNotMatch(html, /<a\b[^>]*>\s*<img[^>]*badge-/);
+  assert.doesNotMatch(html, /<a\b[^>]*>\s*(<span[^>]*>\s*)?<img[^>]*badge-/);
+});
+
+test('every store badge says Coming soon on hover and focus', async () => {
+  const html = await read('index.html');
+  const badges = [...html.matchAll(/<img[^>]*class="badge-[^"]*"[^>]*>/g)];
+  assert.equal(badges.length, 4);
+  const tips = [...html.matchAll(/<span class="badge-tip" tabindex="0" data-tip="Coming soon"><img class="badge-/g)];
+  assert.equal(tips.length, 4);
+});
+
+test('every page uses the app icon as favicon and in the header', async () => {
+  for (const p of PAGES) {
+    const html = await read(p);
+    assert.match(html, /<link rel="icon" type="image\/png" sizes="32x32" href="\/img\/icon-32\.png">/, p);
+    assert.match(html, /<link rel="apple-touch-icon" href="\/img\/icon-180\.png">/, p);
+    assert.match(html, /<a class="brand" href="\/">\s*<img class="brand-icon" src="\/img\/icon-64\.png"/, p);
+  }
 });
 
 import { stepStates, formatClock, STEP_LABELS, phoneSwapper, openLinkedAnswer, triggerMargin } from '../sites/sidelinehero/src/js/site.js';
