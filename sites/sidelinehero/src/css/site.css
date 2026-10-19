@@ -281,7 +281,10 @@ main:has(> .band-fulltime:last-child) { padding-bottom: 0; }
 .badge-app-store { height: 48px; width: auto; }
 .badge-google-play { height: 71.43px; width: auto; }
 
-/* Until launch the badges aren't links, so hovering or focusing one says why.
+/* A live store's badge is a plain link to its listing. */
+.badge-link { display: inline-flex; border-radius: 8px; outline-offset: 2px; }
+
+/* Until a store has the app its badge isn't a link, so hovering or focusing one says why.
    The tip is a broadcast tag (motif 1). Google's image carries ~12px of clear
    space, so its tip anchors to the image box and still sits above the badge. */
 .badge-tip { position: relative; display: inline-flex; border-radius: 8px; outline-offset: 2px; }

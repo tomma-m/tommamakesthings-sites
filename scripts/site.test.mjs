@@ -155,7 +155,7 @@ test('homepage keeps the existing copy word for word', async () => {
 
 test('homepage has the approved new copy, and no em or en dashes', async () => {
   const html = flat(await read('index.html'));
-  for (const s of ['Coming soon · iPhone and Android', 'How a game goes', 'Auto-plan · equal minutes',
+  for (const s of ['Out now on Android · iPhone coming soon', 'How a game goes', 'Auto-plan · equal minutes',
     'Ready for your next game.', 'Free to download', 'the free version shows ads',
     'Premium, an optional in-app purchase', PREMIUM,
     'Yearly subscription or one-time lifetime purchase.', '5 to 12']) {
@@ -193,15 +193,18 @@ test('every image has alt, width and height; below-the-fold images are lazy', as
 
 test('store badges are not links', async () => {
   const html = await read('index.html');
-  assert.doesNotMatch(html, /<a\b[^>]*>\s*(<span[^>]*>\s*)?<img[^>]*badge-/);
+  assert.doesNotMatch(html, /<a\b[^>]*>\s*(<span[^>]*>\s*)?<img[^>]*badge-app-store/);
 });
 
-test('every store badge says Coming soon on hover and focus', async () => {
+test('App Store badges say Coming soon; Google Play badges link to the live listing', async () => {
   const html = await read('index.html');
   const badges = [...html.matchAll(/<img[^>]*class="badge-[^"]*"[^>]*>/g)];
   assert.equal(badges.length, 4);
-  const tips = [...html.matchAll(/<span class="badge-tip" tabindex="0" data-tip="Coming soon"><img class="badge-/g)];
-  assert.equal(tips.length, 4);
+  const tips = [...html.matchAll(/<span class="badge-tip" tabindex="0" data-tip="Coming soon"><img class="badge-app-store"/g)];
+  assert.equal(tips.length, 2);
+  const play = [...html.matchAll(/<a class="badge-link" href="https:\/\/play\.google\.com\/store\/apps\/details\?id=app\.sidelinehero\.coach"><img class="badge-google-play"[^>]*alt="Get it on Google Play">/g)];
+  assert.equal(play.length, 2);
+  assert.doesNotMatch(html, /Google Play, coming soon/);
 });
 
 test('every page uses the app icon as favicon and in the header', async () => {
