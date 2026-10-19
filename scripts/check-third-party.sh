@@ -39,9 +39,15 @@ NAMESPACES='^https?://www\.w3\.org/(2000/svg|1999/xlink|1999/xhtml)$'
 # caught. The optional `</a` tolerates the grep capturing the closing tag.
 POLICY_LINKS='^(https://policies\.google\.com/(privacy|technologies/partner-sites)|https://www\.apple\.com/legal/internet-services/itunes/dev/stdeula/|https://www\.revenuecat\.com/privacy)(</a)?$'
 
+# Store listing links on the store badges. Same reasoning as POLICY_LINKS: an
+# <a href> navigation, loaded only on tap. Exact listing URL only, so any other
+# play.google.com resource is still caught. Add the App Store listing here when
+# its badge is linked.
+STORE_LINKS='^https://play\.google\.com/store/apps/details\?id=app\.sidelinehero\.coach$'
+
 found=$(grep -rEoh "$URL_RE" "$DIST" \
   --include='*.html' --include='*.css' --include='*.js' --include='*.svg' \
-  | grep -vE "$ALLOWED" | grep -vE "$NAMESPACES" | grep -vE "$POLICY_LINKS" | sort -u || true)
+  | grep -vE "$ALLOWED" | grep -vE "$NAMESPACES" | grep -vE "$POLICY_LINKS" | grep -vE "$STORE_LINKS" | sort -u || true)
 
 if [ -n "$found" ]; then
   echo "  FAIL third-party URLs found in built output:"
