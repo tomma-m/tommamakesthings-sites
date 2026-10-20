@@ -2,6 +2,7 @@ import { readFile, writeFile, mkdir, cp, rm, readdir, rename } from 'node:fs/pro
 import { existsSync } from 'node:fs';
 import { marked } from 'marked';
 import { validateFaqs, parseFaqsJson } from './scripts/faqs.mjs';
+import { validateReleases, parseReleasesJson, renderReleases } from './scripts/releases.mjs';
 import { assetVersion } from './scripts/asset-version.mjs';
 
 const site = process.argv[2];
@@ -159,4 +160,22 @@ const faqBody = [
 await page('faq/index.html', faqBody, {
   title: 'FAQ · Sideline Hero',
   description: 'How Sideline Hero works, what it costs, and what happens to your data.',
+});
+
+// What's new. releases-app.json is a copy of sideline-hero's docs/releases.json,
+// refreshed by scripts/sync-releases.mjs — never edit it here. Only releases
+// that reached a public store are in it, and only the stores each one reached.
+const releasesPath = `${SRC}/releases-app.json`;
+if (!existsSync(releasesPath)) throw new Error('releases-app.json is missing — see README "What’s new"');
+const releases = validateReleases(parseReleasesJson(await readFile(releasesPath, 'utf8'), 'releases-app.json'), 'releases-app.json');
+const releasesBody = [
+  '<p class="kicker">Updates</p>',
+  '<h1>What’s new</h1>',
+  '<p class="lede">Every Sideline Hero update on Google Play and the App Store,',
+  'newest first, with the date it reached each store.</p>',
+  renderReleases(releases),
+].join('\n');
+await page('releases/index.html', releasesBody, {
+  title: 'What’s new · Sideline Hero',
+  description: 'Every Sideline Hero update, what changed, and when it reached Google Play and the App Store.',
 });

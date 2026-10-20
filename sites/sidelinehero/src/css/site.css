@@ -68,6 +68,9 @@ h2 { font-size: clamp(1.6rem, 4.5vw, 2.25rem); margin: 48px 0 12px; }
 /* 360px Android: wordmark + three links overflow. The page scrolls straight
    into How it works anyway, so that link is the one to drop. */
 @media (max-width: 419px) { .nav-how { display: none; } }
+@media (max-width: 359px) {
+  .brand-name { display: none; }
+}
 
 /* Main + footer */
 main { padding-bottom: 64px; }
@@ -112,6 +115,15 @@ main:has(> .band-fulltime:last-child) { padding-bottom: 0; }
 .faq-topic summary:hover h3 { color: var(--orange-ink); }
 .faq-answer { padding: 0 0 12px; }
 .faq-answer p { margin: 0 0 12px; }
+
+/* What's new: FAQ rows, plus the date each store got the release and the
+   notes as bullets. */
+.release-stores { border-collapse: collapse; margin: 0 0 12px; min-width: min(100%, 18rem); }
+.release-stores th, .release-stores td { padding: 6px 0; border-bottom: 1px dashed var(--rule); text-align: left; }
+.release-stores th { font-weight: 700; padding-right: 24px; }
+.release-stores td { color: var(--muted); text-align: right; font-variant-numeric: tabular-nums; }
+.faq-answer ul { margin: 0 0 12px; padding-left: 20px; }
+.faq-answer li { margin: 0 0 6px; }
 
 /* ---------- Homepage ---------- */
 

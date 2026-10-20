@@ -59,17 +59,18 @@ test('assetVersion skips directories that do not exist', async () => {
   assert.match(await assetVersion(['definitely/not/here']), /^[0-9a-f]{8}$/);
 });
 
-const PAGES = ['index.html', 'faq/index.html', 'privacy/index.html', 'terms/index.html', 'support/index.html', '404.html'];
+const PAGES = ['index.html', 'faq/index.html', 'releases/index.html', 'privacy/index.html', 'terms/index.html', 'support/index.html', '404.html'];
 
 test('every page has the new header and footer', async () => {
   for (const p of PAGES) {
     const html = await read(p);
     assert.match(html, /<header class="site-header">/, p);
     assert.match(html, /<main id="main">/, p);
-    for (const href of ['/privacy', '/terms', '/faq', '/support']) {
+    for (const href of ['/privacy', '/terms', '/faq', '/releases', '/support']) {
       assert.match(html, new RegExp(`<footer class="site-footer">[\\s\\S]*href="${href}"`), `${p} footer → ${href}`);
     }
     assert.match(html, /href="\/#how-it-works"/, `${p} header links How it works`);
+    assert.match(html, /<nav class="site-nav"[^>]*>[\s\S]*?href="\/releases">What’s new<\/a>[\s\S]*?<\/nav>/, `${p} header links What’s new`);
     assert.ok(!/class="(wrap|card)"/.test(html), `${p} still uses .wrap or .card`);
   }
 });
@@ -93,6 +94,17 @@ test('FAQ answers are closed accordions inside their two sections, no contents l
   }
   assert.doesNotMatch(html, /<details[^>]*\sopen/, 'all start closed');
   for (const id of ['getting-started', 'is-it-free']) assert.match(html, new RegExp(`<details class="faq-topic" id="${id}">`));
+});
+
+test('What’s new lists each release from releases-app.json, newest open, rest closed', async () => {
+  const html = await read('releases/index.html');
+  const { releases } = JSON.parse(await readFile('sites/sidelinehero/src/releases-app.json', 'utf8'));
+  assert.match(html, /<h1>What’s new<\/h1>/);
+  assert.match(html, /<title>What’s new · Sideline Hero<\/title>/);
+  const rows = [...html.matchAll(/<details class="faq-topic release" id="v[0-9-]+"( open)?>/g)];
+  assert.equal(rows.length, releases.length, 'one row per release');
+  assert.deepEqual(rows.map((r) => Boolean(r[1])), releases.map((_, i) => i === 0), 'only the first starts open');
+  for (const r of releases) assert.match(html, new RegExp(`<h3>Version ${r.version.replace(/\./g, '\\.')}</h3>`));
 });
 
 test('anchors land below the sticky header', async () => {
@@ -212,7 +224,7 @@ test('every page uses the app icon as favicon and in the header', async () => {
     const html = await read(p);
     assert.match(html, /<link rel="icon" type="image\/png" sizes="32x32" href="\/img\/favicon-32\.png">/, p);
     assert.match(html, /<link rel="apple-touch-icon" href="\/img\/icon-180\.png">/, p);
-    assert.match(html, /<a class="brand" href="\/">\s*<img class="brand-icon" src="\/img\/icon-64\.png"/, p);
+    assert.match(html, /<a class="brand" href="\/" aria-label="Sideline Hero home">\s*<img class="brand-icon" src="\/img\/icon-64\.png"/, p);
   }
 });
 
@@ -333,4 +345,13 @@ test('desktop: the last step is as tall as the pinned phone, so it reaches the t
 test('app-ads.txt is published at the site root for our AdMob publisher', async () => {
   const txt = await read('app-ads.txt');
   assert.equal(txt.trim(), 'google.com, pub-2727987591732368, DIRECT, f08c47fec0942fa0');
+});
+
+// Four header links (How it works, What's new, FAQ, Support) overflow a
+// 320px phone. How it works already drops below 420px; below 360px the
+// wordmark goes too and the icon alone links home.
+test('very narrow phones: the header wordmark hides below 360px so the menu fits', async () => {
+  const css = await readCss();
+  assert.match(css, /@media \(max-width: 359px\) \{\s*\.brand-name \{ display: none; \}\s*\}/);
+  assert.match(await read('index.html'), /<a class="brand" href="\/" aria-label="Sideline Hero home">/);
 });

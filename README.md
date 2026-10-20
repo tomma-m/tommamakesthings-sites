@@ -45,6 +45,24 @@ Both use `{ "faqs": [{ "id", "title", "body": [paragraphs] }] }`, plain text
 only. `build.mjs` refuses a malformed file or an id used in both.
 `node --test scripts/faqs.test.mjs` covers the helpers and runs in CI.
 
+## What’s new
+
+`/releases` lists each app version that reached a public store, newest
+first, with the date it reached each store and its store release notes. It
+is built from `sites/sidelinehero/src/releases-app.json`, a **copy** of
+`docs/releases.json` in the private `sideline-hero` repo. Never edit it here.
+When a store approves a release, the app's file gets the date, then:
+
+    node scripts/sync-releases.mjs          # copy it in
+    node scripts/sync-releases.mjs --check  # exit 1 if the copy is stale
+
+The format is `{ "releases": [{ "version", "stores": { "google_play",
+"app_store" }, "notes": [plain text] }] }`. Dates are `YYYY-MM-DD`; a store
+appears only once the release has reached it. The app repo's
+`releasesJson.test.ts` checks the notes match the store text word for word.
+`build.mjs` refuses a malformed file, and `node --test
+scripts/releases.test.mjs` covers the helpers in CI.
+
 ## Infrastructure
 
 AWS account `957424402699`. S3 bucket `sidelinehero-tommamakesthings-site`

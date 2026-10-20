@@ -1,0 +1,15 @@
+{
+  "releases": [
+    {
+      "version": "1.1.2",
+      "stores": {
+        "google_play": "2026-10-20"
+      },
+      "notes": [
+        "Share a team with another coach. Send a team file from the team screen, or a single game from its summary, and import it from the Teams tab. Free.",
+        "On Android, the back button now asks before you leave a live game.",
+        "Smaller fixes and tidy-ups."
+      ]
+    }
+  ]
+}
