@@ -16,9 +16,9 @@ jobs:
   sidelinehero:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: { node-version: '20' }
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with: { node-version: '24' }
       - run: npm ci
       - name: Tests
         run: node --test scripts/*.test.mjs
@@ -29,7 +29,7 @@ jobs:
       # reports on a third-party asset that is already live.
       - name: Check for third-party assets
         run: ./scripts/check-third-party.sh
-      - uses: aws-actions/configure-aws-credentials@v4
+      - uses: aws-actions/configure-aws-credentials@v5
         with:
           role-to-assume: arn:aws:iam::957424402699:role/github-tommamakesthings-sites-deploy
           aws-region: ap-southeast-2
