@@ -202,7 +202,7 @@ test('App Store badges say Coming soon; Google Play badges link to the live list
   assert.equal(badges.length, 4);
   const tips = [...html.matchAll(/<span class="badge-tip" tabindex="0" data-tip="Coming soon"><img class="badge-app-store"/g)];
   assert.equal(tips.length, 2);
-  const play = [...html.matchAll(/<a class="badge-link" href="https:\/\/play\.google\.com\/store\/apps\/details\?id=app\.sidelinehero\.coach"><img class="badge-google-play"[^>]*alt="Get it on Google Play">/g)];
+  const play = [...html.matchAll(/<a class="badge-link" href="https:\/\/play\.google\.com\/store\/apps\/details\?id=app\.sidelinehero\.coach" target="_blank" rel="noopener"><img class="badge-google-play"[^>]*alt="Get it on Google Play">/g)];
   assert.equal(play.length, 2);
   assert.doesNotMatch(html, /Google Play, coming soon/);
 });
