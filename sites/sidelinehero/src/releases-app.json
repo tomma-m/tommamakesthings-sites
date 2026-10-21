@@ -20,6 +20,15 @@
         "On Android, the back button now asks before you leave a live game.",
         "Smaller fixes and tidy-ups."
       ]
+    },
+    {
+      "version": "1.0",
+      "stores": {
+        "app_store": "2026-10-21"
+      },
+      "notes": [
+        "The first release of Sideline Hero. Set up your team, plan fair rotations before tip-off, and let the app guide every substitution during the game. Live scoring, seasons, and game summaries you can share or export are all there if you want them."
+      ]
     }
   ]
 }

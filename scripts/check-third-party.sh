@@ -43,7 +43,7 @@ POLICY_LINKS='^(https://policies\.google\.com/(privacy|technologies/partner-site
 # <a href> navigation, loaded only on tap. Exact listing URL only, so any other
 # play.google.com resource is still caught. Add the App Store listing here when
 # its badge is linked.
-STORE_LINKS='^https://play\.google\.com/store/apps/details\?id=app\.sidelinehero\.coach$'
+STORE_LINKS='^https://(play\.google\.com/store/apps/details\?id=app\.sidelinehero\.coach|apps\.apple\.com/app/id6796588008)$'
 
 found=$(grep -rEoh "$URL_RE" "$DIST" \
   --include='*.html' --include='*.css' --include='*.js' --include='*.svg' \
