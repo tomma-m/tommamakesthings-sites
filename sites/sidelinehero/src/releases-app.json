@@ -3,7 +3,8 @@
     {
       "version": "1.1.4",
       "stores": {
-        "google_play": "2026-10-20"
+        "google_play": "2026-10-20",
+        "app_store": "2026-10-22"
       },
       "notes": [
         "Fixes the app closing as soon as it opened after the last update. Sorry about that!",
