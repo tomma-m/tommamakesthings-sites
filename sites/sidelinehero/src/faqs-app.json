@@ -110,7 +110,7 @@
       "body": [
         "After the last period, tap the period button and confirm. Enter the final score, then tap End game & save.",
         "To finish before every period is played, choose End game early… from the ⋮ menu. End & save keeps the stats, and End & delete removes the game completely.",
-        "The Game Summary shows each player's minutes and stats. To fix a stat afterwards, tap the edit button on that player's row. This works when you open the game from History too."
+        "The Game Summary shows each player's minutes and stats. To fix a stat afterwards, tap the edit button on that player's row. To change a saved final score, tap the score. Both work when you open the game from History too."
       ]
     },
     {
@@ -159,9 +159,12 @@
       "id": "sharing-and-exporting",
       "title": "Sharing and Exporting",
       "body": [
-        "On a game's summary, Share summary sends a readable recap, handy for a team chat, and Export CSV saves the game as a spreadsheet.",
+        "On a game's summary, tap the share icon at the top of the screen. Share summary sends a readable recap, handy for a team chat, and Export CSV saves the game as a spreadsheet.",
         "For a whole season, open the team's Season minutes and tap Export CSV.",
         "For the full game record as a data file, use Settings → App settings → Your data → Export last completed game, or Export game data from the ⋮ menu during a game.",
+        "To share a team with another coach, open the team and tap Share team file. If the team has seasons, pick one or the whole team. To share one game, tap the share icon at the top of its Game Summary, then Share game file. Send the file however you like.",
+        "The other coach opens the Teams tab and taps the import button at the top, or goes to Settings → App settings → Your data → Import team file. Importing adds the games and players they don't have, and it never changes a player they already have. If a game is on both phones but differs, they choose which version to keep. Opening the file straight from a chat app isn't supported, so save it first, then import it from the app.",
+        "A game you delete on your phone comes back if someone sends a file that still has it.",
         "Everything goes through your phone's own share sheet, so it only goes where you send it."
       ]
     },
