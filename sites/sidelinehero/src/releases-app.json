@@ -1,6 +1,22 @@
 {
   "releases": [
     {
+      "version": "1.2.1",
+      "stores": {
+        "google_play": "2026-10-28",
+        "app_store": "2026-10-28"
+      },
+      "notes": [
+        "See who's in the next sub on the sub strip. Turn it on in App settings.",
+        "Tap ON COURT or BENCH to sort players by total time, time on, name or number.",
+        "The screen stays on during a game. Turn it off in App settings.",
+        "Player names are capitalised, and Next moves from name to number.",
+        "Fixed: the Add player sheet vanishing as it opened.",
+        "Fixed: the green suggestion naming a stale sub. It's now Even up court time.",
+        "Fixed: planned minutes in a manual game with no plan."
+      ]
+    },
+    {
       "version": "1.2.0",
       "stores": {
         "google_play": "2026-10-23",
