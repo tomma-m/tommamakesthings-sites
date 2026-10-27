@@ -54,8 +54,9 @@
       "body": [
         "Tap the play button beside the clock to start it, and tap it again to pause.",
         "If your clock drifts from the scoreboard, tap the clock, or choose Adjust timer… from the ⋮ menu, and set the time. Nobody's recorded minutes change, and the rest of the plan is reworked from the new time.",
-        "The Court tab shows who's on and who's on the bench. The Plan tab lists every sub: Edit plan changes the next one and Skip next skips it. The Score tab appears when live scoring is on (see Live Scoring).",
-        "When a planned sub is due, tap the sub strip and confirm with Substitute. UNDO, at the top of the game screen, reverses the last substitution."
+        "The Court tab shows who's on and who's on the bench. Tap ON COURT or BENCH to change the order: total time, time on (or time on the bench), name or number. Both switch to total time after the first sub. The Plan tab lists every sub: Edit plan changes the next one and Skip next skips it. The Score tab appears when live scoring is on (see Live Scoring).",
+        "When a planned sub is due, tap the sub strip and confirm with Substitute. UNDO, at the top of the game screen, reverses the last substitution.",
+        "The screen stays on while a game is open, so your phone won't go to sleep mid-game. To change that, go to Settings → App settings → Keep the screen on."
       ]
     },
     {
@@ -63,6 +64,7 @@
       "title": "Substitution Alerts",
       "body": [
         "The sub strip counts down to the next planned sub. It reads NEXT SUB, turns green with WINDOW OPEN when it's time to make the sub, and turns red with OVERDUE if the window passes.",
+        "To see who comes off and who goes on without tapping the strip, turn on Settings → App settings → Show who's in the next sub. It shows first names, or jersey numbers if you choose Numbers.",
         "As the window opens the phone gives a short vibration. At the planned time it vibrates and plays a tone, and if the window passes without the sub, the tone and vibration repeat every 10 seconds by default. Tap Snooze to quiet the alert for a minute.",
         "Change these in Settings → App settings. The Sub alerts card sets the window around each planned sub, Haptics controls the vibration, and Sound alerts controls the tone, how often the alert repeats, and Play through silent mode, which is off by default."
       ]
@@ -149,10 +151,10 @@
     },
     {
       "id": "balance-swap-alerts",
-      "title": "Balance-swap Alerts",
+      "title": "Even-up Suggestions",
       "body": [
-        "With Manual cadence, the app can suggest one late-game swap that would even out court time. It appears as a Balance swap strip: tap it to set up that sub, or tap × to dismiss it.",
-        "It's off by default and only appears with Manual cadence. Turn on Balance-swap alerts in Settings → App settings."
+        "With Manual cadence, the app can suggest one late-game sub that evens up court time. It shows as a green strip, like \"Even up court time: Sam on for Alex\". Tap it to set up that sub, or tap × to hide it. It disappears by itself if you make a different sub first.",
+        "It's off by default and only appears with Manual cadence. Turn on Even-up suggestions in Settings → App settings."
       ]
     },
     {
