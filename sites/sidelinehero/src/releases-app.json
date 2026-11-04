@@ -1,6 +1,18 @@
 {
   "releases": [
     {
+      "version": "1.2.2",
+      "stores": {
+        "google_play": "2026-11-04",
+        "app_store": "2026-11-05"
+      },
+      "notes": [
+        "Fixed: on iPhone, team logos disappeared after an app update. Logos that went missing should come back.",
+        "History lists games by game date, newest first. Editing an old game no longer moves it to the top.",
+        "Smaller fixes and tidy-ups."
+      ]
+    },
+    {
       "version": "1.2.1",
       "stores": {
         "google_play": "2026-10-28",
