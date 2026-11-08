@@ -93,7 +93,10 @@
       "body": [
         "Live scoring is off by default. Turn on Track live score in Settings → App settings → Stat tracking to add a Score tab to the game screen.",
         "On the Score tab, tap to add 1, 2 or 3 points or a foul for any player, and points, fouls and steals for the opponent. Undo reverses the last stat.",
-        "Assists, blocks and steals for your players can be switched on in the same place, with Track Assists, Track Blocks and Track Steals.",
+        "Assists, blocks, steals and rebounds for your players can be switched on in the same place, with Track Assists, Track Blocks, Track Steals and Track Rebounds.",
+        "Team fouls for this period, yours and the opponent's, show under the opponent's buttons. They start again at 0 each period.",
+        "If you add a stat while the clock is paused, a Clock paused bar shows at the top with a Start button, in case you forgot to restart it after a timeout.",
+        "Game Summary shows each player's fouls and tracked stats under their name, and the team fouls for the game. Export CSV includes every stat.",
         "Court time is tracked whether live scoring is on or off."
       ]
     },
@@ -138,7 +141,7 @@
       "title": "Season Minutes and Player Stats",
       "body": [
         "With seasons on, Season minutes on a team's page shows each player's court time against an even split of the team's total. Tap Export CSV there to save it as a spreadsheet.",
-        "Tap a player on the team page to see their stats game by game. When seasons are on, switch between This Season and All Time."
+        "Tap a player on the team page to see their stats game by game: minutes, points and fouls, plus any assists, blocks, steals or rebounds you track. When seasons are on, switch between This Season and All Time."
       ]
     },
     {
