@@ -1,6 +1,22 @@
 {
   "releases": [
     {
+      "version": "1.3.0",
+      "stores": {
+        "google_play": "2026-11-09",
+        "app_store": "2026-11-09"
+      },
+      "notes": [
+        "Track rebounds with a new R button. Turn it on in App settings.",
+        "Team fouls per period, yours and the opponent's, on the Score tab.",
+        "Add a stat with the clock paused and a Start button shows.",
+        "Game Summary shows each player's stats. Player Stats shows them game by game.",
+        "Export CSV includes assists, blocks, steals and rebounds.",
+        "A Done bar above the keyboard, and sheets stay put when it opens.",
+        "Fixed: End & sub sometimes left the new period on the old clock."
+      ]
+    },
+    {
       "version": "1.2.2",
       "stores": {
         "google_play": "2026-11-04",
