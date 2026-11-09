@@ -69,6 +69,7 @@ test('every page has the new header and footer', async () => {
     for (const href of ['/privacy', '/terms', '/faq', '/releases', '/support']) {
       assert.match(html, new RegExp(`<footer class="site-footer">[\\s\\S]*href="${href}"`), `${p} footer → ${href}`);
     }
+    assert.match(html, /<footer class="site-footer">[\s\S]*href="https:\/\/www\.instagram\.com\/sidelinehero\/"[^>]*>Instagram<\/a>/, `${p} footer → Instagram`);
     assert.match(html, /href="\/#how-it-works"/, `${p} header links How it works`);
     assert.match(html, /<nav class="site-nav"[^>]*>[\s\S]*?href="\/releases">What’s new<\/a>[\s\S]*?<\/nav>/, `${p} header links What’s new`);
     assert.ok(!/class="(wrap|card)"/.test(html), `${p} still uses .wrap or .card`);

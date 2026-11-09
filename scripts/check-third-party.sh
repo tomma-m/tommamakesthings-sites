@@ -45,9 +45,13 @@ POLICY_LINKS='^(https://policies\.google\.com/(privacy|technologies/partner-site
 # its badge is linked.
 STORE_LINKS='^https://(play\.google\.com/store/apps/details\?id=app\.sidelinehero\.coach|apps\.apple\.com/app/id6796588008)$'
 
+# The app's Instagram profile, linked from the footer. Same reasoning again:
+# a navigation on tap, exact profile URL only, so an Instagram embed is caught.
+SOCIAL_LINKS='^https://www\.instagram\.com/sidelinehero/$'
+
 found=$(grep -rEoh "$URL_RE" "$DIST" \
   --include='*.html' --include='*.css' --include='*.js' --include='*.svg' \
-  | grep -vE "$ALLOWED" | grep -vE "$NAMESPACES" | grep -vE "$POLICY_LINKS" | grep -vE "$STORE_LINKS" | sort -u || true)
+  | grep -vE "$ALLOWED" | grep -vE "$NAMESPACES" | grep -vE "$POLICY_LINKS" | grep -vE "$STORE_LINKS" | grep -vE "$SOCIAL_LINKS" | sort -u || true)
 
 if [ -n "$found" ]; then
   echo "  FAIL third-party URLs found in built output:"
