@@ -253,6 +253,30 @@ main:has(> .band-fulltime:last-child) { padding-bottom: 0; }
   .story-phone .phone { transition: none; }
 }
 
+/* Made for iPhone Duo: the unfolded inner screen with the folded outer
+   screen tucked over its corner, beside ruled rows (motif 2). */
+.duo { padding: 0 0 64px; }
+.duo-grid { display: grid; gap: 32px; margin-top: 24px; }
+@media (min-width: 880px) {
+  .duo-grid { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); align-items: center; gap: 48px; }
+}
+.duo-text .lede { margin: 0 0 20px; }
+.duo-points { margin: 0; border-top: 2px solid var(--ink); }
+.duo-points div { padding: 12px 0; border-bottom: 1px solid var(--rule); }
+.duo-points dt { font-weight: 700; }
+.duo-points dd { margin: 2px 0 0; color: var(--muted); }
+/* Room under the big screen for the folded one to hang below it. */
+.duo-figure { position: relative; margin: 0; padding: 0 0 14% 12%; }
+.duo-device {
+  display: block; height: auto; border: 5px solid var(--ink);
+  border-radius: 16px; background: var(--ink);
+}
+.duo-unfolded { width: 100%; }
+.duo-folded {
+  position: absolute; left: 0; bottom: 0; width: 30%;
+  box-shadow: 0 10px 24px rgb(25 20 16 / 0.25);
+}
+
 /* Built for youth basketball: a stat sheet (motif 2). */
 .sheet-section { padding: 0 0 64px; }
 .stat-sheet { width: 100%; border-collapse: collapse; }
