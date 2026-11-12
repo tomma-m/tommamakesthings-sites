@@ -1,6 +1,19 @@
 {
   "releases": [
     {
+      "version": "1.4.0",
+      "stores": {
+        "google_play": "2026-11-12",
+        "app_store": "2026-11-13"
+      },
+      "notes": [
+        "Made for foldables and tablets. On a wide screen, the live game shows Court and Plan side by side.",
+        "Teams, History, Review Plan and Settings open in two panes: pick on the left, see it on the right.",
+        "On iPhone Duo, the tabs and buttons sit in a strip down the side, so the game gets more of the screen.",
+        "Fixed: End & save could close the app on iPhone."
+      ]
+    },
+    {
       "version": "1.3.0",
       "stores": {
         "google_play": "2026-11-09",
