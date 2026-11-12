@@ -197,11 +197,28 @@ test('every image has alt, width and height; below-the-fold images are lazy', as
   assert.ok(imgs.length >= 12, `only ${imgs.length} images`);
   for (const img of imgs) {
     assert.match(img, /\salt="[^"]*"/, img);
-    if (!/badge-|brand-icon/.test(img)) assert.match(img, /\swidth="840" height="1818"/, img);
+    if (/duo-unfolded/.test(img)) assert.match(img, /\swidth="1400" height="985"/, img);
+    else if (/duo-folded/.test(img)) assert.match(img, /\swidth="560" height="815"/, img);
+    else if (!/badge-|brand-icon/.test(img)) assert.match(img, /\swidth="840" height="1818"/, img);
   }
-  for (const img of imgs.filter((i) => /step-shot|data-story-phone/.test(i))) {
+  for (const img of imgs.filter((i) => /step-shot|data-story-phone|duo-device/.test(i))) {
     assert.match(img, /loading="lazy"/, img);
   }
+});
+
+test('the iPhone Duo section sits between How a game goes and the stat sheet, with both screens', async () => {
+  const html = await read('index.html');
+  const story = html.indexOf('id="how-it-works"');
+  const duo = html.indexOf('<section class="duo" id="duo">');
+  const sheet = html.indexOf('class="sheet-section"');
+  assert.ok(story > -1 && duo > story && sheet > duo, 'order: story, duo, sheet');
+  const section = html.slice(duo, sheet);
+  assert.match(section, /<h2>Made for iPhone Duo<\/h2>/);
+  assert.match(section, /src="\/img\/duo-unfolded\.[0-9a-f]{8}\.png"/);
+  assert.match(section, /src="\/img\/duo-folded\.[0-9a-f]{8}\.png"/);
+  assert.equal([...section.matchAll(/<dt>/g)].length, 4);
+  // Voice rule: no em dashes in visitor copy.
+  assert.doesNotMatch(section, /\u2014/);
 });
 
 test('both stores link to the live listings; no Coming soon left', async () => {
