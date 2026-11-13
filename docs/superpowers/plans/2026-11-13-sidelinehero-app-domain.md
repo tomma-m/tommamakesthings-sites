@@ -57,7 +57,7 @@ Written 2026-11-13. Tom bought `sidelinehero.app` at Cloudflare. Goal: the site 
 | - [x] 18 (done 13 Nov) | Play Console | Store settings → Website, Email; App content → Privacy policy | No |
 | - [ ] 19 | AdMob | Nothing to type: it reads `app-ads.txt` from the developer website the stores list. After 15–18, AdMob → Apps → each app → app-ads.txt → *Check for updates*. The new apex domain should verify more easily than the old subdomain did. Keep `app-ads.txt` served on both hosts (the redirect covers the old one). |
 | - [ ] 20 | RevenueCat | Nothing (no website field used). |
-| - [ ] 21 | Instagram | Bio link → `https://sidelinehero.app`. |
+| - [x] 21 (done 13 Nov) | Instagram | Bio link → `https://sidelinehero.app`. |
 | - [ ] 22 | Google Search Console | Add a Domain property for `sidelinehero.app` (TXT record in Cloudflare). If the old subdomain was a property, use *Change of address* to the new one. |
 
 ## Phase 5 · Marketing assets and loose ends
