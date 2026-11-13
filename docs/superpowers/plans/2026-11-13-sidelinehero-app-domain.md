@@ -1,5 +1,7 @@
 # Move the Sideline Hero site to sidelinehero.app
 
+**Status 2026-11-13:** phases 1 and 2 DONE and live (cert `070feadd`, CloudFront `E2TT04WD2AYX92`, function `sidelinehero-rewrite`, site `59e938b`, support email on the site). Canonical tags (step 10) not added: the 301s cover it.
+
 Written 2026-11-13. Tom bought `sidelinehero.app` at Cloudflare. Goal: the site lives at **https://sidelinehero.app**, and every old `https://sidelinehero.tommamakesthings.com/<path>` link keeps working forever as a 301 to the same path on the new domain.
 
 **Why "forever":** shipped app builds (1.0 to 1.4) open `https://sidelinehero.tommamakesthings.com/terms` and `/privacy` from the Premium page (`src/features/premium/premiumCopy.ts`), and both stores, AdMob, Instagram posts and printed QR codes carry the old URL. Never delete the old hostname, its certificate or its DNS record.
@@ -19,25 +21,25 @@ Written 2026-11-13. Tom bought `sidelinehero.app` at Cloudflare. Goal: the site 
 
 ## Phase 1 · Infrastructure (no app release, nothing public changes yet)
 
-- [ ] **1. Certificate.** ACM in **us-east-1**: request one certificate for `sidelinehero.app` and `www.sidelinehero.app`, DNS validation. Add the two validation CNAMEs in Cloudflare (`sidelinehero.app` zone, grey cloud). Wait for *Issued*.
-- [ ] **2. Check for an existing CloudFront Function.** `/privacy` serves without `.html`, so either a viewer-request function rewrites clean URLs or the build uploads extensionless files. Look at the distribution's behaviour → *Function associations*. If a viewer-request function exists, the redirect in step 3 goes **into that same function** (one per event per distribution); if none, step 3 creates one.
-- [ ] **3. Redirect in the function.** At the top of the viewer-request handler: if the `host` header isn't `sidelinehero.app`, return a 301 with `location: https://sidelinehero.app` + the URI + the query string (rebuild it from `request.querystring`). Otherwise fall through to the existing clean-URL rewrite. Test in the console's Test tab with three hosts: the old subdomain, `www.sidelinehero.app` (both 301, path kept) and `sidelinehero.app` (rewrite as today). Publish only after that.
-- [ ] **4. Distribution settings.** Add `sidelinehero.app` and `www.sidelinehero.app` to *Alternate domain names*. Switch the certificate to one that covers **all three** names (either re-issue step 1's cert with `sidelinehero.tommamakesthings.com` added, or a new one with all three). The old name must stay covered or old links break with a certificate error.
-- [ ] **5. DNS.** In the `sidelinehero.app` zone: apex `CNAME @ → d2vqjk4yncpywq.cloudfront.net` (Cloudflare flattens it) and `CNAME www → d2vqjk4yncpywq.cloudfront.net`, both **grey cloud**. Leave the `tommamakesthings.com` record alone.
-- [ ] **6. Check by hand.**
+- [x] **1. Certificate.** ACM in **us-east-1**: request one certificate for `sidelinehero.app` and `www.sidelinehero.app`, DNS validation. Add the two validation CNAMEs in Cloudflare (`sidelinehero.app` zone, grey cloud). Wait for *Issued*.
+- [x] **2. Check for an existing CloudFront Function.** `/privacy` serves without `.html`, so either a viewer-request function rewrites clean URLs or the build uploads extensionless files. Look at the distribution's behaviour → *Function associations*. If a viewer-request function exists, the redirect in step 3 goes **into that same function** (one per event per distribution); if none, step 3 creates one.
+- [x] **3. Redirect in the function.** At the top of the viewer-request handler: if the `host` header isn't `sidelinehero.app`, return a 301 with `location: https://sidelinehero.app` + the URI + the query string (rebuild it from `request.querystring`). Otherwise fall through to the existing clean-URL rewrite. Test in the console's Test tab with three hosts: the old subdomain, `www.sidelinehero.app` (both 301, path kept) and `sidelinehero.app` (rewrite as today). Publish only after that.
+- [x] **4. Distribution settings.** Add `sidelinehero.app` and `www.sidelinehero.app` to *Alternate domain names*. Switch the certificate to one that covers **all three** names (either re-issue step 1's cert with `sidelinehero.tommamakesthings.com` added, or a new one with all three). The old name must stay covered or old links break with a certificate error.
+- [x] **5. DNS.** In the `sidelinehero.app` zone: apex `CNAME @ → d2vqjk4yncpywq.cloudfront.net` (Cloudflare flattens it) and `CNAME www → d2vqjk4yncpywq.cloudfront.net`, both **grey cloud**. Leave the `tommamakesthings.com` record alone.
+- [x] **6. Check by hand.**
   - `curl -sI https://sidelinehero.app/` → 200
   - `curl -sI https://sidelinehero.app/privacy` → 200
   - `curl -sI https://www.sidelinehero.app/faq` → 301 to `https://sidelinehero.app/faq`
   - `curl -sI "https://sidelinehero.tommamakesthings.com/terms?x=1"` → 301 to `https://sidelinehero.app/terms?x=1`
   - `curl -sI https://sidelinehero.app/app-ads.txt` → 200
-- [ ] **7. Email.** Cloudflare → `sidelinehero.app` → Email Routing: enable (it adds MX and SPF records), add `support@sidelinehero.app` forwarding to your inbox, verify the destination, send a test.
+- [x] **7. Email.** Cloudflare → `sidelinehero.app` → Email Routing: enable (it adds MX and SPF records), add `support@sidelinehero.app` forwarding to your inbox, verify the destination, send a test.
 
 ## Phase 2 · Website repo (one PR, deploys on merge)
 
-- [ ] **8.** `scripts/smoke.sh`: `BASE="https://sidelinehero.app"`, and add checks that the old host and `www` return 301 to the right place (path kept).
-- [ ] **9.** `scripts/check-third-party.sh`: allow the new host as first-party (the old one only as a redirect target in links, if anything still links to it).
-- [ ] **10.** Replace the domain in the site text: `privacy-site.md` ("This section covers …"), `support.html` (email → `support@sidelinehero.app`), README's Live line. Add `<link rel="canonical">` and `og:url` on every page with the new host if the layout has them (add them if not).
-- [ ] **11.** Build, tests, third-party gate, merge (deploy), then `./scripts/smoke.sh` against the live site.
+- [x] **8.** `scripts/smoke.sh`: `BASE="https://sidelinehero.app"`, and add checks that the old host and `www` return 301 to the right place (path kept).
+- [x] **9.** `scripts/check-third-party.sh`: allow the new host as first-party (the old one only as a redirect target in links, if anything still links to it).
+- [x] **10.** Replace the domain in the site text: `privacy-site.md` ("This section covers …"), `support.html` (email → `support@sidelinehero.app`), README's Live line. Add `<link rel="canonical">` and `og:url` on every page with the new host if the layout has them (add them if not).
+- [x] **11.** Build, tests, third-party gate, merge (deploy), then `./scripts/smoke.sh` against the live site.
 
 ## Phase 3 · App repo (rides in a release)
 
@@ -49,7 +51,7 @@ Written 2026-11-13. Tom bought `sidelinehero.app` at Cloudflare. Goal: the site 
 
 | # | Where | Field | Needs a new version? |
 |---|---|---|---|
-| - [ ] 15 | App Store Connect | Privacy Policy URL (App Privacy) | No |
+| - [ ] 15 | App Store Connect | Privacy Policy URL (App Privacy) | **Yes** (checked 13 Nov: "To make changes to the privacy policy, create a new app version"): 19 Nov |
 | - [ ] 16 | App Store Connect | Support URL, Marketing URL, and the "Terms of Use: …" line at the end of the description | **Yes**: do it on the 19 Nov version with the description and keyword changes |
 | - [ ] 17 | App Store Connect | App Review contact email / notes, if they show the old address | No |
 | - [ ] 18 | Play Console | Store settings → Website, Email; App content → Privacy policy | No |
@@ -69,7 +71,7 @@ Written 2026-11-13. Tom bought `sidelinehero.app` at Cloudflare. Goal: the site 
 1. Phase 1 any time (about an hour, most of it waiting for the certificate). Nothing changes for visitors until step 5.
 2. Phase 2 straight after, same day.
 3. Phase 3 step 12 in the 17 Nov release; the rest of phase 3 with it.
-4. Phase 4: Play and the iOS Privacy Policy URL the day phase 2 is live; the iOS version-level URLs with the 19 Nov submission.
+4. Phase 4: Play, the Instagram bio and the iOS contact email the day phase 2 is live; every iOS URL (Privacy Policy, Support, Marketing, the description's Terms line) with the 19 Nov submission.
 5. Phase 5 before the next Instagram post that has a footer.
 
 ## Rollback
