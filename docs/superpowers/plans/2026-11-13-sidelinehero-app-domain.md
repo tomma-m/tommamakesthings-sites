@@ -54,7 +54,7 @@ Written 2026-11-13. Tom bought `sidelinehero.app` at Cloudflare. Goal: the site 
 | - [ ] 15 | App Store Connect | Privacy Policy URL (App Privacy) | **Yes** (checked 13 Nov: "To make changes to the privacy policy, create a new app version"): 19 Nov |
 | - [ ] 16 | App Store Connect | Support URL, Marketing URL, and the "Terms of Use: …" line at the end of the description | **Yes**: do it on the 19 Nov version with the description and keyword changes |
 | - [ ] 17 | App Store Connect | App Review contact email / notes, if they show the old address | No |
-| - [ ] 18 | Play Console | Store settings → Website, Email; App content → Privacy policy | No |
+| - [x] 18 (done 13 Nov) | Play Console | Store settings → Website, Email; App content → Privacy policy | No |
 | - [ ] 19 | AdMob | Nothing to type: it reads `app-ads.txt` from the developer website the stores list. After 15–18, AdMob → Apps → each app → app-ads.txt → *Check for updates*. The new apex domain should verify more easily than the old subdomain did. Keep `app-ads.txt` served on both hosts (the redirect covers the old one). |
 | - [ ] 20 | RevenueCat | Nothing (no website field used). |
 | - [ ] 21 | Instagram | Bio link → `https://sidelinehero.app`. |
