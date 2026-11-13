@@ -62,7 +62,7 @@ Written 2026-11-13. Tom bought `sidelinehero.app` at Cloudflare. Goal: the site 
 
 ## Phase 5 · Marketing assets and loose ends
 
-- [ ] **23.** Instagram slides not yet posted that print the old domain: posts 6 and 9 (`post-06-tips/src/post.html`, `post-09-privacy/src/post.html`; also check the end cards of reels 7 and 10). Change the domain and re-render before posting. Posts already up are fine (the old URL redirects). Also `instagram-plan.md`.
+- [x] **23.** (done 13 Nov: posts 6 and 9 re-rendered; reels 7 and 10 only say "Link in bio") Instagram slides not yet posted that print the old domain: posts 6 and 9 (`post-06-tips/src/post.html`, `post-09-privacy/src/post.html`; also check the end cards of reels 7 and 10). Change the domain and re-render before posting. Posts already up are fine (the old URL redirects). Also `instagram-plan.md`.
 - [ ] **24.** Memory and docs that describe "push main = live at sidelinehero.tommamakesthings.com" (README, memory notes): update.
 - [ ] **25.** One week later: check AdMob shows app-ads.txt verified for both apps, Search Console sees the new domain, and the CloudFront logs or a few `curl`s show the old host still redirecting.
 
