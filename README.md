@@ -5,7 +5,10 @@ Static sites for `tommamakesthings.com` subdomains. One directory per site under
 
 ## Live
 
-- `sites/sidelinehero` → https://sidelinehero.tommamakesthings.com
+- `sites/sidelinehero` → https://sidelinehero.app (since 2026-11-13; the old
+  https://sidelinehero.tommamakesthings.com and `www.sidelinehero.app` 301 to
+  it, path and query kept, and must keep doing so: shipped app builds link the
+  old `/terms` and `/privacy`)
 
 ## Build
 
@@ -69,6 +72,12 @@ AWS account `957424402699`. S3 bucket `sidelinehero-tommamakesthings-site`
 (`ap-southeast-2`, private, OAC-only) behind CloudFront. ACM certificate is in
 `us-east-1` — CloudFront reads certificates from nowhere else. DNS is at
 Cloudflare, **grey cloud**, so there is no Route 53 hosted zone to pay for.
+CloudFront distribution `E2TT04WD2AYX92` answers `sidelinehero.app`,
+`www.sidelinehero.app` and `sidelinehero.tommamakesthings.com` on one ACM
+certificate covering all three. Its viewer-request function
+`sidelinehero-rewrite` 301s any host but `sidelinehero.app` to it, then
+rewrites clean URLs (`/faq` → `/faq/index.html`). Never drop the old name from
+the certificate or the aliases.
 
 ## Rules
 

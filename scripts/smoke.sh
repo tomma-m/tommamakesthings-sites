@@ -1,7 +1,14 @@
 #!/usr/bin/env bash
 set -euo pipefail
-BASE="https://sidelinehero.tommamakesthings.com"
+BASE="https://sidelinehero.app"
 fail=0
+
+redirect() {  # description, url, expected-location
+  local got
+  got=$(curl -sS -o /dev/null -w '%{http_code} %{redirect_url}' "$2")
+  if [ "$got" = "301 $3" ]; then echo "  ok   $1"
+  else echo "  FAIL $1 — expected 301 $3, got $got"; fail=1; fi
+}
 
 check() {  # description, expected-status, path
   local got
@@ -18,6 +25,13 @@ check "releases"          200 "/releases"
 check "terms"             200 "/terms"
 check "app-ads.txt"       200 "/app-ads.txt"
 check "missing page 404s" 404 "/definitely-not-a-page"
+
+# The old host must redirect FOREVER: app 1.0-1.4 open its /terms and /privacy
+# from the Premium page. Path and query are kept. (CloudFront Function
+# sidelinehero-rewrite.)
+redirect "old host keeps path and query" "https://sidelinehero.tommamakesthings.com/terms?x=1" "https://sidelinehero.app/terms?x=1"
+redirect "old host /privacy"             "https://sidelinehero.tommamakesthings.com/privacy"    "https://sidelinehero.app/privacy"
+redirect "www to the apex"               "https://www.sidelinehero.app/faq"                     "https://sidelinehero.app/faq"
 
 echo "checking for third-party requests..."
 # Also run as its own workflow step BEFORE the S3 sync, so it gates the deploy

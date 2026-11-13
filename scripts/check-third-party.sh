@@ -24,8 +24,10 @@ fi
 URL_RE='(https?:)?//[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)+(:[0-9]+)?(/[^"'"'"'`) >]*)?'
 
 # (/|$) after the host is load-bearing: without it,
-# sidelinehero.tommamakesthings.com.evil.example matches the prefix and passes.
-ALLOWED='^(https:)?//sidelinehero\.tommamakesthings\.com(/|$)'
+# sidelinehero.app.evil.example matches the prefix and passes. The old host
+# (sidelinehero.tommamakesthings.com) 301s to sidelinehero.app since 2026-11-13
+# and stays allowed, so an old link in the text isn't a third-party request.
+ALLOWED='^(https:)?//(sidelinehero\.app|sidelinehero\.tommamakesthings\.com)(/|$)'
 
 # XML namespace URIs are identifiers, never fetched. Anchored exactly, so a real
 # asset hosted on w3.org would still be caught.

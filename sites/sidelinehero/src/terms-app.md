@@ -11,7 +11,7 @@ Sideline Hero helps coaches plan substitutions and track playing time and stats.
 
 ## 2. Free version and ads
 
-The app is free to download and use. The free version shows ads served by Google AdMob, as described in our Privacy Policy (https://sidelinehero.tommamakesthings.com/privacy).
+The app is free to download and use. The free version shows ads served by Google AdMob, as described in our Privacy Policy (https://sidelinehero.app/privacy).
 
 ## 3. Premium
 

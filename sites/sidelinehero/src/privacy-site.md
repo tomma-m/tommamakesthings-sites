@@ -1,7 +1,7 @@
 ## This website
 
-This section covers **sidelinehero.tommamakesthings.com**, the website you are
-reading now. It is separate from the app policy above, which describes the
+This section covers **sidelinehero.app**, the website you are reading now (the
+old address, sidelinehero.tommamakesthings.com, sends you here). It is separate from the app policy above, which describes the
 Sideline Hero app itself. This website collects nothing about you.
 
 **No personal information is collected here.** There are no forms, no sign-ups,
