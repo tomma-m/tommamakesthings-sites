@@ -94,9 +94,9 @@
         "Live scoring is off by default. Turn on Track live score in Settings → App settings → Stat tracking to add a Score tab to the game screen.",
         "On the Score tab, tap to add 1, 2 or 3 points or a foul for any player, and points, fouls and steals for the opponent. Undo reverses the last stat.",
         "Assists, blocks, steals and rebounds for your players can be switched on in the same place, with Track Assists, Track Blocks, Track Steals and Track Rebounds.",
-        "Team fouls for this period, yours and the opponent's, show under the opponent's buttons. They start again at 0 each period.",
+        "Team fouls for this period sit in the score box, marked TF: yours on the left, the opponent's on the right. They start again at 0 each period.",
         "If you add a stat while the clock is paused, a Clock paused bar shows at the top with a Start button, in case you forgot to restart it after a timeout.",
-        "Game Summary shows each player's fouls and tracked stats under their name, and the team fouls for the game. Export CSV includes every stat.",
+        "Game Summary shows each player's fouls and tracked stats under their name, and each team's fouls for the game under its score. Tap the score to change the score or either team's fouls. Export CSV includes every stat.",
         "Court time is tracked whether live scoring is on or off."
       ]
     },
@@ -167,7 +167,7 @@
         "On a game's summary, tap the share icon at the top of the screen. Share summary sends a readable recap, handy for a team chat, and Export CSV saves the game as a spreadsheet.",
         "For a whole season, open the team's Season minutes and tap Export CSV.",
         "For the full game record as a data file, use Settings → App settings → Your data → Export last completed game, or Export game data from the ⋮ menu during a game.",
-        "To share a team with another coach, open the team and tap Share team file. If the team has seasons, pick one or the whole team. To share one game, tap the share icon at the top of its Game Summary, then Share game file. Send the file however you like.",
+        "To share a team with another coach, open the team and tap the share icon next to its name. If the team has seasons, pick one or the whole team. To share one game, tap the share icon at the top of its Game Summary, then Share game file. Send the file however you like.",
         "The other coach opens the Teams tab and taps the import button at the top, or goes to Settings → App settings → Your data → Import team file. Importing adds the games and players they don't have, and it never changes a player they already have. If a game is on both phones but differs, they choose which version to keep. Opening the file straight from a chat app isn't supported, so save it first, then import it from the app.",
         "A game you delete on your phone comes back if someone sends a file that still has it.",
         "Everything goes through your phone's own share sheet, so it only goes where you send it."

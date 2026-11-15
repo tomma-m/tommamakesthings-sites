@@ -1,6 +1,21 @@
 {
   "releases": [
     {
+      "version": "1.4.1",
+      "stores": {
+        "google_play": "2026-11-15"
+      },
+      "notes": [
+        "Team fouls now sit inside the score box, so the live game screen has more room.",
+        "Game Summary shows each team's fouls under its score, and you can change them with the score.",
+        "Shared game summaries now show every stat you track, not just points.",
+        "Share a team from the icon next to its name.",
+        "Follow Sideline Hero on Instagram from Settings.",
+        "Team, player and season forms open with the keyboard up and its Done bar showing.",
+        "Smaller fixes and tidy-ups."
+      ]
+    },
+    {
       "version": "1.4.0",
       "stores": {
         "google_play": "2026-11-12",
