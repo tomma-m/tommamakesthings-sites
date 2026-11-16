@@ -3,7 +3,8 @@
     {
       "version": "1.4.1",
       "stores": {
-        "google_play": "2026-11-15"
+        "google_play": "2026-11-15",
+        "app_store": "2026-11-16"
       },
       "notes": [
         "Team fouls now sit inside the score box, so the live game screen has more room.",
