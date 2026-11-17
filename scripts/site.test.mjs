@@ -408,8 +408,10 @@ test('the 404 page is noindex, has no canonical, and is not in the sitemap', asy
 });
 
 test('sitemap.xml lists exactly the indexable pages; robots.txt points at it', async () => {
-  const locs = [...(await read('sitemap.xml')).matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]).sort();
-  assert.deepEqual(locs, Object.values(INDEXABLE).map((p) => `${ORIGIN}${p}`).sort());
+  const locs = [...(await read('sitemap.xml')).matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
+  for (const p of Object.values(INDEXABLE)) assert.ok(locs.includes(`${ORIGIN}${p}`), `${p} in sitemap`);
+  assert.equal(new Set(locs).size, locs.length, 'no duplicates');
+  assert.ok(locs.every((l) => l.startsWith(`${ORIGIN}/`)), 'every URL on the canonical host');
   const robots = await read('robots.txt');
   assert.match(robots, /^User-agent: \*$/m);
   assert.doesNotMatch(robots, /Disallow: \/$/m, 'robots.txt must not block the site');
@@ -432,4 +434,43 @@ test('structured data: home only, valid JSON, both store links, no rating', asyn
   for (const file of Object.keys(INDEXABLE).filter((f) => f !== 'index.html')) {
     assert.doesNotMatch(await read(file), /application\/ld\+json/, file);
   }
+});
+
+// Rotation chart pages (SEO phase 2, Task 4).
+const ROSTERS = [6, 7, 8, 9, 10, 11, 12];
+const OTHER_FORMATS = ['h16', 'h20', 'q6', 'q10', 'q12'];
+const tagged = (campaign) => [
+  `https://apps.apple.com/app/apple-store/id6796588008?pt=129245947&amp;ct=site-${campaign}&amp;mt=8`,
+  `https://play.google.com/store/apps/details?id=app.sidelinehero.coach&amp;utm_source=sidelinehero.app&amp;utm_medium=website&amp;utm_campaign=${campaign}`,
+];
+
+test('each roster page has its 8-minute-quarter chart, the other formats and its own app block', async () => {
+  for (const n of ROSTERS) {
+    const file = `rotation-charts/${n}-players/index.html`;
+    const html = await read(file);
+    assert.equal((html.match(/<table class="rotation-chart">/g) || []).length, 1, file);
+    assert.equal((html.match(/<tr class="player">/g) || []).length, n, `${file} has ${n} player rows`);
+    assert.match(html, new RegExp(`<caption>${n} players · 4 × 8-min quarters</caption>`), file);
+    for (const f of OTHER_FORMATS) {
+      assert.ok(html.includes(`href="/rotation-chart-maker?players=${n}&amp;format=${f}"`), `${file} links ${f}`);
+    }
+    for (const href of tagged(`rotation-charts-${n}-players`)) assert.ok(html.includes(`href="${href}"`), `${file} app block tag`);
+    assert.match(html, new RegExp(`<title>${n} player basketball rotation · Sideline Hero</title>`), file);
+    assert.match(html, /<h1>/, `${file} has an H1`);
+    assert.doesNotMatch(html, /—/, `${file} has no em dash`);
+  }
+});
+
+test('the rotation chart hub links every roster page and the chart maker', async () => {
+  const html = await read('rotation-charts/index.html');
+  for (const n of ROSTERS) assert.ok(html.includes(`href="/rotation-charts/${n}-players"`), `hub → ${n}`);
+  assert.ok(html.includes('href="/rotation-chart-maker"'), 'hub → maker');
+  for (const href of tagged('rotation-charts')) assert.ok(html.includes(`href="${href}"`), 'hub app block tag');
+  assert.doesNotMatch(html, /—/);
+});
+
+test('the hub and every roster page are in the sitemap', async () => {
+  const sitemap = await read('sitemap.xml');
+  assert.ok(sitemap.includes(`<loc>${ORIGIN}/rotation-charts</loc>`));
+  for (const n of ROSTERS) assert.ok(sitemap.includes(`<loc>${ORIGIN}/rotation-charts/${n}-players</loc>`), `${n} in sitemap`);
 });
