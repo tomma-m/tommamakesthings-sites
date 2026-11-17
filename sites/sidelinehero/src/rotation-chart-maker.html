@@ -1,0 +1,25 @@
+<p class="kicker">Free tool</p>
+<h1>Rotation chart maker</h1>
+<p class="lede">Make a fair basketball rotation chart for your team. Pick your roster size and game format, add your players' names if you like, then print it for the bench.</p>
+<form id="chart-maker" class="chart-maker no-print" hidden>
+  <label>Players
+    <select name="players">
+      <option>6</option><option>7</option><option>8</option><option>9</option>
+      <option>10</option><option>11</option><option>12</option>
+    </select>
+  </label>
+  <label>Format
+    <select name="format">{{format-options}}</select>
+  </label>
+  <label class="chart-maker-names">Player names (optional, one per line)
+    <textarea name="names" rows="6" autocomplete="off" spellcheck="false"></textarea>
+  </label>
+  <p class="chart-maker-privacy">Names stay on this page. They're never saved or sent anywhere.</p>
+  <button type="button" class="button" data-print>Print chart</button>
+</form>
+<div class="chart-scroll" id="chart-output">{{default-chart}}</div>
+<noscript><p>This shows the 10-player chart. For other roster sizes, see the <a href="/rotation-charts">rotation charts</a>.</p></noscript>
+<p>Every chart comes from Sideline Hero's planner, set to equal playing time, with Players 1 to 5 starting. The times are the scoreboard when each stretch starts. Sub at the next dead ball near that time.</p>
+<p>Charts cover 6 to 12 players, halves of 16 or 20 minutes, and quarters of 6, 8, 10 or 12 minutes. Read more about each roster size on the <a href="/rotation-charts">rotation charts page</a>.</p>
+<script type="application/json" id="chart-data">{{chart-data}}</script>
+<script type="module" src="/js/chart-maker.{{v}}.js"></script>

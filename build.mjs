@@ -317,6 +317,18 @@ for (const file of await markdownFiles(`${SRC}/pages`)) {
   await page(out, content, { title: meta.title, description: meta.description, path: meta.path });
 }
 
+// The chart maker: the charts embedded as JSON (no fetch), the default chart
+// pre-rendered so the page works without JavaScript, the app block last.
+const makerBody = (await readFile(`${SRC}/rotation-chart-maker.html`, 'utf8'))
+  .replaceAll('{{format-options}}', () => FORMATS.map((f) => `<option value="${f.key}">${escapeHtml(f.label)}</option>`).join(''))
+  .replaceAll('{{default-chart}}', () => renderChartTable(findChart(charts, 10, 'q8'), playerLabels(10)))
+  .replaceAll('{{chart-data}}', () => JSON.stringify(charts).replaceAll('<', '\\u003c'));
+await page('rotation-chart-maker/index.html', `${makerBody}\n${appBlock('rotation-chart-maker')}`, {
+  title: 'Basketball rotation chart maker · Sideline Hero',
+  description: 'Free basketball rotation chart maker. Pick 6 to 12 players, halves or quarters, add names and print a fair, equal playing time chart.',
+  path: '/rotation-chart-maker',
+});
+
 // Written last, from every page() above that isn't noindex.
 await writeFile(`${DIST}/robots.txt`, `User-agent: *\nAllow: /\n\nSitemap: ${ORIGIN}/sitemap.xml\n`);
 await writeFile(`${DIST}/sitemap.xml`, [

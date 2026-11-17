@@ -474,3 +474,38 @@ test('the hub and every roster page are in the sitemap', async () => {
   assert.ok(sitemap.includes(`<loc>${ORIGIN}/rotation-charts</loc>`));
   for (const n of ROSTERS) assert.ok(sitemap.includes(`<loc>${ORIGIN}/rotation-charts/${n}-players</loc>`), `${n} in sitemap`);
 });
+
+// Rotation chart maker (SEO phase 2, Task 5).
+test('the chart maker embeds valid chart data and works without JavaScript', async () => {
+  const html = await read('rotation-chart-maker/index.html');
+  const data = html.match(/<script type="application\/json" id="chart-data">([\s\S]*?)<\/script>/);
+  assert.ok(data, 'chart data embedded');
+  const { validateCharts } = await import('./charts.mjs');
+  assert.equal(validateCharts(JSON.parse(data[1]), 'embedded').charts.length, 42);
+  assert.match(html, /<caption>10 players · 4 × 8-min quarters<\/caption>/, 'default chart rendered for no-JS');
+  assert.equal((html.match(/<tr class="player">/g) || []).length, 10);
+  assert.match(html, /<form[^>]*id="chart-maker"[^>]*hidden/, 'form hidden until the script runs');
+  assert.match(html, new RegExp(`<link rel="canonical" href="${ORIGIN}/rotation-chart-maker">`));
+  assert.ok((await read('sitemap.xml')).includes(`<loc>${ORIGIN}/rotation-chart-maker</loc>`));
+  for (const href of tagged('rotation-chart-maker')) assert.ok(html.includes(`href="${href}"`), 'app block tag');
+  const v = html.match(/src="\/js\/chart-maker\.([0-9a-f]{8})\.js"/)?.[1];
+  assert.ok(v, 'loads the hashed chart-maker module');
+  assert.doesNotMatch(html, /—/);
+});
+
+test('the chart maker script keeps nothing and sends nothing', async () => {
+  const js = (await readdir(join(DIST, 'js'))).filter((n) => /^chart-(maker|render)\./.test(n));
+  assert.equal(js.length, 2);
+  for (const n of js) {
+    const src = await read(`js/${n}`);
+    for (const banned of ['localStorage', 'sessionStorage', 'indexedDB', 'fetch(', 'XMLHttpRequest', 'document.cookie', 'sendBeacon', 'WebSocket']) {
+      assert.ok(!src.includes(banned), `${n} uses ${banned}`);
+    }
+  }
+  const maker = await read(`js/${js.find((n) => n.startsWith('chart-maker.'))}`);
+  assert.match(maker, /from '\.\/chart-render\.[0-9a-f]{8}\.js'/, 'imports the hashed renderer');
+});
+
+test('the chart scroll box contains its hidden labels (else wide charts push phone pages sideways)', async () => {
+  assert.match(await readCss(), /\.chart-scroll \{[^}]*position: relative/);
+});

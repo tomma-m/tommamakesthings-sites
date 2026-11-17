@@ -354,7 +354,10 @@ main:has(> .band-fulltime:last-child) { padding-bottom: 0; }
    where a player is on court, totals in the last column. Wide charts scroll
    sideways inside their own box so the page never does. */
 .page > .chart-scroll { max-width: none; }
-.chart-scroll { overflow-x: auto; margin: 24px 0 8px; -webkit-overflow-scrolling: touch; }
+/* position: relative keeps the cells' visually-hidden labels (absolutely
+   positioned) inside the scroll box. Without it they escape to the page and a
+   wide chart pushed a 360px phone page 700px sideways (found 2026-11-18). */
+.chart-scroll { position: relative; overflow-x: auto; margin: 24px 0 8px; -webkit-overflow-scrolling: touch; }
 .rotation-chart { border-collapse: collapse; font-size: 14px; font-variant-numeric: tabular-nums; }
 .rotation-chart caption {
   text-align: left; font-family: Saira, sans-serif; font-weight: 700; font-size: 13px;
@@ -374,8 +377,9 @@ main:has(> .band-fulltime:last-child) { padding-bottom: 0; }
 /* Print: one landscape page of chart, nothing else. */
 @media print {
   @page { size: landscape; margin: 12mm; }
-  .site-header, .site-footer, .app-block, .chart-other-formats, .chart-other-formats-lede,
-  .no-print, .kicker { display: none !important; }
+  .site-header, .site-footer, .no-print { display: none !important; }
+  /* Only the heading and the chart: prose and links stay on screen. */
+  .page > *:not(h1):not(.chart-scroll) { display: none !important; }
   body { background: #fff; }
   main { padding: 0; }
   .page { padding-top: 0; }
@@ -386,3 +390,22 @@ main:has(> .band-fulltime:last-child) { padding-bottom: 0; }
   .rotation-chart td.on { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   main::after { content: "sidelinehero.app"; display: block; margin-top: 8mm; font-size: 9px; color: #666; }
 }
+
+/* Rotation chart maker form. Ruled like the rest of the site; the button is a
+   broadcast tag, not a pill. */
+.chart-maker { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px 16px; margin: 24px 0 8px; padding: 16px 0; border-top: 2px solid var(--ink); border-bottom: 1px solid var(--rule); }
+.chart-maker[hidden] { display: none; }
+.chart-maker label { display: flex; flex-direction: column; gap: 6px; font-weight: 700; font-size: 14px; }
+.chart-maker select, .chart-maker textarea {
+  font: inherit; font-weight: 400; font-size: 16px; color: var(--ink); background: #fff;
+  border: 1px solid var(--muted); border-radius: 4px; padding: 8px;
+}
+.chart-maker select:focus-visible, .chart-maker textarea:focus-visible, .button:focus-visible { outline: 3px solid var(--orange); outline-offset: 2px; }
+.chart-maker-names { grid-column: 1 / -1; }
+.chart-maker-privacy { grid-column: 1 / -1; margin: 0; font-size: 14px; color: var(--muted); }
+.button {
+  justify-self: start; font-family: Saira, sans-serif; font-weight: 700; font-size: 14px;
+  letter-spacing: 0.08em; text-transform: uppercase; color: #fff; background: var(--orange-cta);
+  border: 0; border-radius: 4px; padding: 12px 18px; cursor: pointer;
+}
+.button:hover { background: var(--orange-ink); }

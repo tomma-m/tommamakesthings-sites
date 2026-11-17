@@ -6,7 +6,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { parseChartsJson, validateCharts, formatCharts } from './charts.mjs';
 import {
-  FORMATS, findChart, playerLabels, periodClock, renderChartTable,
+  FORMATS, findChart, playerLabels, periodClock, renderChartTable, parsePreset,
 } from '../sites/sidelinehero/src/js/chart-render.js';
 
 const SYNCED = 'sites/sidelinehero/src/rotation-charts-app.json';
@@ -83,4 +83,13 @@ test('sync-charts --check passes when the copy matches and fails when it does no
   changed.charts[0].subs += 0; changed.version = 1; changed.charts.reverse();
   await writeFile(join(app, 'docs/rotation-charts.json'), JSON.stringify(changed));
   assert.throws(() => execFileSync('node', ['scripts/sync-charts.mjs', app, '--check'], { stdio: 'pipe' }));
+});
+
+test('parsePreset reads a valid roster and format, and falls back to 10 players q8', async () => {
+  const file = await load();
+  assert.deepEqual(parsePreset('?players=8&format=h20', file), { players: 8, format: 'h20' });
+  assert.deepEqual(parsePreset('players=12&format=q12', file), { players: 12, format: 'q12' });
+  for (const bad of ['?players=20', '?format=q7', '?players=abc', '', '?players=8', '?format=h20&players=99', '?players=8.5&format=q8']) {
+    assert.deepEqual(parsePreset(bad, file), { players: 10, format: 'q8' }, bad);
+  }
 });

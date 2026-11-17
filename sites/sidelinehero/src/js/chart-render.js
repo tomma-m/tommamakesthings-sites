@@ -69,3 +69,14 @@ export function renderChartTable(chart, labels) {
     '</table>',
   ].join('\n');
 }
+
+// The chart a maker link asks for (?players=8&format=h20), if the data has it;
+// otherwise the default, so a bad or old link never shows a blank page.
+export const DEFAULT_PRESET = { players: 10, format: 'q8' };
+export function parsePreset(search, file) {
+  const params = new URLSearchParams(search);
+  const raw = params.get('players');
+  const players = /^\d+$/.test(raw ?? '') ? Number(raw) : NaN;
+  const format = params.get('format');
+  return findChart(file, players, format) ? { players, format } : { ...DEFAULT_PRESET };
+}
