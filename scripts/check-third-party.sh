@@ -33,6 +33,10 @@ ALLOWED='^(https:)?//(sidelinehero\.app|sidelinehero\.tommamakesthings\.com)(/|$
 # asset hosted on w3.org would still be caught.
 NAMESPACES='^https?://www\.w3\.org/(2000/svg|1999/xlink|1999/xhtml)$'
 
+# The home page's JSON-LD "@context" is an identifier too: search engines read
+# it as a vocabulary name and the browser never requests it. Exact value only.
+VOCABULARIES='^https://schema\.org$'
+
 # External policy pages the privacy policy and terms MUST link to (App Store /
 # Play require linking each processor's own policy). These are <a href>
 # NAVIGATIONS — the browser only loads them when the reader taps, never as a
@@ -53,7 +57,7 @@ SOCIAL_LINKS='^https://www\.instagram\.com/sidelinehero/$'
 
 found=$(grep -rEoh "$URL_RE" "$DIST" \
   --include='*.html' --include='*.css' --include='*.js' --include='*.svg' \
-  | grep -vE "$ALLOWED" | grep -vE "$NAMESPACES" | grep -vE "$POLICY_LINKS" | grep -vE "$STORE_LINKS" | grep -vE "$SOCIAL_LINKS" | sort -u || true)
+  | grep -vE "$ALLOWED" | grep -vE "$NAMESPACES" | grep -vE "$VOCABULARIES" | grep -vE "$POLICY_LINKS" | grep -vE "$STORE_LINKS" | grep -vE "$SOCIAL_LINKS" | sort -u || true)
 
 if [ -n "$found" ]; then
   echo "  FAIL third-party URLs found in built output:"

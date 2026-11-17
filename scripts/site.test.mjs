@@ -368,3 +368,59 @@ test('very narrow phones: the header wordmark hides below 360px so the menu fits
   assert.match(css, /@media \(max-width: 359px\) \{\s*\.brand-name \{ display: none; \}\s*\}/);
   assert.match(await read('index.html'), /<a class="brand" href="\/" aria-label="Sideline Hero home">/);
 });
+
+// Search and sharing (phase 1 SEO, 2026-11-17).
+const ORIGIN = 'https://sidelinehero.app';
+const INDEXABLE = {
+  'index.html': '/', 'faq/index.html': '/faq', 'releases/index.html': '/releases',
+  'privacy/index.html': '/privacy', 'terms/index.html': '/terms', 'support/index.html': '/support',
+};
+
+test('every indexable page names its own canonical URL and share card', async () => {
+  const card = (await readdir(join(DIST, 'img'))).filter((n) => /^og-card\.[0-9a-f]{8}\.png$/.test(n));
+  assert.equal(card.length, 1, 'exactly one hashed share card ships');
+  for (const [file, path] of Object.entries(INDEXABLE)) {
+    const html = await read(file);
+    assert.match(html, new RegExp(`<link rel="canonical" href="${ORIGIN}${path}">`), file);
+    assert.match(html, new RegExp(`<meta property="og:url" content="${ORIGIN}${path}">`), file);
+    assert.match(html, new RegExp(`<meta property="og:image" content="${ORIGIN}/img/${card[0]}">`), file);
+    assert.match(html, /<meta name="twitter:card" content="summary_large_image">/, file);
+    const title = html.match(/<title>([^<]*)<\/title>/)[1];
+    assert.match(html, new RegExp(`<meta property="og:title" content="${title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}">`), `${file} og:title matches <title>`);
+    assert.doesNotMatch(html, /name="robots"/, `${file} must not be noindex`);
+  }
+});
+
+test('the 404 page is noindex, has no canonical, and is not in the sitemap', async () => {
+  const html = await read('404.html');
+  assert.match(html, /<meta name="robots" content="noindex">/);
+  assert.doesNotMatch(html, /rel="canonical"/);
+  assert.doesNotMatch(await read('sitemap.xml'), /404/);
+});
+
+test('sitemap.xml lists exactly the indexable pages; robots.txt points at it', async () => {
+  const locs = [...(await read('sitemap.xml')).matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]).sort();
+  assert.deepEqual(locs, Object.values(INDEXABLE).map((p) => `${ORIGIN}${p}`).sort());
+  const robots = await read('robots.txt');
+  assert.match(robots, /^User-agent: \*$/m);
+  assert.doesNotMatch(robots, /Disallow: \/$/m, 'robots.txt must not block the site');
+  assert.match(robots, new RegExp(`^Sitemap: ${ORIGIN}/sitemap.xml$`, 'm'));
+});
+
+test('structured data: home only, valid JSON, both store links, no rating', async () => {
+  const html = await read('index.html');
+  const blocks = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)];
+  assert.equal(blocks.length, 1);
+  const data = JSON.parse(blocks[0][1]);
+  const app = data['@graph'].find((n) => n['@type'] === 'MobileApplication');
+  const site = data['@graph'].find((n) => n['@type'] === 'WebSite');
+  assert.equal(site.name, 'Sideline Hero');
+  assert.deepEqual(app.sameAs.sort(), [
+    'https://apps.apple.com/app/id6796588008',
+    'https://play.google.com/store/apps/details?id=app.sidelinehero.coach',
+  ]);
+  assert.equal(app.aggregateRating, undefined, 'never claim a rating the app does not have');
+  for (const file of Object.keys(INDEXABLE).filter((f) => f !== 'index.html')) {
+    assert.doesNotMatch(await read(file), /application\/ld\+json/, file);
+  }
+});

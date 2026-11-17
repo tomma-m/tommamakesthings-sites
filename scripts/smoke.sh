@@ -24,6 +24,8 @@ check "faq"               200 "/faq"
 check "releases"          200 "/releases"
 check "terms"             200 "/terms"
 check "app-ads.txt"       200 "/app-ads.txt"
+check "robots.txt"        200 "/robots.txt"
+check "sitemap.xml"       200 "/sitemap.xml"
 check "missing page 404s" 404 "/definitely-not-a-page"
 
 # The old host must redirect FOREVER: app 1.0-1.4 open its /terms and /privacy
