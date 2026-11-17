@@ -71,6 +71,9 @@ test('every page has the new header and footer', async () => {
     }
     assert.match(html, /<footer class="site-footer">[\s\S]*href="https:\/\/www\.instagram\.com\/sidelinehero\/"[^>]*>Instagram<\/a>/, `${p} footer → Instagram`);
     assert.match(html, /href="\/#how-it-works"/, `${p} header links How it works`);
+    assert.match(html, /<nav class="site-nav"[^>]*>[\s\S]*?href="\/rotation-charts">Rotation charts<\/a>[\s\S]*?<\/nav>/, `${p} header links Rotation charts`);
+    assert.match(html, /<footer class="site-footer">[\s\S]*href="\/rotation-charts"/, `${p} footer → /rotation-charts`);
+    assert.match(html, /<footer class="site-footer">[\s\S]*href="\/guides"/, `${p} footer → /guides`);
     assert.match(html, /<nav class="site-nav"[^>]*>[\s\S]*?href="\/releases">What’s new<\/a>[\s\S]*?<\/nav>/, `${p} header links What’s new`);
     assert.ok(!/class="(wrap|card)"/.test(html), `${p} still uses .wrap or .card`);
   }

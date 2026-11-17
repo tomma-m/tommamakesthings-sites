@@ -4,6 +4,9 @@ import { marked } from 'marked';
 import { validateFaqs, parseFaqsJson } from './scripts/faqs.mjs';
 import { validateReleases, parseReleasesJson, renderReleases } from './scripts/releases.mjs';
 import { assetVersion } from './scripts/asset-version.mjs';
+import { parseFrontMatter } from './scripts/pages.mjs';
+import { validateCharts, parseChartsJson } from './scripts/charts.mjs';
+import { FORMATS, findChart, playerLabels, renderChartTable } from './sites/sidelinehero/src/js/chart-render.js';
 
 const site = process.argv[2];
 if (!site) { console.error('usage: node build.mjs <site>'); process.exit(1); }
@@ -258,6 +261,61 @@ await page('releases/index.html', releasesBody, {
   description: 'Every Sideline Hero update, what changed, and when it reached Google Play and the App Store.',
   path: '/releases',
 });
+
+// Rotation charts: a copy of the app engine's output (README "Rotation
+// charts"). Validated here so a broken copy fails the build, not the page.
+const chartsPath = `${SRC}/rotation-charts-app.json`;
+if (!existsSync(chartsPath)) throw new Error('rotation-charts-app.json is missing — see README "Rotation charts"');
+const charts = validateCharts(parseChartsJson(await readFile(chartsPath, 'utf8'), 'rotation-charts-app.json'), 'rotation-charts-app.json');
+
+// The "get the app" block every content page ends with. Its store badges carry
+// the page's own campaign tag, so the store dashboards show which page a
+// download came from (README "Search and sharing").
+const appBlockTemplate = await readFile(`${SRC}/partials/app-block.html`, 'utf8');
+const appBlock = (campaign) => appBlockTemplate.replaceAll('{{campaign}}', () => campaign);
+
+// A roster page's chart: the 8-minute-quarter chart (the most common US youth
+// format), then links to the same roster in every other format in the maker.
+function chartBlock(players) {
+  const chart = findChart(charts, players, 'q8');
+  const others = FORMATS.filter((f) => f.key !== 'q8').map((f) =>
+    `<li><a href="/rotation-chart-maker?players=${players}&amp;format=${f.key}">${escapeHtml(f.label)}</a></li>`).join('\n');
+  return [
+    `<div class="chart-scroll">${renderChartTable(chart, playerLabels(players))}</div>`,
+    `<p class="chart-other-formats-lede">The same ${players} players in another format:</p>`,
+    `<ul class="chart-other-formats">\n${others}\n</ul>`,
+  ].join('\n');
+}
+
+async function markdownFiles(dir) {
+  if (!existsSync(dir)) return [];
+  const out = [];
+  for (const e of await readdir(dir, { withFileTypes: true })) {
+    const p = `${dir}/${e.name}`;
+    if (e.isDirectory()) out.push(...await markdownFiles(p));
+    else if (e.name.endsWith('.md')) out.push(p);
+  }
+  return out.sort();
+}
+
+// Content pages: Markdown with front matter (scripts/pages.mjs). Each page's
+// file path under src/pages doesn't decide its URL; its front matter path does.
+for (const file of await markdownFiles(`${SRC}/pages`)) {
+  const rel = file.slice(`${SRC}/`.length);
+  const { meta, body } = parseFrontMatter(await readFile(file, 'utf8'), rel);
+  let html = marked.parse(body);
+  if (html.includes('{{chart}}')) {
+    if (!meta.chartPlayers) throw new Error(`${rel}: {{chart}} needs chartPlayers in the front matter`);
+    html = html.replace(/<p>\{\{chart\}\}<\/p>|\{\{chart\}\}/, () => chartBlock(meta.chartPlayers));
+  }
+  const content = [
+    meta.kicker ? `<p class="kicker">${escapeHtml(meta.kicker)}</p>` : '',
+    html,
+    appBlock(meta.campaign),
+  ].join('\n');
+  const out = meta.path === '/' ? 'index.html' : `${meta.path.slice(1)}/index.html`;
+  await page(out, content, { title: meta.title, description: meta.description, path: meta.path });
+}
 
 // Written last, from every page() above that isn't noindex.
 await writeFile(`${DIST}/robots.txt`, `User-agent: *\nAllow: /\n\nSitemap: ${ORIGIN}/sitemap.xml\n`);

@@ -68,6 +68,8 @@ h2 { font-size: clamp(1.6rem, 4.5vw, 2.25rem); margin: 48px 0 12px; }
 /* 360px Android: wordmark + three links overflow. The page scrolls straight
    into How it works anyway, so that link is the one to drop. */
 @media (max-width: 419px) { .nav-how { display: none; } }
+/* Rotation charts joins the header only where it fits; the footer always has it. */
+@media (max-width: 599px) { .nav-charts { display: none; } }
 @media (max-width: 359px) {
   .brand-name { display: none; }
 }
@@ -337,3 +339,50 @@ main:has(> .band-fulltime:last-child) { padding-bottom: 0; }
 }
 .policy > h2:first-child { margin-top: 32px; }
 
+
+/* Screen-reader-only text (the "On" in a chart cell). */
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* Content pages end with the app: a ruled block, never a boxed CTA. */
+.page .app-block { max-width: var(--measure); margin-top: 48px; border-top: 2px solid var(--ink); padding-top: 16px; }
+.app-block-line { margin: 0 0 16px; }
+
+/* Rotation chart: a stat-sheet grid. Rows ruled like the app's lists, a dot
+   where a player is on court, totals in the last column. Wide charts scroll
+   sideways inside their own box so the page never does. */
+.page > .chart-scroll { max-width: none; }
+.chart-scroll { overflow-x: auto; margin: 24px 0 8px; -webkit-overflow-scrolling: touch; }
+.rotation-chart { border-collapse: collapse; font-size: 14px; font-variant-numeric: tabular-nums; }
+.rotation-chart caption {
+  text-align: left; font-family: Saira, sans-serif; font-weight: 700; font-size: 13px;
+  letter-spacing: 0.08em; text-transform: uppercase; padding-bottom: 8px; color: var(--muted);
+}
+.rotation-chart th, .rotation-chart td { padding: 6px 8px; border-bottom: 1px solid var(--rule); text-align: center; white-space: nowrap; }
+.rotation-chart thead th { border-bottom: 2px solid var(--ink); font-size: 12px; font-weight: 700; vertical-align: bottom; }
+.rotation-chart thead th:first-child, .rotation-chart tbody th { text-align: left; }
+.rotation-chart tbody th { font-weight: 700; position: sticky; left: 0; background: var(--canvas); }
+.rotation-chart .chart-period { display: block; color: var(--orange-ink); }
+.rotation-chart .period-start { border-left: 2px solid var(--ink); }
+.rotation-chart td.on { background: var(--tint); color: var(--orange-ink); }
+.rotation-chart td.mins { font-weight: 700; border-left: 2px solid var(--ink); }
+.chart-other-formats-lede { margin-bottom: 4px; }
+.chart-other-formats { margin-top: 0; }
+
+/* Print: one landscape page of chart, nothing else. */
+@media print {
+  @page { size: landscape; margin: 12mm; }
+  .site-header, .site-footer, .app-block, .chart-other-formats, .chart-other-formats-lede,
+  .no-print, .kicker { display: none !important; }
+  body { background: #fff; }
+  main { padding: 0; }
+  .page { padding-top: 0; }
+  .chart-scroll { overflow: visible; margin: 0; }
+  .rotation-chart { font-size: 11px; width: 100%; }
+  .rotation-chart th, .rotation-chart td { padding: 4px 3px; }
+  .rotation-chart tbody th { position: static; }
+  .rotation-chart td.on { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  main::after { content: "sidelinehero.app"; display: block; margin-top: 8mm; font-size: 9px; color: #666; }
+}
