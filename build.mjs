@@ -22,18 +22,70 @@ function escapeHtml(s) {
     .replaceAll("'", '&#39;');
 }
 
+// Search and sharing. ORIGIN is the one canonical host: the old subdomain and
+// www 301 here (CloudFront Function sidelinehero-rewrite), so every canonical
+// URL, the sitemap and the share tags name this host only.
+const ORIGIN = 'https://sidelinehero.app';
+const SITE_NAME = 'Sideline Hero';
+const APP_STORE_URL = 'https://apps.apple.com/app/id6796588008';
+const PLAY_URL = 'https://play.google.com/store/apps/details?id=app.sidelinehero.coach';
+
+// The share card is rendered from sites/sidelinehero/og-card/ (render.sh), with
+// its hash in the file name like every other cached asset. Exactly one may exist.
+const ogCards = existsSync(`${SRC}/img`)
+  ? (await readdir(`${SRC}/img`)).filter((n) => /^og-card\.[0-9a-f]{8}\.png$/.test(n))
+  : [];
+if (ogCards.length !== 1) throw new Error(`expected one img/og-card.<hash>.png, found ${ogCards.length} — run og-card/render.sh`);
+const OG_IMAGE = `${ORIGIN}/img/${ogCards[0]}`;
+
+// Every indexable page, in build order. robots.txt and sitemap.xml are written
+// from this list at the end, so a new page can't be left out of the sitemap.
+const indexable = [];
+
+// JSON-LD sits inside a <script>; escaping `<` keeps a `</script>` in any
+// string from closing it early.
+const jsonLd = (data) =>
+  `<script type="application/ld+json">${JSON.stringify(data).replaceAll('<', '\\u003c')}</script>`;
+
+function seoTags({ title, description, path, noindex, structuredData }) {
+  if (noindex) return '<meta name="robots" content="noindex">';
+  const url = `${ORIGIN}${path}`;
+  const tags = [
+    `<link rel="canonical" href="${url}">`,
+    '<meta property="og:type" content="website">',
+    `<meta property="og:site_name" content="${SITE_NAME}">`,
+    `<meta property="og:title" content="${escapeHtml(title)}">`,
+    `<meta property="og:description" content="${escapeHtml(description)}">`,
+    `<meta property="og:url" content="${url}">`,
+    `<meta property="og:image" content="${OG_IMAGE}">`,
+    '<meta property="og:image:width" content="1200">',
+    '<meta property="og:image:height" content="630">',
+    '<meta property="og:image:alt" content="Sideline Hero: coach the game, not the subs. The live game screen on a phone.">',
+    '<meta name="twitter:card" content="summary_large_image">',
+  ];
+  if (structuredData) tags.push(jsonLd(structuredData));
+  return tags.join('\n');
+}
+
 // Function replacements throughout: a string replacement would interpret `$&`,
 // "$`", `$'` and `$1` in the *content* as substitution patterns. This is legal
 // text — it has to come out byte-for-byte.
-function render(body, { title, description }) {
+function render(body, meta) {
   return layout
-    .replaceAll('{{title}}', () => escapeHtml(title))
-    .replaceAll('{{description}}', () => escapeHtml(description))
+    .replaceAll('{{title}}', () => escapeHtml(meta.title))
+    .replaceAll('{{description}}', () => escapeHtml(meta.description))
+    .replaceAll('{{seo}}', () => seoTags(meta))
     .replaceAll('{{body}}', () => body)
     .replaceAll('{{v}}', () => V);
 }
 
+// meta.path is the page's public, clean URL path ('/faq'), which is what the
+// header and footer link to. Required unless the page is noindex.
 async function page(outPath, body, meta) {
+  if (!meta.noindex) {
+    if (!meta.path?.startsWith('/')) throw new Error(`${outPath} needs a path`);
+    indexable.push(meta.path);
+  }
   const full = `${DIST}/${outPath}`;
   await mkdir(full.replace(/\/[^/]+$/, ''), { recursive: true });
   const content = meta.fullBleed ? body : `<div class="container page">\n${body}\n</div>`;
@@ -73,16 +125,39 @@ await page('index.html', await readFile(`${SRC}/index.html`, 'utf8'), {
   title: 'Sideline Hero · basketball substitution planner for coaches',
   description: 'Fair rotations, planned before tip-off. Game day works offline, no account needed.',
   fullBleed: true,
+  path: '/',
+  // WebSite gives Google the site's name for search results; MobileApplication
+  // ties the site to both store listings. No rating: the app has no reviews to
+  // quote yet, and an invented one is against Google's rules.
+  structuredData: {
+    '@context': 'https://schema.org',
+    '@graph': [
+      { '@type': 'WebSite', name: SITE_NAME, url: `${ORIGIN}/` },
+      {
+        '@type': 'MobileApplication',
+        name: SITE_NAME,
+        url: `${ORIGIN}/`,
+        description: 'Basketball substitution planner and sub timer for youth and community coaches. Plans fair rotations before tip-off and guides every sub during the game.',
+        applicationCategory: 'SportsApplication',
+        operatingSystem: 'iOS, Android',
+        image: `${ORIGIN}/img/icon-180.png`,
+        offers: { '@type': 'Offer', price: '0', priceCurrency: 'AUD' },
+        sameAs: [APP_STORE_URL, PLAY_URL],
+      },
+    ],
+  },
 });
 
 await page('404.html', await readFile(`${SRC}/404.html`, 'utf8'), {
   title: 'Not found · Sideline Hero',
   description: 'That page does not exist.',
+  noindex: true,
 });
 
 await page('support/index.html', await readFile(`${SRC}/support.html`, 'utf8'), {
   title: 'Support · Sideline Hero',
   description: 'Get help with Sideline Hero, report a bug, or ask a question.',
+  path: '/support',
 });
 
 // Two policies, two audiences. They are wrapped in their own <section>s and
@@ -114,11 +189,13 @@ const privacyBody = [
 ].join('\n');
 await page('privacy/index.html', privacyBody,
   { title: 'Privacy · Sideline Hero',
-    description: 'How Sideline Hero and this website handle your information.' });
+    description: 'How Sideline Hero and this website handle your information.',
+    path: '/privacy' });
 
 await page('terms/index.html', marked.parse(await readFile(`${SRC}/terms-app.md`, 'utf8')), {
   title: 'Terms · Sideline Hero',
   description: 'Terms of use for the Sideline Hero app, including Premium purchases.',
+  path: '/terms',
 });
 
 // FAQ. faqs-app.json is a copy of sideline-hero's src/features/help/faqs.json,
@@ -160,6 +237,7 @@ const faqBody = [
 await page('faq/index.html', faqBody, {
   title: 'FAQ · Sideline Hero',
   description: 'How Sideline Hero works, what it costs, and what happens to your data.',
+  path: '/faq',
 });
 
 // What's new. releases-app.json is a copy of sideline-hero's docs/releases.json,
@@ -178,4 +256,16 @@ const releasesBody = [
 await page('releases/index.html', releasesBody, {
   title: 'What’s new · Sideline Hero',
   description: 'Every Sideline Hero update, what changed, and when it reached Google Play and the App Store.',
+  path: '/releases',
 });
+
+// Written last, from every page() above that isn't noindex.
+await writeFile(`${DIST}/robots.txt`, `User-agent: *\nAllow: /\n\nSitemap: ${ORIGIN}/sitemap.xml\n`);
+await writeFile(`${DIST}/sitemap.xml`, [
+  '<?xml version="1.0" encoding="UTF-8"?>',
+  '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+  ...indexable.map((p) => `  <url><loc>${ORIGIN}${p}</loc></url>`),
+  '</urlset>',
+  '',
+].join('\n'));
+console.log('  -> robots.txt, sitemap.xml');

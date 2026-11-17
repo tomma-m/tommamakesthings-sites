@@ -66,6 +66,27 @@ appears only once the release has reached it. The app repo's
 `build.mjs` refuses a malformed file, and `node --test
 scripts/releases.test.mjs` covers the helpers in CI.
 
+## Search and sharing
+
+Every page passed to `page()` in `build.mjs` gets a `path` (its clean URL,
+`/faq`), which becomes its canonical URL on `https://sidelinehero.app` and its
+share tags (Open Graph, Twitter card). `robots.txt` and `sitemap.xml` are
+written at the end of the build from those same pages, so a new page is in the
+sitemap as soon as it has a `path`. A page with `noindex: true` (the 404) is
+left out of both. The home page also carries JSON-LD (`WebSite` for the site
+name in Google, `MobileApplication` with both store links). Never add an
+`aggregateRating` until there are real reviews to back it.
+
+The share image is `src/img/og-card.<hash>.png` (1200 × 630). Its source is
+`sites/sidelinehero/og-card/og-card.html`, which uses the site's own fonts,
+colours and a screenshot. After editing it, run
+`sites/sidelinehero/og-card/render.sh` (headless Chrome); it replaces the old
+card, and the build picks up the new name.
+
+Google Search Console: a Domain property for `sidelinehero.app` (verified by a
+DNS TXT record in the Cloudflare zone), with `https://sidelinehero.app/sitemap.xml`
+submitted under Sitemaps.
+
 ## Infrastructure
 
 AWS account `957424402699`. S3 bucket `sidelinehero-tommamakesthings-site`
