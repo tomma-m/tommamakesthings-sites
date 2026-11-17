@@ -14,7 +14,7 @@ Twelve players means seven on the bench at a time. Everyone plays about 13 to 14
 
 ## How this rotation works
 
-Twelve is a big roster. An even split is 13:20 each, and with seven sitting at any time the chart rotates a few players at once, three or four times a quarter. This plan lands everyone between 12:45 and 14:15.
+Twelve is a big roster. An even split is 13:20 each, and with seven sitting at any time the chart makes three or four changes a quarter, anywhere from one player to a whole five. This plan lands everyone between 12:45 and 14:15.
 
 ## Tips for twelve players
 

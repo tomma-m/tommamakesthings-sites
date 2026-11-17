@@ -1,6 +1,6 @@
 ---
 title: How to sub fairly in youth basketball · Sideline Hero
-description: A practical way to sub fairly in youth basketball: plan minutes before tip-off, sub at dead balls, track who's sat longest and fix the plan when the game changes.
+description: A practical way to sub fairly in youth basketball: plan minutes before tip-off, sub at dead balls, track who's been sitting longest and fix the plan when the game changes.
 path: /guides/fair-subs-youth-basketball
 kicker: Guides
 ---
@@ -20,7 +20,7 @@ If your league has a minimum playing time rule, that's your floor. Check your le
 
 ## Work out the minutes before tip-off
 
-Equal minutes is simple maths. Multiply the game length by five (the players on court), then divide by your roster.
+Equal minutes is simple math. Multiply the game length by five (the players on court), then divide by your roster.
 
 For a game of four 8-minute quarters with nine players: 32 minutes times 5 is 160 player-minutes, divided by 9 is about 17 minutes 47 seconds each. That's the target for every player.
 
@@ -32,7 +32,7 @@ A target is only half a plan. You also need to know when each sub happens. There
 
 - **Sub on the clock.** Change players at set times, like every 4 minutes. Simple to remember, and it works well when your roster divides neatly. With eight players and 8-minute quarters, subbing at the 4:00 mark and at each quarter break gives everyone exactly 20 minutes ([see the 8 player chart](/rotation-charts/8-players)).
 - **Sub by quarter.** With ten players, two groups of five can each play two quarters. Everyone gets 16 minutes and all your subs happen at quarter breaks ([see the 10 player chart](/rotation-charts/10-players)).
-- **Small, frequent changes.** With odd numbers like seven or nine, nothing divides neatly, so the fairest plans swap one or two players at a time, several times a quarter.
+- **Small, frequent changes.** With odd numbers like seven or nine, nothing divides neatly, so the fairest plans make smaller changes more often: one or two players at a time with seven, two to four with nine.
 
 You don't have to work this out by hand. The [rotation chart maker](/rotation-chart-maker) gives you a fair chart for 6 to 12 players, for halves or quarters, and you can print it with your players' names on it.
 
@@ -56,23 +56,23 @@ Some ways to keep on top of it:
 
 - **A printed chart on a clipboard.** Tick off each sub as you make it.
 - **An assistant on minutes.** If you have a helper, give them the chart and one job: tell you who's next.
-- **An app.** Sideline Hero tracks every player's court time from the bench, tells you when a sub is due, and shows who's sat longest.
+- **An app.** Sideline Hero tracks every player's court time from the bench, tells you when a sub is due, and shows who's been sitting longest.
 
 Whatever you use, check it at halftime. If someone's well behind, give them a longer stretch in the third quarter while there's still time to catch up.
 
 ## Fix the plan when the game changes
 
-No game goes exactly to plan. A player fouls out, someone gets hurt, a kid turns up after tip-off. Each of these changes the maths for everyone else.
+No game goes exactly to plan. A player fouls out, someone gets hurt, a kid turns up after tip-off. Each of these changes the math for everyone else.
 
 When it happens, don't try to rescue the old plan. Work out what's left: how many minutes remain, and how far each player is from their target. Then share the remaining time so the gaps close by the final whistle. A player who arrived late won't reach the full target, but they can still get their fair share of the time that's left.
 
-Doing that in your head while coaching is hard. It's the main thing the Sideline Hero app does: it re-plans everyone's minutes on the spot when a player fouls out, gets hurt or shows up late.
+Doing that math in your head while coaching is hard. It's the main thing the Sideline Hero app does: it re-plans everyone's minutes on the spot when a player fouls out, gets hurt or shows up late.
 
 ## Look at the season, not just one game
 
 Some games won't be perfectly fair. Foul trouble, injuries and close finishes all get in the way. That's fine, as long as it evens out over the season.
 
-Keep a running total of each player's minutes. If someone's behind after a few games, give them a little more in the next few. A season where every kid got a fair go matters more than any one game.
+Keep a running total of each player's minutes. If someone's behind after a few games, give them a little more in the next few. A season where every kid got a fair shot matters more than any one game.
 
 ## The short version
 

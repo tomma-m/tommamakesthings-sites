@@ -28,7 +28,7 @@ Two things to watch. If your two fives aren't evenly matched, one group can get 
 
 With eleven or twelve, the numbers stop dividing neatly. The even share for a 32-minute game is 14:33 with eleven and 13:20 with twelve.
 
-Whole-group swaps don't work here, because the groups would be different sizes. The fairest plans change a few players at a time, three or four times a quarter. That means more subs, but each one is small, so the court stays settled.
+Whole-group swaps don't work here, because the groups would be different sizes. The fairest plans change players three or four times a quarter, sometimes one or two, sometimes a whole five. That means more subs, so it pays to have each group ready.
 
 The [11 player](/rotation-charts/11-players) and [12 player](/rotation-charts/12-players) charts show how it works. If your league plays halves, or longer quarters, the [rotation chart maker](/rotation-chart-maker) has those too.
 
@@ -48,7 +48,7 @@ Seven kids sitting is a lot of kids sitting. A bored bench is where frustration 
 
 Give the bench something to do:
 
-- Have them watch one opposition player and tell you what they see.
+- Have them watch one opponent and tell you what they see.
 - Have one keep count of the other team's fouls.
 - Talk to players as they come off: one thing they did well, one thing to try next time.
 

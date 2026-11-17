@@ -374,21 +374,27 @@ main:has(> .band-fulltime:last-child) { padding-bottom: 0; }
 .chart-other-formats-lede { margin-bottom: 4px; }
 .chart-other-formats { margin-top: 0; }
 
-/* Print: one landscape page of chart, nothing else. */
+/* Print. Only pages that hold a chart change: they print one landscape page
+   with the heading and the chart. Every other page (guides, privacy, FAQ)
+   prints as a normal portrait document. */
 @media print {
-  @page { size: landscape; margin: 12mm; }
+  @page chart { size: landscape; margin: 10mm; }
   .site-header, .site-footer, .no-print { display: none !important; }
-  /* Only the heading and the chart: prose and links stay on screen. */
-  .page > *:not(h1):not(.chart-scroll) { display: none !important; }
-  body { background: #fff; }
-  main { padding: 0; }
-  .page { padding-top: 0; }
+  body:has(.rotation-chart) { page: chart; background: #fff; }
+  body:has(.rotation-chart) main { padding: 0; }
+  body:has(.rotation-chart) .page { padding-top: 0; }
+  body:has(.rotation-chart) .page > *:not(h1):not(.chart-scroll) { display: none !important; }
+  body:has(.rotation-chart) main::after { content: "sidelinehero.app"; display: block; margin-top: 6mm; font-size: 9px; color: #666; }
   .chart-scroll { overflow: visible; margin: 0; }
   .rotation-chart { font-size: 11px; width: 100%; }
   .rotation-chart th, .rotation-chart td { padding: 4px 3px; }
   .rotation-chart tbody th { position: static; }
   .rotation-chart td.on { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  main::after { content: "sidelinehero.app"; display: block; margin-top: 8mm; font-size: 9px; color: #666; }
+  /* Charts with more than 20 stretches (up to 40) squeeze onto US Letter. */
+  .rotation-chart-wide { font-size: 7px; letter-spacing: -0.02em; }
+  .rotation-chart-wide th, .rotation-chart-wide td { padding: 3px 0.5px; }
+  .rotation-chart-wide tbody th { padding-right: 3px; }
+  .rotation-chart-wide thead th + th:not(.period-start), .rotation-chart-wide td:not(.mins) { border-left: 0.5px solid #ccc; }
 }
 
 /* Rotation chart maker form. Ruled like the rest of the site; the button is a

@@ -28,11 +28,11 @@ With 8 or 10 players the numbers come out clean. With 7, 9 or 12 they don't, so 
 
 ## Why it's harder than it sounds
 
-On paper, equal minutes is just maths. On game day, three things get in the way.
+On paper, equal minutes is just math. On game day, three things get in the way.
 
 **The clock doesn't wait for you.** You can only sub at dead balls, and in some stretches there aren't many. A planned sub at 4:00 might happen at 3:20.
 
-**It's hard to keep count.** By the third quarter, most coaches without a chart can't say for sure who's played the most. The kids who've sat longest are usually the quiet ones, and they're the easiest to forget.
+**It's hard to keep count.** By the third quarter, most coaches without a chart can't say for sure who's played the most. The kids who've been sitting longest are usually the quiet ones, and they're the easiest to forget.
 
 **The game changes.** Fouls, injuries and late arrivals all upset the numbers, and fixing them while coaching is hard.
 

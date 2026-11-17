@@ -14,12 +14,12 @@ Nine players means four on the bench at a time. Everyone plays about 17 to 18 mi
 
 ## How this rotation works
 
-Nine is the awkward one. 32 minutes split nine ways is 17:47 each, which doesn't divide into neat quarters, so the chart changes one or two players at a time, five or six times a quarter. This plan lands everyone between 17:00 and 18:00.
+Nine is the awkward one. 32 minutes split nine ways is 17:47 each, which doesn't divide into neat quarters, so the chart makes smaller changes more often: five or six times a quarter, usually two or three players at a time, sometimes one or four. This plan lands everyone between 17:00 and 18:00.
 
 ## Tips for nine players
 
-- More changes, smaller ones. You'll sub often, but only one or two players at a time, so the court stays settled.
-- This is where a clipboard gets hard. With nine, it's easy to lose track of who's sat longest. That's the job the app does for you during the game.
+- Expect to sub often. Most changes are two or three players, so part of your five stays on and the court stays settled.
+- This is where a clipboard gets hard. With nine, it's easy to lose track of who's been sitting longest. That's the job the app does for you during the game.
 - Group your subs at dead balls. If two changes fall close together on the chart, it's fine to make them at the same stoppage.
 
 ## How to read the chart

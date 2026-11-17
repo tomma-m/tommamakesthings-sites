@@ -14,7 +14,7 @@ Eleven players means six on the bench at a time. Everyone plays about 14 to 15 m
 
 ## How this rotation works
 
-With eleven, more than half your team is on the bench at any moment. An even split is 14:33 each. This plan changes a few players at a time, about four times a quarter, and lands everyone between 14:00 and 15:30.
+With eleven, more than half your team is on the bench at any moment. An even split is 14:33 each. This plan changes players about four times a quarter, anywhere from one player to a whole five, and lands everyone between 14:00 and 15:30.
 
 ## Tips for eleven players
 

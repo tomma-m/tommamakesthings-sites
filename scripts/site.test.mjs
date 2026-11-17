@@ -448,7 +448,7 @@ test('each roster page has its 8-minute-quarter chart, the other formats and its
   for (const n of ROSTERS) {
     const file = `rotation-charts/${n}-players/index.html`;
     const html = await read(file);
-    assert.equal((html.match(/<table class="rotation-chart">/g) || []).length, 1, file);
+    assert.equal((html.match(/<table class="rotation-chart[^"]*">/g) || []).length, 1, file);
     assert.equal((html.match(/<tr class="player">/g) || []).length, n, `${file} has ${n} player rows`);
     assert.match(html, new RegExp(`<caption>${n} players · 4 × 8-min quarters</caption>`), file);
     for (const f of OTHER_FORMATS) {
@@ -537,5 +537,66 @@ test('each guide is canonical, tagged, in the sitemap and links the charts', asy
     assert.match(html, /href="\/rotation-charts\//, `${file} links a roster page`);
     assert.doesNotMatch(html, /—/, `${file} has no em dash`);
     assert.ok(sitemap.includes(`<loc>${ORIGIN}/guides/${slug}</loc>`), `${slug} in sitemap`);
+  }
+});
+
+// Final review fixes (2026-11-18).
+const PAGE_MD = async () => {
+  const out = {};
+  const walk = async (dir) => {
+    for (const e of await readdir(dir, { withFileTypes: true })) {
+      const p = join(dir, e.name);
+      if (e.isDirectory()) await walk(p); else if (p.endsWith('.md')) out[p] = await readFile(p, 'utf8');
+    }
+  };
+  await walk('sites/sidelinehero/src/pages');
+  return out;
+};
+
+test('print rules only reshape pages that hold a chart', async () => {
+  const css = await readCss();
+  const print = css.slice(css.indexOf('@media print'));
+  assert.doesNotMatch(print, /@page\s*\{\s*size:\s*landscape/, 'landscape must be a named page for charts only');
+  assert.match(print, /@page chart\s*\{[^}]*size:\s*landscape/);
+  const hide = print.match(/([^{}]*)\{\s*display:\s*none !important;\s*\}\s*$/m);
+  for (const rule of print.match(/[^{}]*:not\(h1\)[^{}]*\{/g) || []) {
+    assert.match(rule, /:has\(\.rotation-chart\)/, `print hide rule must be scoped to chart pages: ${rule.trim()}`);
+  }
+  assert.ok(hide !== undefined);
+});
+
+test('wide charts get the compact print layout', async () => {
+  const { findChart, renderChartTable, playerLabels } = await import('../sites/sidelinehero/src/js/chart-render.js');
+  const file = JSON.parse(await read('../src/rotation-charts-app.json'));
+  const widest = findChart(file, 11, 'q12');
+  assert.match(renderChartTable(widest, playerLabels(11)), /^<table class="rotation-chart rotation-chart-wide">/);
+  assert.match(renderChartTable(findChart(file, 10, 'q8'), playerLabels(10)), /^<table class="rotation-chart">/);
+  // The compact print layout is sized for 40 stretch columns on US Letter.
+  // An engine change that makes a chart wider than that needs a new layout.
+  assert.ok(Math.max(...file.charts.map((c) => c.stretches.length)) <= 40);
+  assert.match(await readCss(), /\.rotation-chart-wide[^{]*\{[^}]*font-size/);
+});
+
+test('roster copy never undersells how many players change at once', async () => {
+  const file = JSON.parse(await read('../src/rotation-charts-app.json'));
+  const maxSwap = (c) => Math.max(...c.stretches.slice(1).map((s, i) => s.on.filter((p) => !c.stretches[i].on.includes(p)).length));
+  for (const n of [6, 7, 8, 9, 10, 11, 12]) {
+    const md = await readFile(`sites/sidelinehero/src/pages/rotation-charts/${n}-players.md`, 'utf8');
+    const max = maxSwap(file.charts.find((c) => c.players === n && c.format === 'q8'));
+    if (/one or two (players )?at a time/i.test(md)) assert.ok(max <= 2, `${n}-players says "one or two at a time" but the chart swaps up to ${max}`);
+    if (/a few players at a time/i.test(md)) assert.ok(max <= 3, `${n}-players says "a few at a time" but the chart swaps up to ${max}`);
+  }
+  const guides = await PAGE_MD();
+  for (const [p, md] of Object.entries(guides)) {
+    assert.doesNotMatch(md, /fairest plans swap one or two players at a time/i, `${p}: nine-player charts swap up to four`);
+    assert.doesNotMatch(md, /each one is small, so the court stays settled/i, `${p}: 11 and 12 player charts swap whole fives`);
+  }
+});
+
+test('US pages use US terms', async () => {
+  for (const [p, md] of Object.entries(await PAGE_MD())) {
+    for (const term of [/\bmaths\b/i, /\bfair go\b/i, /\bopposition player/i, /\bsat longest\b/i, /\bcolour/i, /\bbehaviour/i]) {
+      assert.doesNotMatch(md, term, `${p} uses ${term}`);
+    }
   }
 });

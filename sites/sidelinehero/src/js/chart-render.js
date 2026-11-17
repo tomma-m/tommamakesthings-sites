@@ -62,7 +62,7 @@ export function renderChartTable(chart, labels) {
     return `<tr class="player"><th scope="row">${escapeHtml(label)}</th>${cells}<td class="mins">${mmss(chart.seconds[i])}</td></tr>`;
   }).join('\n');
   return [
-    '<table class="rotation-chart">',
+    `<table class="rotation-chart${chart.stretches.length > 20 ? ' rotation-chart-wide' : ''}">`,
     `<caption>${chart.players} players · ${formatLabel(chart.format)}</caption>`,
     `<thead><tr><th scope="col">Player</th>${head}<th scope="col">Mins</th></tr></thead>`,
     `<tbody>\n${rows}\n</tbody>`,
