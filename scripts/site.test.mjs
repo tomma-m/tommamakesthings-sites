@@ -509,3 +509,33 @@ test('the chart maker script keeps nothing and sends nothing', async () => {
 test('the chart scroll box contains its hidden labels (else wide charts push phone pages sideways)', async () => {
   assert.match(await readCss(), /\.chart-scroll \{[^}]*position: relative/);
 });
+
+// Guides (SEO phase 2, Task 6).
+const GUIDES = {
+  'fair-subs-youth-basketball': 'How to sub fairly in youth basketball',
+  'equal-playing-time': 'Equal playing time in rec league basketball',
+  'big-roster-rotation': 'Running a rotation with 10 or more players',
+};
+
+test('the guides hub lists exactly the three guides', async () => {
+  const html = await read('guides/index.html');
+  const links = [...html.matchAll(/href="\/guides\/([a-z0-9-]+)"/g)].map((m) => m[1]);
+  assert.deepEqual([...new Set(links)].sort(), Object.keys(GUIDES).sort());
+  for (const href of tagged('guides')) assert.ok(html.includes(`href="${href}"`), 'hub app block');
+  assert.doesNotMatch(html, /—/);
+});
+
+test('each guide is canonical, tagged, in the sitemap and links the charts', async () => {
+  const sitemap = await read('sitemap.xml');
+  for (const [slug, title] of Object.entries(GUIDES)) {
+    const file = `guides/${slug}/index.html`;
+    const html = await read(file);
+    assert.match(html, new RegExp(`<link rel="canonical" href="${ORIGIN}/guides/${slug}">`), file);
+    assert.ok(html.includes(`<title>${title} · Sideline Hero</title>`), `${file} title`);
+    for (const href of tagged(slug)) assert.ok(html.includes(`href="${href}"`), `${file} app block`);
+    assert.ok(html.includes('href="/rotation-chart-maker'), `${file} links the maker`);
+    assert.match(html, /href="\/rotation-charts\//, `${file} links a roster page`);
+    assert.doesNotMatch(html, /—/, `${file} has no em dash`);
+    assert.ok(sitemap.includes(`<loc>${ORIGIN}/guides/${slug}</loc>`), `${slug} in sitemap`);
+  }
+});
