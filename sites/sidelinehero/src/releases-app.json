@@ -1,6 +1,20 @@
 {
   "releases": [
     {
+      "version": "1.5.0",
+      "stores": {
+        "google_play": "2026-11-17",
+        "app_store": "2026-11-18"
+      },
+      "notes": [
+        "Android tablets turn to landscape, with two panes side by side.",
+        "Dialogs scroll when the keyboard is up, so Save is always in reach.",
+        "Next sub names add a surname initial when two players share a first name.",
+        "The Game Summary score sits in the middle of the card.",
+        "Smaller fixes and tidy-ups."
+      ]
+    },
+    {
       "version": "1.4.1",
       "stores": {
         "google_play": "2026-11-15",
