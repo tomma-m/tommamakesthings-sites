@@ -66,6 +66,22 @@ appears only once the release has reached it. The app repo's
 `build.mjs` refuses a malformed file, and `node --test
 scripts/releases.test.mjs` covers the helpers in CI.
 
+## Rotation charts
+
+The rotation chart pages and the chart maker are built from
+`sites/sidelinehero/src/rotation-charts-app.json`, a **copy** of
+`docs/rotation-charts.json` in the private `sideline-hero` repo, which the
+app's engine writes (`npm run charts` there). Only the finished charts come
+here; the engine never does. Never edit the copy. After the app regenerates
+it:
+
+    node scripts/sync-charts.mjs          # copy it in
+    node scripts/sync-charts.mjs --check  # exit 1 if the copy is stale
+
+`scripts/charts.mjs` validates it (five on court in every stretch, no gaps,
+seconds that add up), and `src/js/chart-render.js` draws a chart. The build
+and the browser chart maker share that one renderer.
+
 ## Search and sharing
 
 Every page passed to `page()` in `build.mjs` gets a `path` (its clean URL,
