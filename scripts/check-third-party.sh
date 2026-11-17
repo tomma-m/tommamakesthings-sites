@@ -49,7 +49,9 @@ POLICY_LINKS='^(https://policies\.google\.com/(privacy|technologies/partner-site
 # <a href> navigation, loaded only on tap. Exact listing URL only, so any other
 # play.google.com resource is still caught. Add the App Store listing here when
 # its badge is linked.
-STORE_LINKS='^https://(play\.google\.com/store/apps/details\?id=app\.sidelinehero\.coach|apps\.apple\.com/app/id6796588008)$'
+# The badges carry campaign tags (one per spot on the page), so those exact
+# tagged forms are allowed too; the untagged ones stay for the JSON-LD.
+STORE_LINKS='^https://(play\.google\.com/store/apps/details\?id=app\.sidelinehero\.coach(&amp;utm_source=sidelinehero\.app&amp;utm_medium=website&amp;utm_campaign=(hero|fulltime))?|apps\.apple\.com/app/id6796588008|apps\.apple\.com/app/apple-store/id6796588008\?pt=129245947&amp;ct=site-(hero|fulltime)&amp;mt=8)$'
 
 # The app's Instagram profile, linked from the footer. Same reasoning again:
 # a navigation on tap, exact profile URL only, so an Instagram embed is caught.
