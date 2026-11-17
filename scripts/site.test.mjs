@@ -221,14 +221,20 @@ test('the iPhone Duo section sits between How a game goes and the stat sheet, wi
   assert.doesNotMatch(section, /\u2014/);
 });
 
-test('both stores link to the live listings; no Coming soon left', async () => {
+test('both stores link to the live listings, tagged per spot; no Coming soon left', async () => {
   const html = await read('index.html');
   const badges = [...html.matchAll(/<img[^>]*class="badge-[^"]*"[^>]*>/g)];
   assert.equal(badges.length, 4);
-  const apple = [...html.matchAll(/<a class="badge-link" href="https:\/\/apps\.apple\.com\/app\/id6796588008" target="_blank" rel="noopener"><img class="badge-app-store"[^>]*alt="Download on the App Store">/g)];
-  assert.equal(apple.length, 2);
-  const play = [...html.matchAll(/<a class="badge-link" href="https:\/\/play\.google\.com\/store\/apps\/details\?id=app\.sidelinehero\.coach" target="_blank" rel="noopener"><img class="badge-google-play"[^>]*alt="Get it on Google Play">/g)];
-  assert.equal(play.length, 2);
+  // One tag per spot, so the store dashboards say which badge was tapped.
+  for (const spot of ['hero', 'fulltime']) {
+    const apple = `https://apps.apple.com/app/apple-store/id6796588008?pt=129245947&amp;ct=site-${spot}&amp;mt=8`;
+    const play = `https://play.google.com/store/apps/details?id=app.sidelinehero.coach&amp;utm_source=sidelinehero.app&amp;utm_medium=website&amp;utm_campaign=${spot}`;
+    assert.ok(html.includes(`<a class="badge-link" href="${apple}" target="_blank" rel="noopener"><img class="badge-app-store"`), `App Store badge, ${spot}`);
+    assert.ok(html.includes(`<a class="badge-link" href="${play}" target="_blank" rel="noopener"><img class="badge-google-play"`), `Google Play badge, ${spot}`);
+  }
+  // No untagged badge left behind.
+  assert.doesNotMatch(html, /class="badge-link" href="https:\/\/apps\.apple\.com\/app\/id/);
+  assert.doesNotMatch(html, /class="badge-link" href="[^"]*details\?id=app\.sidelinehero\.coach"/);
   assert.doesNotMatch(html, /badge-tip|coming soon/i);
 });
 
